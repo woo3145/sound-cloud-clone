@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <div>
-      <header>Header</header>
+      <header className="w-full h-12 bg-slate-400">Header</header>
       <nav>
         <Link to="/">Home</Link>
         <Link to="/discover">Discover</Link>
