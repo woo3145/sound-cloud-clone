@@ -11,6 +11,10 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="discover" element={<Discover />} />
+          <Route path="stream" element={<Discover />} />
+          <Route path="you" element={<Discover />}>
+            <Route path="*" element={<Discover />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
