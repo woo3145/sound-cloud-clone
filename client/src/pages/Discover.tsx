@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MusicCard from "../components/Cards/MusicCard";
+import Footer from "../components/Footer";
 import useMockMixedLists from "../mockData/useMockMixedLists";
 
 function Discover() {
   const { mixedListsOfNewAndHot, mixedListsOfSleep } = useMockMixedLists();
   return (
     <div className="w-full flex">
-      <div className="w-full sm:max-w-[600px] md:max-w-[750px] lg:max-w-[910px] pt-8 px-8 overflow-hidden">
+      <div className="w-full sm:max-w-[570px] md:max-w-[720px] lg:max-w-[880px] pt-8 px-8 overflow-hidden">
         <div className="min-h-screen w-full">
           {/* Header */}
           <div>
@@ -80,49 +81,10 @@ function Discover() {
           </ul>
         </div>
       </div>
-      <div className="hidden p-4 sm:block w-full shrink-0  min-h-screen max-w-[330px] border-gray-100 border-l box-border">
-        <div className="sticky top-16 w-full h-auto">
+      <div className="hidden p-8 sm:block w-full shrink-0  min-h-screen max-w-[360px] border-gray-100 border-l box-border">
+        <div className="sticky top-16 w-full h-auto border-t border-gray-100">
           {/* SideBar Footer */}
-          <div className="border-t border-gray-100 pt-4 flex flex-wrap gap-0.5 text-xs text-neutral-400">
-            <Link to="/" className="hover:text-neutral-500">
-              Legal
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Privacy
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Cookie Policy
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Consent Manager
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Imprint
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Creator Resources
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Blog
-            </Link>
-            ∙
-            <Link to="/" className="hover:text-neutral-500">
-              Charts
-            </Link>
-            ∙
-            <div className="pt-2 cursor-pointer group">
-              <span className="text-blue-600 mr-1 group-hover:text-neutral-700">
-                Language:
-              </span>
-              <span className="text-neutral-700">English (US)</span>
-            </div>
-          </div>
+          <Footer />
         </div>
       </div>
     </div>

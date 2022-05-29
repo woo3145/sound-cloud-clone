@@ -85,9 +85,12 @@ const Header = () => {
         <div className="flex items-center justify-between self-stretch shrink-0">
           {/* Not Login */}
           <div className="flex items-center text-white">
-            <div className="px-3 py-1 ml-2 mr-4 border rounded-md border-gray-400 cursor-pointer hover:border-gray-300">
+            <Link
+              to="/signin"
+              className="px-3 py-1 ml-2 mr-4 border rounded-md border-gray-400 cursor-pointer hover:border-gray-300"
+            >
               Sign in
-            </div>
+            </Link>
             <div className="px-3 py-1 rounded-md cursor-pointer bg-orange-600">
               Create account
             </div>

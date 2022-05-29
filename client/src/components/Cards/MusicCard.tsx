@@ -9,10 +9,10 @@ interface Props {
 
 const MusicCard = ({ coverImg, title, mixedTitle }: Props) => {
   return (
-    <div className="mr-8 pb-8 w-32 md:w-36">
+    <div className="mr-8 pb-8 w-32 md:w-36 lg:w-40">
       <div
         style={{ backgroundImage: `url(${coverImg})` }}
-        className="w-32 h-32 md:w-36 md:h-36 bg-cover bg-center"
+        className="w-32 h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 bg-cover bg-center"
       ></div>
       <div className="mt-1 text-sm relative">
         <Link to="/" className="opacity-80 hover:opacity-100 turncate">
