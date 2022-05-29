@@ -82,8 +82,7 @@ function Discover() {
         </div>
       </div>
       <div className="hidden p-8 sm:block w-full shrink-0  min-h-screen max-w-[360px] border-gray-100 border-l box-border">
-        <div className="sticky top-16 w-full h-auto border-t border-gray-100">
-          {/* SideBar Footer */}
+        <div className="sticky top-16 w-full h-auto">
           <Footer />
         </div>
       </div>
