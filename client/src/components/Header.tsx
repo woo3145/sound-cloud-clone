@@ -91,9 +91,12 @@ const Header = () => {
             >
               Sign in
             </Link>
-            <div className="px-3 py-1 rounded-md cursor-pointer bg-orange-600">
+            <Link
+              to="/signup"
+              className="px-3 py-1 rounded-md cursor-pointer bg-orange-600"
+            >
               Create account
-            </div>
+            </Link>
           </div>
           <div className="px-4 cursor-pointer">Upload</div>
           <IoEllipsisHorizontalSharp

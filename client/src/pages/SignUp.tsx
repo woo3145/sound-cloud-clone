@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
-const SignIn = () => {
+const SignUp = () => {
   return (
     <div className="w-full flex items-center flex-col px-8">
       <div className="max-w-md w-full py-8">
@@ -14,7 +14,10 @@ const SignIn = () => {
           </h2>
         </div>
         <div className="w-full h-auto border p-8">
-          <h2 className="text-center text-2xl">Welcome back!</h2>
+          <h2 className="text-center text-2xl">
+            Create your SoundCloud(clone) account
+          </h2>
+
           <div className="flex flex-col py-8">
             {/*SNS Login*/}
             <div className="w-full">
@@ -33,23 +36,33 @@ const SignIn = () => {
             <form className="flex flex-col text-lg mb-4">
               <input
                 type="text"
+                placeholder="user name"
+                className="border rounded-sm px-4 py-1.5 focus:outline-none mb-2"
+              />
+              <input
+                type="text"
                 placeholder="email address"
                 className="border rounded-sm px-4 py-1.5 focus:outline-none mb-2"
               />
               <input
                 type="password"
                 placeholder="password"
+                className="border rounded-sm px-4 py-1.5 focus:outline-none mb-2"
+              />
+              <input
+                type="password"
+                placeholder="check password"
                 className="border rounded-sm px-4 py-1.5 focus:outline-none"
               />
               <button className="w-full py-1.5 bg-orange-600 mt-4 rounded-sm text-white">
-                Sing in
+                Sing up
               </button>
             </form>
 
             <div className="flex justify-center text-sm">
-              <span className="mr-2">No Account?</span>
-              <Link to="/signup" className="font-bold text-blue-500">
-                Sign up
+              <span className="mr-2">Already have an account?</span>
+              <Link to="/signin" className="font-bold text-blue-500">
+                Sign in
               </Link>
             </div>
           </div>
@@ -60,4 +73,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
