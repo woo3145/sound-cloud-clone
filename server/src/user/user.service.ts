@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  CreateAccountInputDto,
-  CreateAccountOutputDto,
-} from './dtos/createAccount.dto';
+import { CreateAccountInputDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
+import * as brypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -14,38 +12,53 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
-  }
-
-  findOne(email: string): Promise<User> {
+  findOneByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { email } });
   }
-
-  async remove(id: number): Promise<void> {
-    await this.userRepository.delete(id);
+  findOneById(id: number): Promise<User> {
+    return this.userRepository.findOne({ where: { id } });
   }
 
-  async createAccount({
+  async create({
     email,
     password,
     name,
-  }: CreateAccountInputDto): Promise<CreateAccountOutputDto> {
+  }: CreateAccountInputDto): Promise<User> {
     const exist = await this.userRepository.findOne({
       where: { email },
     });
 
     if (exist) {
-      return {
-        ok: false,
-        error: '이미 사용중인 이메일입니다.',
-      };
+      throw new Error('이미 사용중인 이메일입니다.');
     }
-    await this.userRepository.save(
+    return await this.userRepository.save(
       this.userRepository.create({ email, password, name }),
     );
-    return {
-      ok: true,
-    };
+  }
+
+  async setCurrentHashedRefreshToken(refreshToken: string, id: number) {
+    const currentHashedRefreshToken = await brypt.hash(refreshToken, 10);
+    await this.userRepository.update(id, { currentHashedRefreshToken });
+  }
+
+  async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
+    const { password: _, ...user } = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    const isRefreshTokenMatching = await brypt.compare(
+      refreshToken,
+      user.currentHashedRefreshToken,
+    );
+
+    if (isRefreshTokenMatching) {
+      return user;
+    }
+  }
+
+  async removeRefreshToken(id: number) {
+    return this.userRepository.update(id, {
+      currentHashedRefreshToken: null,
+    });
   }
 }

@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
+import { Exclude } from 'class-transformer';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -21,8 +22,11 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  @Exclude()
+  currentHashedRefreshToken?: string;
+
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword(): Promise<void> {
     try {
       const salt = await bcrypt.genSalt();
