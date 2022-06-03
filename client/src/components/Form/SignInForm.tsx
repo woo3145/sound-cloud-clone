@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { signInApi } from "../../apis/auth-api";
 import ErrorText from "../Text/ErrorText";
 
 interface FormData {
@@ -16,9 +17,15 @@ const SignInForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
-    console.log(email, password);
+    const res = await signInApi({ email, password });
+
+    if (res.ok) {
+      console.log("success login", res.access_token);
+    } else {
+      console.log("error", res.error);
+    }
   });
   return (
     <div className="w-full h-auto border p-8">

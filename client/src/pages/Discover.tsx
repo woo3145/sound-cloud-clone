@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import MusicCard from "../components/Cards/MusicCard";
 import Footer from "../components/Footer";
 import useMockMixedLists from "../mockData/useMockMixedLists";

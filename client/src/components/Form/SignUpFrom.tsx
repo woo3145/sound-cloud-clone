@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { signUpApi } from "../../apis/auth-api";
 import ErrorText from "../Text/ErrorText";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   name: string;
@@ -12,6 +14,7 @@ interface FormData {
 }
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const [resError, setResError] = useState("");
   const {
     register,
@@ -20,7 +23,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     setResError("");
     const { name, email, password, checkPassword } = data;
     if (password !== checkPassword) {
@@ -29,7 +32,13 @@ const SignUpForm = () => {
       setValue("checkPassword", "");
       return;
     }
-    console.log(name, email, password, checkPassword);
+    const res = await signUpApi({ email, password, name });
+
+    if (res.ok) {
+      navigate("/");
+    } else {
+      setResError(res.error);
+    }
   });
   return (
     <div className="w-full h-auto border p-8">
