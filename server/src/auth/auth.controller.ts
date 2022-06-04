@@ -14,6 +14,7 @@ import {
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { JwtRefreshGuard } from './guards/jwt-refresh-auth.gurad';
+import { Public } from './auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +23,7 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Response({ passthrough: true }) res) {
@@ -39,6 +41,7 @@ export class AuthController {
     return user;
   }
 
+  @Public()
   @Post('register')
   async register(
     @Body() createAccountInput: CreateAccountInputDto,
@@ -46,6 +49,7 @@ export class AuthController {
     return this.authService.register(createAccountInput);
   }
 
+  @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   refresh(@Request() req, @Response({ passthrough: true }) res) {
@@ -58,6 +62,7 @@ export class AuthController {
     return user;
   }
 
+  @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('logout')
   logout(@Request() req, @Response({ passthrough: true }) res) {

@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -45,6 +46,10 @@ import * as Joi from 'joi';
     {
       provide: 'APP_PIPE',
       useClass: ValidationPipe,
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: JwtAuthGuard,
     },
   ],
 })
