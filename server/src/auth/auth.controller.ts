@@ -21,6 +21,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
+
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Response({ passthrough: true }) res) {
@@ -55,5 +56,17 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOptions);
 
     return user;
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('logout')
+  logout(@Request() req, @Response({ passthrough: true }) res) {
+    const { accessOption, refreshOption } =
+      this.authService.getCookiesForLogOut();
+
+    this.userService.removeRefreshToken(req.user.id);
+
+    res.cookie('Authentication', '', accessOption);
+    res.cookie('Refresh', '', refreshOption);
   }
 }
