@@ -27,14 +27,19 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Response({ passthrough: true }) res) {
+    // local strategy를 통과하여 받은 user객체
     const user = req.user;
+
+    // user.id 값으로 jwt token과 refresh token을 생성
     const { accessToken, ...accessOptions } =
       this.authService.getCookieWithJwtAccessToken(user.id);
     const { refreshToken, ...refreshOptions } =
       this.authService.getCookieWithJwtRefreshToken(user.id);
 
+    //유저 DB의 refresh table을 업데이트해줌
     await this.userService.setCurrentHashedRefreshToken(refreshToken, user.id);
 
+    // 응답에 쿠키를 담아줌
     res.cookie('Authentication', accessToken, accessOptions);
     res.cookie('Refresh', refreshToken, refreshOptions);
 
@@ -49,6 +54,7 @@ export class AuthController {
     return this.authService.register(createAccountInput);
   }
 
+  // refresh guard를 통과하면 그 user객체로 accesstoken을 발급해줍니다.
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
@@ -62,6 +68,7 @@ export class AuthController {
     return user;
   }
 
+  // refresh gurad를 통과하면 해당 유저의 DB에서 refresh token을 제거하고 쿠키를 만료시켜줍니다.
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('logout')

@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from 'src/user/user.service';
 
+// refresh token을 로그인 상태를 처리합니다.
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,

@@ -16,10 +16,11 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
+  // email, password가 검증
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userService.findOneByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
+      const { password, currentHashedRefreshToken, ...result } = user;
       return result;
     }
     return null;
@@ -43,9 +44,10 @@ export class AuthService {
     }
   }
 
-  getCookieWithJwtAccessToken(id: number) {
+  // 유저 id로 jwt token과 cookie에 담을 옵션을 반환합니다.
+  getCookieWithJwtAccessToken(userId: number) {
     const token = this.jwtService.sign(
-      { id },
+      { id: userId },
       {
         secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
         expiresIn: `${this.configService.get(
@@ -65,6 +67,7 @@ export class AuthService {
     };
   }
 
+  // 유저 id로 refresh token과 cookie에 담을 옵션을 반환합니다.
   getCookieWithJwtRefreshToken(id: number) {
     const token = this.jwtService.sign(
       { id },
@@ -87,6 +90,7 @@ export class AuthService {
     };
   }
 
+  // 각 jwt token과 refresh token의 cookie를 만료하기위한 옵션값들을 반환합니다.
   getCookiesForLogOut() {
     return {
       accessOption: {

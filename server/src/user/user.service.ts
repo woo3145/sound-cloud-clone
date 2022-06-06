@@ -36,13 +36,15 @@ export class UserService {
     );
   }
 
+  // refresh token을 해쉬하여 유저의 DB에 저장합니다.
   async setCurrentHashedRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await brypt.hash(refreshToken, 10);
     await this.userRepository.update(id, { currentHashedRefreshToken });
   }
 
+  // refresh token이 일치하는지 확인 후 일치하다면 유저를 반환합니다.
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
-    const { password: _, ...user } = await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { id },
     });
 
@@ -52,10 +54,12 @@ export class UserService {
     );
 
     if (isRefreshTokenMatching) {
-      return user;
+      const { password, currentHashedRefreshToken, ...filteredUser } = user;
+      return filteredUser;
     }
   }
 
+  // logout시 유저 DB의 currentHashedRefreshToken를 제거해줍니다.
   async removeRefreshToken(id: number) {
     return this.userRepository.update(id, {
       currentHashedRefreshToken: null,
