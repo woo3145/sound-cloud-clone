@@ -15,12 +15,14 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { JwtRefreshGuard } from './guards/jwt-refresh-auth.gurad';
 import { Public } from './auth.decorator';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Public()
@@ -43,7 +45,15 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOptions);
     res.cookie('Refresh', refreshToken, refreshOptions);
 
-    return user;
+    // 클라이언트에서 accessToken의 만료값을 체크하여 refresh token을 발급받아야 하는지 확인하기 위함 (local storage 저장)
+    const accessTokenExpire =
+      Date.now() +
+      Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) * 1000;
+
+    return {
+      user,
+      accessTokenExpire,
+    };
   }
 
   @Public()
@@ -68,7 +78,7 @@ export class AuthController {
     return user;
   }
 
-  // refresh gurad를 통과하면 해당 유저의 DB에서 refresh token을 제거하고 쿠키를 만료시켜줍니다.
+  // refresh gurad를 통과하면 해당 유저의 DB에서 refresh token을 제거하고 클라이언트의 쿠키를 만료시켜줍니다.
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('logout')

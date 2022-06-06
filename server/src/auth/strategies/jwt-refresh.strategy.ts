@@ -25,6 +25,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
+  // 클라이언트에서 보낸 refresh token이 User DB의 currentHashedRefreshToken와 일치하면 통과
   async validate(req, payload: any) {
     const refreshToken = req.cookies?.Refresh;
     return this.userService.getUserIfRefreshTokenMatches(
