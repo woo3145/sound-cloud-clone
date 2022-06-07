@@ -45,8 +45,8 @@ export class AuthService {
   }
 
   // 유저 id로 jwt token과 cookie에 담을 옵션을 반환합니다.
-  getCookieWithJwtAccessToken(userId: number) {
-    const token = this.jwtService.sign(
+  getJwtAccessToken(userId: number) {
+    const accessToken = this.jwtService.sign(
       { id: userId },
       {
         secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
@@ -57,13 +57,10 @@ export class AuthService {
     );
 
     return {
-      accessToken: token,
-      domain: 'localhost',
-      path: '/',
-      httpOnly: true,
-      maxAge:
-        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
-        1000,
+      accessToken,
+      accessTokenExpire:
+        Date.now() +
+        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')),
     };
   }
 
@@ -93,12 +90,6 @@ export class AuthService {
   // 각 jwt token과 refresh token의 cookie를 만료하기위한 옵션값들을 반환합니다.
   getCookiesForLogOut() {
     return {
-      accessOption: {
-        domain: 'localhost',
-        path: '/',
-        httpOnly: true,
-        maxAge: 0,
-      },
       refreshOption: {
         domain: 'localhost',
         path: '/',
