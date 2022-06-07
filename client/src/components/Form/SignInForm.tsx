@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { signInApi } from "../../apis/auth-api";
 import ErrorText from "../Text/ErrorText";
+import { useLocalStorage } from "../../utils/useLocalStorage";
 
 interface FormData {
   email: string;
@@ -11,21 +12,36 @@ interface FormData {
 }
 
 const SignInForm = () => {
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+  // eslint-disable-next-line
+  const [accessToken, setAccessToken] = useLocalStorage<string>(
+    "accessToken",
+    ""
+  );
+  // eslint-disable-next-line
+  const [accessTokenExpire, setAccessTokenExpire] = useLocalStorage<number>(
+    "accessTokenExpire",
+    0
+  );
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
-    const res = await signInApi({ email, password });
-
-    if (res.ok) {
-      console.log("success login", res.access_token);
-    } else {
-      console.log("error", res.error);
-    }
+    signInApi({ email, password })
+      .then((res) => {
+        setAccessToken(res.data?.accessToken);
+        setAccessTokenExpire(res.data?.accessTokenExpire);
+        window.location.replace("/");
+      })
+      .catch((e) => {
+        setAccessToken("");
+        setAccessTokenExpire(0);
+        setError("이메일이나 패스워드가 잘못되었습니다.");
+      });
   });
   return (
     <div className="w-full h-auto border p-8">
@@ -77,6 +93,7 @@ const SignInForm = () => {
           <button className="w-full py-1.5 bg-orange-600 mt-4 rounded-sm text-white">
             Sing in
           </button>
+          {error && <ErrorText text={error} />}
         </form>
 
         <div className="flex justify-center text-sm">
