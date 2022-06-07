@@ -41,7 +41,6 @@ export class AuthController {
 
     // 응답에 Refresh 쿠키를 담아줌
     res.cookie('Refresh', refreshToken, refreshOptions);
-
     return {
       user,
       accessToken,
@@ -63,10 +62,12 @@ export class AuthController {
   @Post('refresh')
   refresh(@Request() req, @Response({ passthrough: true }) res) {
     const user = req.user;
-    const accessToken = this.authService.getJwtAccessToken(user.id);
+    const { accessToken, accessTokenExpire } =
+      this.authService.getJwtAccessToken(user.id);
 
     return {
       accessToken,
+      accessTokenExpire,
     };
   }
 

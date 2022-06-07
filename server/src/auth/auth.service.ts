@@ -60,7 +60,8 @@ export class AuthService {
       accessToken,
       accessTokenExpire:
         Date.now() +
-        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')),
+        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
+          1000,
     };
   }
 
