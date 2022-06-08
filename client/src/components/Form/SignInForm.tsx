@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import { signInApi } from "../../apis/auth-api";
 import ErrorText from "../Text/ErrorText";
 import { useLocalStorage } from "../../utils/useLocalStorage";
+import customAxios from "../../utils/customAxios";
 
 interface FormData {
   email: string;
@@ -18,31 +18,29 @@ const SignInForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+
   // eslint-disable-next-line
-  const [accessToken, setAccessToken] = useLocalStorage<string>(
-    "accessToken",
-    ""
-  );
+  const [__, setAccessToken] = useLocalStorage<string>("accessToken", "");
   // eslint-disable-next-line
-  const [accessTokenExpire, setAccessTokenExpire] = useLocalStorage<number>(
+  const [_, setAccessTokenExpire] = useLocalStorage<number>(
     "accessTokenExpire",
     0
   );
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onLogin = handleSubmit(async (data) => {
     const { email, password } = data;
-    signInApi({ email, password })
-      .then((res) => {
-        setAccessToken(res.data?.accessToken);
-        setAccessTokenExpire(res.data?.accessTokenExpire);
-        window.location.replace("/");
-      })
-      .catch((e) => {
-        setAccessToken("");
-        setAccessTokenExpire(0);
-        setError("이메일이나 패스워드가 잘못되었습니다.");
-      });
+    try {
+      const res = await customAxios.post("/auth/login", { email, password });
+      setAccessToken(res.data.accessToken);
+      setAccessTokenExpire(res.data.accessTokenExpire);
+      window.location.replace("/");
+    } catch (e) {
+      setAccessToken("");
+      setAccessTokenExpire(0);
+      setError("이메일이나 패스워드가 잘못되었습니다.");
+    }
   });
+
   return (
     <div className="w-full h-auto border p-8">
       <h2 className="text-center text-2xl">Welcome back!</h2>
@@ -61,7 +59,7 @@ const SignInForm = () => {
           <hr className="w-full border-neutral-900" />
         </div>
 
-        <form className="flex flex-col text-lg mb-4" onSubmit={onSubmit}>
+        <form className="flex flex-col text-lg mb-4" onSubmit={onLogin}>
           <input
             {...register("email", { required: true })}
             type="email"

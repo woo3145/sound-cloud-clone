@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import { signUpApi } from "../../apis/auth-api";
 import ErrorText from "../Text/ErrorText";
 import { useNavigate } from "react-router-dom";
+import customAxios from "../../utils/customAxios";
 
 interface FormData {
   name: string;
@@ -14,7 +14,6 @@ interface FormData {
 }
 
 const SignUpForm = () => {
-  const navigate = useNavigate();
   const [resError, setResError] = useState("");
   const {
     register,
@@ -23,7 +22,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onRegister = handleSubmit(async (data) => {
     setResError("");
     const { name, email, password, checkPassword } = data;
     if (password !== checkPassword) {
@@ -32,12 +31,20 @@ const SignUpForm = () => {
       setValue("checkPassword", "");
       return;
     }
-    const res = await signUpApi({ email, password, name });
 
-    if (res.ok) {
-      navigate("/");
-    } else {
-      setResError(res.error);
+    try {
+      const res = await customAxios.post("/auth/register", {
+        email,
+        password,
+        name,
+      });
+      if (res.data.ok) {
+        window.location.replace("/signin");
+      } else {
+        setResError(res.data.error);
+      }
+    } catch (e) {
+      setResError("서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   });
   return (
@@ -61,7 +68,7 @@ const SignUpForm = () => {
           <hr className="w-full border-neutral-900" />
         </div>
 
-        <form className="flex flex-col text-lg mb-4" onSubmit={onSubmit}>
+        <form className="flex flex-col text-lg mb-4" onSubmit={onRegister}>
           <input
             {...register("name", { required: true })}
             type="text"

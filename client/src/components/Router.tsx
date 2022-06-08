@@ -8,6 +8,7 @@ import Layout from "./Layouts/Layout";
 
 const Router = () => {
   const isLoggedIn = !!useAppSelector((state) => state.user.id);
+  console.log("LoggedIn : ", isLoggedIn);
   return (
     <BrowserRouter>
       <Routes>

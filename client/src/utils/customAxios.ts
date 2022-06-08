@@ -10,17 +10,13 @@ const customAxios = axios.create({
 
 customAxios.interceptors.request.use(
   async (config: AxiosRequestConfig<any>) => {
-    const accessToken = JSON.parse(
-      window.localStorage.getItem("accessToken") || ""
-    );
     const accessTokenExpire = JSON.parse(
-      window.localStorage.getItem("accessTokenExpire") || ""
+      window.localStorage.getItem("accessTokenExpire") || "{}"
     );
     // 만약 accessToken이 만료 되었다면 cookie에 저장된 refresh token을 이용하여 새로 발급받고
     // refresh Token이 없다면 localStorage를 초기화 해준다.
     if (accessTokenExpire && moment(accessTokenExpire).diff(moment()) < 0) {
       try {
-        console.log("access token 만료되어 새로 발급합니다.");
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/auth/refresh`,
           {},
@@ -31,15 +27,16 @@ customAxios.interceptors.request.use(
           "accessTokenExpire",
           data.accessTokenExpire
         );
-        console.log("access token 발급 성공");
       } catch (e) {
         window.localStorage.setItem("accessToken", "");
         window.localStorage.setItem("accessTokenExpire", "0");
-        console.log("access token 발급 실패");
       }
     }
 
     // 유효한 accessToken이 존재한다면 헤더에 추가해준다.
+    const accessToken = JSON.parse(
+      window.localStorage.getItem("accessToken") || "{}"
+    );
     if (accessToken) {
       config.headers = {
         Authorization: `Bearer ${accessToken}`,
