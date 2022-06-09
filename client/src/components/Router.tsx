@@ -18,6 +18,7 @@ const Router = () => {
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
 
+          <Route path="upload" element={<Discover />} />
           <Route path="stream" element={<Discover />} />
           <Route path="you">
             <Route path="*" element={isLoggedIn ? <Discover /> : <SignIn />} />

@@ -6,7 +6,7 @@ const fetcher = () => {
 };
 
 export const useMe = () => {
-  const { data, error } = useSWR(
+  const { data, error, mutate } = useSWR(
     typeof window === "undefined" ? null : "/profile",
     fetcher
   );
@@ -15,5 +15,6 @@ export const useMe = () => {
     user: data?.profile,
     loading: !data && !error,
     isLoggedIn: data?.profile && !error,
+    mutate,
   };
 };
