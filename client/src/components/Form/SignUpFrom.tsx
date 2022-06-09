@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import ErrorText from "../Text/ErrorText";
-import { useNavigate } from "react-router-dom";
 import customAxios from "../../utils/customAxios";
 
 interface FormData {

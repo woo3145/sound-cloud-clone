@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { SWRConfig } from "swr";
-import customAxios from "./utils/customAxios";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,7 +17,7 @@ root.render(
       <SWRConfig
         value={{
           fetcher: (resource, init) =>
-            customAxios(resource, init).then((res) => res.data),
+            fetch(resource, init).then((res) => res.json()),
         }}
       >
         <App />

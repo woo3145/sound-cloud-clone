@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useMe } from "../hooks/useMe";
 import Discover from "../pages/Discover";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import { useAppSelector } from "../redux/store";
 import Layout from "./Layouts/Layout";
 
 const Router = () => {
-  const isLoggedIn = !!useAppSelector((state) => state.user.id);
-  console.log("LoggedIn : ", isLoggedIn);
+  const { isLoggedIn } = useMe();
+
   return (
     <BrowserRouter>
       <Routes>

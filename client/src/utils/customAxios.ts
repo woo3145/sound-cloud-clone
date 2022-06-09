@@ -6,6 +6,7 @@ const customAxios = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 customAxios.interceptors.request.use(
@@ -22,14 +23,17 @@ customAxios.interceptors.request.use(
           {},
           { withCredentials: true }
         );
-        window.localStorage.setItem("accessToken", data.accessToken);
+        window.localStorage.setItem(
+          "accessToken",
+          JSON.stringify(data.accessToken)
+        );
         window.localStorage.setItem(
           "accessTokenExpire",
-          data.accessTokenExpire
+          JSON.stringify(data.accessTokenExpire)
         );
       } catch (e) {
         window.localStorage.setItem("accessToken", "");
-        window.localStorage.setItem("accessTokenExpire", "0");
+        window.localStorage.setItem("accessTokenExpire", "");
       }
     }
 

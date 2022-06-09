@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import SignUpForm from "../components/Form/SignUpFrom";
+import { useMe } from "../hooks/useMe";
 
 const SignUp = () => {
+  const { isLoggedIn } = useMe();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
   return (
     <div className="w-full flex items-center flex-col px-8">
       <div className="max-w-md w-full py-8">
