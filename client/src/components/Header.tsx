@@ -8,6 +8,8 @@ import {
 import { HiBell, HiMail } from "react-icons/hi";
 import { useMe } from "../hooks/useMe";
 import customAxios from "../utils/customAxios";
+import { UserDropDown } from "./Dropdown/UserDropdown";
+import { MoreDropdown } from "./Dropdown/MoreDropdown";
 
 const logoImg =
   "https://a-v2.sndcdn.com/assets/images/peace-cloud-28ad0963.svg";
@@ -49,56 +51,67 @@ const NavItem = ({ path, text }: { path: string; text: string }) => {
 
 const LoginMenu = () => {
   return (
-    <div className="flex items-center text-white shrink-0 mx-2">
-      <Link
-        to="/signin"
-        className="px-3 py-1 mr-4 border rounded-md border-gray-400 cursor-pointer hover:border-gray-300"
+    <div className="flex items-center self-stretch text-white shrink-0 mx-2">
+      <div className="px-2 flex items-center self-stretch ">
+        <Link
+          to="/signin"
+          className="px-3 py-1 mr-4 border rounded-md border-gray-400 cursor-pointer hover:border-gray-300 shrink-0"
+        >
+          Sign in
+        </Link>
+        <Link
+          to="/signup"
+          className="px-3 py-1 rounded-md cursor-pointer bg-orange-600 shrink-0"
+        >
+          Create account
+        </Link>
+      </div>
+      <NavLink
+        to="/upload"
+        className={({ isActive }) =>
+          `flex self-stretch items-center justify-center px-3 shrink-0 ${
+            isActive ? "bg-neutral-900 text-white" : "hover:text-white"
+          }`
+        }
       >
-        Sign in
-      </Link>
-      <Link
-        to="/signup"
-        className="px-3 py-1 rounded-md cursor-pointer bg-orange-600"
-      >
-        Create account
-      </Link>
+        Upload
+      </NavLink>
+      <MoreDropdown />
     </div>
   );
 };
 
 const UserMenu = () => {
-  const { user } = useMe();
   return (
-    <div className="flex items-center hover:text-white shrink-0 self-stretch">
-      <div className="flex items-center cursor-pointer self-stretch hover:text-white px-2">
-        <div className="w-7 h-7 bg-gray-500 rounded-full shrink-0 mr-2"></div>
-        <p className="mr-2">{user.name}</p>
-        <IoChevronDown size={12} />
-      </div>
+    <div className="flex items-center shrink-0 self-stretch">
+      <NavLink
+        to="/upload"
+        className={({ isActive }) =>
+          `flex self-stretch items-center justify-center w-full px-3 ${
+            isActive ? "bg-neutral-900 text-white" : "hover:text-white"
+          }`
+        }
+      >
+        Upload
+      </NavLink>
+      <UserDropDown />
       <div className="flex items-center justify-center text-neutral-300 hover:text-white cursor-pointer self-stretch px-3">
         <HiBell size={20} />
       </div>
       <div className="flex items-center justify-center text-neutral-300 hover:text-white cursor-pointer self-stretch px-3">
         <HiMail size={20} />
       </div>
+
+      <MoreDropdown />
     </div>
   );
 };
 
 export const Header = () => {
-  const { isLoggedIn, mutate } = useMe();
-  // 임시 로그아웃
-  const onLogout = async () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
-      await customAxios.post("/auth/logout");
-      window.localStorage.removeItem("accessToken");
-      window.localStorage.removeItem("accessTokenExpire");
-      mutate(null);
-    }
-  };
+  const { isLoggedIn } = useMe();
   return (
     <header
-      className="w-full h-12 fixed top-0 left-0
+      className="w-full h-12 fixed top-0 left-0 z-30
     bg-neutral-700 text-gray-300 text-sm"
     >
       <div className="w-full mx-auto max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg flex items-center justify-between self-stretch">
@@ -121,25 +134,9 @@ export const Header = () => {
         <div className="flex items-center justify-between self-stretch shrink-0">
           {/* Login Menu */}
           {!isLoggedIn && <LoginMenu />}
-          <NavLink
-            to="/upload"
-            className={({ isActive }) =>
-              `flex self-stretch items-center justify-center w-full px-3 ${
-                isActive ? "bg-neutral-900 text-white" : "hover:text-white"
-              }`
-            }
-          >
-            Upload
-          </NavLink>
+
           {/* UserMenu */}
           {isLoggedIn && <UserMenu />}
-
-          <div
-            onClick={onLogout}
-            className="flex items-center justify-center hover:text-white cursor-pointer self-stretch px-2"
-          >
-            <IoEllipsisHorizontalSharp size={24} />
-          </div>
         </div>
       </div>
     </header>
