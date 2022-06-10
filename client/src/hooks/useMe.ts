@@ -2,6 +2,12 @@ import useSWR from "swr";
 import customAxios from "../utils/customAxios";
 
 const fetcher = () => {
+  const accessToken = JSON.parse(
+    window.localStorage.getItem("accessToken") || "{}"
+  );
+  if (!accessToken) {
+    return;
+  }
   return customAxios.get("/profile").then((res) => res.data);
 };
 

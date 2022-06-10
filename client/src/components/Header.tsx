@@ -1,13 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  IoChevronDown,
-  IoEllipsisHorizontalSharp,
-  IoSearch,
-} from "react-icons/io5";
+import { IoSearch } from "react-icons/io5";
 import { HiBell, HiMail } from "react-icons/hi";
 import { useMe } from "../hooks/useMe";
-import customAxios from "../utils/customAxios";
 import { UserDropDown } from "./Dropdown/UserDropdown";
 import { MoreDropdown } from "./Dropdown/MoreDropdown";
 

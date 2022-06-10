@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import { useMe } from "../../hooks/useMe";

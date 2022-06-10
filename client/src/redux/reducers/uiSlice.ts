@@ -51,6 +51,12 @@ const uiSlice = createSlice({
   },
 });
 
-export const { userDropdownToggle, moreDropdownToggle } = uiSlice.actions;
+export const {
+  userDropdownToggle,
+  moreDropdownToggle,
+  notificationDropdownToggle,
+  messageDropdownToggle,
+  allDropdownClose,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;
