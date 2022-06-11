@@ -7,6 +7,9 @@ export class AppController {
 
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    return {
+      ok: true,
+      profile: req.user,
+    };
   }
 }

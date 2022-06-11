@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { TrackModule } from './track/track.module';
+import { Track } from './track/entities/track.entity';
 
 @Module({
   imports: [
@@ -35,11 +37,12 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       port: +process.env.DATABASE_PORT,
       username: process.env.DATABASE_USERNAME,
       database: process.env.DATABASE_NAME,
-      entities: [User],
+      entities: [User, Track],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
+    TrackModule,
   ],
   controllers: [AppController],
   providers: [

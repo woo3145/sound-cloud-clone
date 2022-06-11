@@ -29,10 +29,10 @@ export class AuthService {
   async register({
     email,
     password,
-    name,
+    username,
   }: CreateAccountInputDto): Promise<CreateAccountOutputDto> {
     try {
-      await this.userService.create({ email, password, name });
+      await this.userService.create({ email, password, username });
       return {
         ok: true,
       };

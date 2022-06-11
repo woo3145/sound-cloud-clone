@@ -1,6 +1,6 @@
 import { IsBoolean, IsOptional, isString, IsString } from 'class-validator';
 
-export class CommonOutputDto {
+export class CommonOutput {
   @IsBoolean()
   ok: boolean;
 

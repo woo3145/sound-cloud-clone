@@ -29,7 +29,6 @@ export class AuthController {
   async login(@Request() req, @Response({ passthrough: true }) res) {
     // local strategy를 통과하여 받은 user객체
     const user = req.user;
-
     // user.id 값으로 jwt token과 refresh token cookie을 생성
     const { accessToken, accessTokenExpire } =
       this.authService.getJwtAccessToken(user.id);

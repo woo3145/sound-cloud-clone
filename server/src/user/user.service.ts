@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAccountInputDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
-import * as brypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -22,7 +22,7 @@ export class UserService {
   async create({
     email,
     password,
-    name,
+    username,
   }: CreateAccountInputDto): Promise<User> {
     const exist = await this.userRepository.findOne({
       where: { email },
@@ -32,13 +32,13 @@ export class UserService {
       throw new Error('이미 사용중인 이메일입니다.');
     }
     return await this.userRepository.save(
-      this.userRepository.create({ email, password, name }),
+      this.userRepository.create({ email, password, username }),
     );
   }
 
   // refresh token을 해쉬하여 유저의 DB에 저장합니다.
   async setCurrentHashedRefreshToken(refreshToken: string, id: number) {
-    const currentHashedRefreshToken = await brypt.hash(refreshToken, 10);
+    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.userRepository.update(id, { currentHashedRefreshToken });
   }
 
@@ -48,11 +48,10 @@ export class UserService {
       where: { id },
     });
 
-    const isRefreshTokenMatching = await brypt.compare(
+    const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
     );
-
     if (isRefreshTokenMatching) {
       const { password, currentHashedRefreshToken, ...filteredUser } = user;
       return filteredUser;

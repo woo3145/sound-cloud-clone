@@ -1,30 +1,29 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate,
-} from 'typeorm';
+import { Entity, Column, BeforeInsert, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
-import { Exclude } from 'class-transformer';
+import { CommonEntity } from 'src/common/dtos/common.entity';
+import { Track } from 'src/track/entities/track.entity';
+import { IsString } from 'class-validator';
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User extends CommonEntity {
+  @Column()
+  @IsString()
+  username: string;
 
   @Column()
-  name: string;
-
-  @Column()
+  @IsString()
   email: string;
 
   @Column()
+  @IsString()
   password: string;
 
   @Column({ nullable: true })
-  @Exclude()
+  @IsString()
   currentHashedRefreshToken?: string;
+
+  @OneToMany(() => Track, (track) => track.user)
+  tracks: Track[];
 
   @BeforeInsert()
   async hashPassword(): Promise<void> {

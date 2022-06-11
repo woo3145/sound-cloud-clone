@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { CommonOutputDto } from 'src/common/dtos/common.dto';
+import { CommonOutput } from 'src/common/dtos/common.dto';
 
 export class CreateAccountInputDto {
   @IsString()
@@ -9,7 +9,7 @@ export class CreateAccountInputDto {
   password: string;
 
   @IsString()
-  name: string;
+  username: string;
 }
 
-export class CreateAccountOutputDto extends CommonOutputDto {}
+export class CreateAccountOutputDto extends CommonOutput {}
