@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import {
-  CreateAccountInputDto,
-  CreateAccountOutputDto,
-} from '../user/dtos/user.dto';
+import { CreateAccountInput, CreateAccountOutput } from '../user/dtos/user.dto';
 import { ConfigService } from '@nestjs/config';
+import { User } from 'src/user/entities/user.entity';
+import { CookieOptions } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -17,22 +16,20 @@ export class AuthService {
   ) {}
 
   // email, password가 검증
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userService.findOneByEmail(email);
+  async validateUser(email: string, pass: string): Promise<User> | null {
+    const user = await this.userService.findOneWithAllFieldsByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, currentHashedRefreshToken, ...result } = user;
-      return result;
+      const { password, currentHashedRefreshToken, ...filteredUser } = user;
+      return filteredUser as User;
     }
     return null;
   }
 
-  async register({
-    email,
-    password,
-    username,
-  }: CreateAccountInputDto): Promise<CreateAccountOutputDto> {
+  async register(
+    createAccountInput: CreateAccountInput,
+  ): Promise<CreateAccountOutput> {
     try {
-      await this.userService.create({ email, password, username });
+      await this.userService.create(createAccountInput);
       return {
         ok: true,
       };
@@ -45,7 +42,10 @@ export class AuthService {
   }
 
   // 유저 id로 jwt token과 cookie에 담을 옵션을 반환합니다.
-  getJwtAccessToken(userId: number) {
+  getJwtAccessToken(userId: number): {
+    accessToken: string;
+    accessTokenExpire: number;
+  } {
     const accessToken = this.jwtService.sign(
       { id: userId },
       {
@@ -66,9 +66,11 @@ export class AuthService {
   }
 
   // 유저 id로 refresh token과 cookie에 담을 옵션을 반환합니다.
-  getCookieWithJwtRefreshToken(id: number) {
+  getCookieWithJwtRefreshToken(
+    userId: number,
+  ): CookieOptions & { refreshToken: string } {
     const token = this.jwtService.sign(
-      { id },
+      { id: userId },
       {
         secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
         expiresIn: `${this.configService.get(
@@ -89,14 +91,7 @@ export class AuthService {
   }
 
   // 각 jwt token과 refresh token의 cookie를 만료하기위한 옵션값들을 반환합니다.
-  getCookiesForLogOut() {
-    return {
-      refreshOption: {
-        domain: 'localhost',
-        path: '/',
-        httpOnly: true,
-        maxAge: 0,
-      },
-    };
+  getCookiesForLogOut(): CookieOptions {
+    return { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 };
   }
 }

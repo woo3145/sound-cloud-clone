@@ -4,27 +4,33 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { CommonEntity } from 'src/common/dtos/common.entity';
 import { Track } from 'src/track/entities/track.entity';
 import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 @Entity()
 export class User extends CommonEntity {
+  /* properties */
+  @ApiProperty()
   @Column()
   @IsString()
   username: string;
-
-  @Column()
+  @ApiProperty()
+  @Column({ unique: true })
   @IsString()
   email: string;
-
-  @Column()
+  @ApiProperty()
+  @Column({ select: false })
   @IsString()
   password: string;
-
-  @Column({ nullable: true })
+  @ApiProperty()
+  @Column({ nullable: true, select: false })
   @IsString()
   currentHashedRefreshToken?: string;
 
+  /* relations */
+  @ApiProperty()
   @OneToMany(() => Track, (track) => track.user)
   tracks: Track[];
 
+  /* methods */
   @BeforeInsert()
   async hashPassword(): Promise<void> {
     try {

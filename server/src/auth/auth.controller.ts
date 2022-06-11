@@ -7,14 +7,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import {
-  CreateAccountInputDto,
-  CreateAccountOutputDto,
-} from '../user/dtos/user.dto';
+import { CreateAccountInput, CreateAccountOutput } from '../user/dtos/user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { JwtRefreshGuard } from './guards/jwt-refresh-auth.gurad';
 import { Public } from './auth.decorator';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,10 +22,15 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
+  @ApiBody({ type: LoginInput })
+  @ApiResponse({ description: '로그인 성공', type: LoginOutput, status: 201 })
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req, @Response({ passthrough: true }) res) {
+  async login(
+    @Request() req,
+    @Response({ passthrough: true }) res,
+  ): Promise<LoginOutput> {
     // local strategy를 통과하여 받은 user객체
     const user = req.user;
     // user.id 값으로 jwt token과 refresh token cookie을 생성
@@ -41,6 +45,7 @@ export class AuthController {
     // 응답에 Refresh 쿠키를 담아줌
     res.cookie('Refresh', refreshToken, refreshOptions);
     return {
+      ok: true,
       user,
       accessToken,
       accessTokenExpire,
@@ -50,8 +55,8 @@ export class AuthController {
   @Public()
   @Post('register')
   async register(
-    @Body() createAccountInput: CreateAccountInputDto,
-  ): Promise<CreateAccountOutputDto> {
+    @Body() createAccountInput: CreateAccountInput,
+  ): Promise<CreateAccountOutput> {
     return this.authService.register(createAccountInput);
   }
 
@@ -75,7 +80,7 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('logout')
   logout(@Request() req, @Response({ passthrough: true }) res) {
-    const { refreshOption } = this.authService.getCookiesForLogOut();
+    const refreshOption = this.authService.getCookiesForLogOut();
 
     this.userService.removeRefreshToken(req.user.id);
 

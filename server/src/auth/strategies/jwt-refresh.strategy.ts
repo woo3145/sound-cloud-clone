@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 
 // refresh token을 로그인 상태를 처리합니다.
@@ -26,7 +27,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   }
 
   // 클라이언트에서 보낸 refresh token이 User DB의 currentHashedRefreshToken와 일치하면 통과
-  async validate(req, payload: any) {
+  async validate(req, payload: any): Promise<User> | null {
     const refreshToken = req.cookies?.Refresh;
     return this.userService.getUserIfRefreshTokenMatches(
       refreshToken,
