@@ -1,6 +1,7 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiCookieAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { Controller, Get, Request } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { CommonOutput } from './common/dtos/common.dto';
+import { User } from './user/entities/user.entity';
 
 @Controller()
 export class AppController {
@@ -8,7 +9,7 @@ export class AppController {
 
   @Get('profile')
   @ApiBearerAuth()
-  getProfile(@Request() req) {
+  getProfile(@Request() req): CommonOutput & { profile: User } {
     return {
       ok: true,
       profile: req.user,

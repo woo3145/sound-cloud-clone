@@ -8,7 +8,6 @@ export class CommonOutput {
 
   @ApiProperty({
     required: false,
-    nullable: true,
   })
   @IsOptional()
   @IsString()
