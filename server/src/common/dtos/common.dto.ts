@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, isString, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CommonOutput {
   @ApiProperty()
@@ -11,5 +11,5 @@ export class CommonOutput {
   })
   @IsOptional()
   @IsString()
-  error?: string;
+  message?: string;
 }

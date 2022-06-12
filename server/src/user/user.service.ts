@@ -1,9 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAccountInput } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { CommonOutput } from 'src/common/dtos/common.dto';
 
 @Injectable()
 export class UserService {
@@ -42,20 +49,24 @@ export class UserService {
   }
 
   // method
-  async create({
+  async register({
     email,
     password,
     username,
-  }: CreateAccountInput): Promise<User> {
+  }: CreateAccountInput): Promise<CommonOutput> {
     const exist = await this.userRepository.findOne({
       where: { email },
     });
     if (exist) {
-      throw new Error('이미 사용중인 이메일입니다.');
+      throw new BadRequestException('이미 사용중인 이메일입니다.');
     }
-    return await this.userRepository.save(
+    await this.userRepository.save(
       this.userRepository.create({ email, password, username }),
     );
+    return {
+      ok: true,
+      message: '성공적으로 계정이 생성되었습니다.',
+    };
   }
 
   // refresh token을 해쉬하여 유저의 DB에 저장합니다.

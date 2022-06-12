@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { CreateAccountInput, CreateAccountOutput } from '../user/dtos/user.dto';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/user/entities/user.entity';
 import { CookieOptions } from 'express';
@@ -25,22 +24,6 @@ export class AuthService {
     return null;
   }
 
-  async register(
-    createAccountInput: CreateAccountInput,
-  ): Promise<CreateAccountOutput> {
-    try {
-      await this.userService.create(createAccountInput);
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      return {
-        ok: false,
-        error: e.message,
-      };
-    }
-  }
-
   // 유저 id로 jwt token과 cookie에 담을 옵션을 반환합니다.
   getJwtAccessToken(userId: number): {
     accessToken: string;
@@ -55,7 +38,6 @@ export class AuthService {
         )}s`,
       },
     );
-
     return {
       accessToken,
       accessTokenExpire:
@@ -78,7 +60,6 @@ export class AuthService {
         )}s`,
       },
     );
-
     return {
       refreshToken: token,
       domain: 'localhost',

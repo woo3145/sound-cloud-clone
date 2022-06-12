@@ -15,5 +15,3 @@ export class CreateAccountInput {
   @IsString()
   username: string;
 }
-
-export class CreateAccountOutput extends CommonOutput {}
