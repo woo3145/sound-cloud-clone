@@ -32,7 +32,7 @@ const SignUpForm = () => {
     }
 
     try {
-      const res = await customAxios.post("/auth/register", {
+      const res = await customAxios.post("/user/register", {
         email,
         password,
         name,

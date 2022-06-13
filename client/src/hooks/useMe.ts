@@ -16,7 +16,6 @@ export const useMe = () => {
     typeof window === "undefined" ? null : "/profile",
     fetcher
   );
-
   return {
     user: data?.profile,
     loading: !data && !error,

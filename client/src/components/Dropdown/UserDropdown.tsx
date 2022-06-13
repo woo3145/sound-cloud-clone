@@ -19,7 +19,7 @@ export const UserDropDown = () => {
         onClick={() => dispatch(userDropdownToggle())}
       >
         <div className="w-7 h-7 bg-gray-500 rounded-full shrink-0 mr-2"></div>
-        <p className="mr-2">{user.name}</p>
+        <p className="mr-2">{user.username}</p>
         <IoChevronDown size={12} />
       </div>
       {open && (
