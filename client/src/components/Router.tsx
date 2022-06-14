@@ -5,6 +5,7 @@ import Discover from "../pages/Discover";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Layout from "./Layouts/Layout";
+import UserLayout from "./Layouts/UserLayout";
 
 const Router = () => {
   const { isLoggedIn } = useMe();
@@ -20,6 +21,14 @@ const Router = () => {
 
           <Route path="upload" element={<Discover />} />
           <Route path="stream" element={<Discover />} />
+          <Route path=":user_id" element={<UserLayout />}>
+            <Route index element={<div>All</div>} />
+            <Route path="popular-tracks" element={<div>Popular Tracks</div>} />
+            <Route path="tracks" element={<div>Tracks</div>} />
+            <Route path="albums" element={<div>Albums</div>} />
+            <Route path="sets" element={<div>Play Lists</div>} />
+            <Route path="reports" element={<div>Reports</div>} />
+          </Route>
           <Route path="you">
             <Route path="*" element={isLoggedIn ? <Discover /> : <SignIn />} />
           </Route>

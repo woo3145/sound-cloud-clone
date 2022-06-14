@@ -1,6 +1,7 @@
 import React from "react";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
 import { userDropdownToggle } from "../../redux/reducers/uiSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -8,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 export const UserDropDown = () => {
   const open = useAppSelector((state) => state.ui.userDropdownVisible);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { user } = useMe();
 
   return (
@@ -25,7 +27,10 @@ export const UserDropDown = () => {
       {open && (
         <div className="fixed top-12 w-36 text-neutral-900 bg-white border border-t-0 rounded-b-md border-neutral-300 h-auto">
           <ul className="w-full h-auto font-semibold">
-            <li className="py-2 flex items-center cursor-pointer hover:bg-neutral-100">
+            <li
+              onClick={() => navigate(`/${user.id}`)}
+              className="py-2 flex items-center cursor-pointer hover:bg-neutral-100"
+            >
               <FaUser className="mx-2" />
               <p>Profile</p>
             </li>
