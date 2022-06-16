@@ -1,10 +1,10 @@
-interface User {
+export interface User {
   username: string;
   email: string;
   avatarUrl?: string;
 }
 
-interface Track {
+export interface Track {
   title: string;
   description?: string;
   artworkUrl?: string;
@@ -23,7 +23,7 @@ export const useMockTracks = () => {
   };
   const tracks: Track[] = [
     {
-      title: "test",
+      title: "test1",
       description: "description",
       isPublic: true,
       artworkUrl:
@@ -33,7 +33,7 @@ export const useMockTracks = () => {
       user: user,
     },
     {
-      title: "test",
+      title: "test2",
       description: "description",
       isPublic: true,
       artworkUrl:
@@ -43,7 +43,7 @@ export const useMockTracks = () => {
       user: user,
     },
     {
-      title: "test",
+      title: "test3",
       description: "description",
       isPublic: true,
       artworkUrl:
