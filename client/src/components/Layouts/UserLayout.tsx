@@ -5,19 +5,11 @@ import { AiFillCamera } from "react-icons/ai";
 import GrayButton from "../Button/GrayButton";
 import { BsFillPencilFill } from "react-icons/bs";
 
-const NavLinkItem = ({
-  text,
-  to,
-  end = false,
-}: {
-  text: string;
-  to: string;
-  end?: boolean;
-}) => {
+const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
   return (
     <NavLink
       to={to}
-      end={end}
+      end={true}
       className={({ isActive }) =>
         `mr-6 cursor-pointer pb-1 ${to === "."} ${
           isActive
@@ -68,7 +60,7 @@ const UserLayout = () => {
       <div className="px-8 pt-4">
         <div className="flex justify-between items-center border-b">
           <div className="text-lg flex">
-            <NavLinkItem text="All" to="." end />
+            <NavLinkItem text="All" to="." />
             <NavLinkItem text="Popular tracks" to="./popular-tracks" />
             <NavLinkItem text="Tracks" to="./tracks" />
             <NavLinkItem text="Albums" to="./albums" />
@@ -81,7 +73,12 @@ const UserLayout = () => {
           />
         </div>
       </div>
-      <Outlet />
+      <div className="w-full flex">
+        <div className="px-8 pt-5 flex w-full">
+          <Outlet />
+        </div>
+        <div className="w-full max-w-sm bg-red-50">User Sidebar</div>
+      </div>
     </div>
   );
 };
