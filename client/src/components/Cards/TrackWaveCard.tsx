@@ -13,22 +13,22 @@ interface Props {
 const TrackWaveCard = ({ track }: Props) => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
   const trackUrl = "audio/cw-blues.mp3";
-  useEffect(() => {
-    if (wavesurfer.current) {
-      return;
-    }
-    wavesurfer.current = WaveSurfer.create({
-      container: `#waveform-${track.title}`,
-      barWidth: 3,
-      barRadius: 3,
-      cursorWidth: 1,
-      height: 80,
-      barGap: 3,
-      responsive: true,
-      backend: "MediaElementWebAudio",
-    });
-    wavesurfer.current.load(trackUrl);
-  }, [track.title]);
+  // useEffect(() => {
+  //   if (wavesurfer.current) {
+  //     return;
+  //   }
+  //   wavesurfer.current = WaveSurfer.create({
+  //     container: `#waveform-${track.title}`,
+  //     barWidth: 3,
+  //     barRadius: 3,
+  //     cursorWidth: 1,
+  //     height: 80,
+  //     barGap: 3,
+  //     responsive: true,
+  //     backend: "MediaElementWebAudio",
+  //   });
+  //   wavesurfer.current.load(trackUrl);
+  // }, [track.title]);
   const playToggle = () => {
     if (wavesurfer.current) {
       if (wavesurfer.current.isPlaying()) {
@@ -46,32 +46,37 @@ const TrackWaveCard = ({ track }: Props) => {
     }
   };
   return (
-    <li className="mb-9">
+    <li className="mb-4">
       <div className="flex">
         {/* Artwork Image*/}
         <div
           style={{ backgroundImage: `url(${track.artworkUrl})` }}
-          className="w-40 h-40 mr-4 shrink-0 bg-center bg-cover"
+          className="w-28 h-28 mr-4 shrink-0 bg-center bg-cover"
         ></div>
         {/* content */}
-        <div className="w-full">
-          <div className="py-2 flex justify-between">
+        <div className="w-full flex justify-center flex-col text-sm">
+          <div className="flex mb-2 text-neutral-400">
             <BsFillPlayCircleFill
               onClick={playToggle}
-              className="w-9 h-9 mr-2 shrink-0 text-red-400 cursor-pointer"
+              className="w-10 h-10 mr-2 shrink-0 text-red-400 cursor-pointer"
             />
             <div className="w-full">
-              <div className="text-sm text-neutral-400">
+              <div className="w-full flex justify-between items-center">
                 {track.user.username}
+                <div className="shrink-0 text-neutral-300">20 days ago</div>
               </div>
-              <div>{track.title}</div>
+              <div className="w-full flex justify-between items-start">
+                <p className="text-md h-auto text-black break-all pr-4">
+                  {track.title}
+                </p>
+                <div className="rounded-md bg-slate-300 shrink-0 text-white px-2 py-0.5 text-xs first-letter:uppercase">
+                  # {track.genre}
+                </div>
+              </div>
             </div>
-            <div className="shrink-0 text-neutral-300 text-sm">20 days ago</div>
           </div>
 
-          <div id={`waveform-${track.title}`} className="w-full mb-4"></div>
-
-          <div className="flex">
+          <div className="flex items-center">
             <GrayButton icon={<AiFillHeart size={14} />} className="mr-1" />
             <GrayButton icon={<IoEllipsisHorizontalSharp size={14} />} />
           </div>
