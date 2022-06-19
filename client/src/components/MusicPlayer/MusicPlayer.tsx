@@ -1,29 +1,86 @@
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsFillPersonPlusFill, BsPersonCheckFill } from "react-icons/bs";
 import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { RiMenuUnfoldFill } from "react-icons/ri";
+import { MdPause, MdPlayArrow } from "react-icons/md";
+import { playToggle } from "../../redux/reducers/musicPlayerSlice";
 
 const MusicPlayer = () => {
+  const dispatch = useAppDispatch();
+  const musicPlayer = useAppSelector((state) => state.musicPlayer);
+  if (musicPlayer.playList.length === 0) {
+    return null;
+  }
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-neutral-200 h-12 border-t border-neutral-300 flex justify-center">
-      <div className="flex self-stretch max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg bg-red-200 w-full">
+    <div className="fixed bottom-0 left-0 w-full bg-base-200 h-12 border-t border-base-300 flex justify-center">
+      <div className="flex self-stretch max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg w-full">
         {/* Controller */}
-        <div className="w-full flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <div className="flex items-center text-2xl px-4 shrink-0">
-            <BiArrowToLeft />
-            <BsFillPlayFill />
-            <BiArrowToRight />
-          </div>
-          <div className="w-full">
-            <input
-              type="range"
-              className="w-full h-1 rounded-lg bg-gray-400 text-red-300"
-            />
+            <BiArrowToLeft className="mr-4 cursor-pointer" />
+            <label
+              onClick={() => dispatch(playToggle())}
+              className={`swap mr-4 ${musicPlayer.isPlaying && "swap-active"}`}
+            >
+              <MdPause className="swap-on" />
+              <MdPlayArrow className="swap-off" />
+            </label>
+            <BiArrowToRight className="cursor-pointer" />
           </div>
         </div>
-        <div className="shrink-0 w-80 bg-slate-300">
+        <div className="flex-1 w-full flex items-center justify-between px-4 text-xs">
+          <span className="shrink-0 px-4 text-primary">0:00</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="20"
+            className="range range-xs range-primary"
+          />
+          <span className="shrink-0 px-4">0:00</span>
+        </div>
+        <div className="shrink-0 w-full max-w-sm px-2 flex items-center justify-between">
           {/* Current Track Detail */}
-          <div></div>
+          <div className="shrink-0 flex">
+            <div className="avatar border border-base-300">
+              <div className="w-9 rounded">
+                <img
+                  alt="artwork"
+                  src="https://api.lorem.space/image/face?hash=92048"
+                />
+              </div>
+            </div>
+          </div>
+          {/* Track */}
+          <div className="flex-1 w-full px-4">
+            <p className="opacity-50 hover:opacity-100 text-xs cursor-pointer">
+              {musicPlayer.currentTrack?.user.username}
+            </p>
+            <p className="opacity-90 hover:opacity-100 text-xs cursor-pointer break-all line-clamp-1">
+              {musicPlayer.currentTrack?.title}
+            </p>
+          </div>
           {/* More Menu */}
-          <div></div>
+          <div className="shrink-0 text-lg flex items-center">
+            <label className="swap mr-3">
+              <input type="checkbox" />
+              <AiFillHeart className="swap-on text-primary" />
+              <AiOutlineHeart className="swap-off" />
+            </label>
+
+            <label className="swap mr-3">
+              <input type="checkbox" />
+              <BsPersonCheckFill className="swap-on text-primary" />
+              <BsFillPersonPlusFill className="swap-off" />
+            </label>
+
+            <label className="swap">
+              <input type="checkbox" />
+              <RiMenuUnfoldFill className="swap-on text-primary" />
+              <RiMenuUnfoldFill className="swap-off" />
+            </label>
+          </div>
         </div>
       </div>
     </div>

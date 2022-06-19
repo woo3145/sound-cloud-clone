@@ -30,7 +30,6 @@ const TrackCard = ({ track, idx }: Props) => {
       },
     ];
     dispatch(setCollection({ collection, idx: idx }));
-    console.log(state);
   };
   return (
     <li className="pb-4">

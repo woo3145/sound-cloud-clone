@@ -35,6 +35,7 @@ const musicPlayerSlice = createSlice({
       state.playList = payload.collection;
       state.currentTrackIdx = payload.idx;
       state.currentTrack = state.playList[payload.idx];
+      state.isPlaying = true;
     },
     prevTrack: (state) => {
       if (!state.currentTrackIdx || state.playList.length === 0) {
@@ -62,10 +63,16 @@ const musicPlayerSlice = createSlice({
       state.currentTrackIdx = state.currentTrackIdx += 1;
       state.currentTrack = state.playList[state.currentTrackIdx];
     },
+    playToggle: (state) => {
+      if (!state.currentTrack) {
+        return;
+      }
+      state.isPlaying = !state.isPlaying;
+    },
   },
 });
 
-export const { clear, setCollection, prevTrack, nextTrack } =
+export const { clear, setCollection, prevTrack, nextTrack, playToggle } =
   musicPlayerSlice.actions;
 
 export default musicPlayerSlice.reducer;
