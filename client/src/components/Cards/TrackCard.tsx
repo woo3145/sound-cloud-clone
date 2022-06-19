@@ -1,6 +1,6 @@
 import React from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { Track } from "../../mockData/useMockTracks";
+import { Track, useMockTracks } from "../../mockData/useMockTracks";
 import { BiTimeFive } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -20,15 +20,10 @@ interface Props {
 const TrackCard = ({ track, idx }: Props) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.musicPlayer);
-  const trackUrl = "audio/cw-blues.mp3";
+  const tracks = useMockTracks();
 
   const setCollectionAndPlay = () => {
-    const collection: Track[] = [
-      {
-        ...track,
-        audioUrl: trackUrl,
-      },
-    ];
+    const collection: Track[] = [...tracks];
     dispatch(setCollection({ collection, idx: idx }));
   };
   return (
@@ -61,7 +56,11 @@ const TrackCard = ({ track, idx }: Props) => {
         </div>
         <div className="shrink-0 flex items-center">
           <label
-            className={`swap ${idx === state.currentTrackIdx && "swap-active"}`}
+            className={`swap ${
+              idx === state.currentTrackIdx &&
+              state.isPlaying === true &&
+              "swap-active"
+            }`}
             onClick={setCollectionAndPlay}
           >
             <div className="btn btn-sm swap-on bg-primary border-none">

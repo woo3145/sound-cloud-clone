@@ -34,24 +34,25 @@ const musicPlayerSlice = createSlice({
     ) => {
       state.playList = payload.collection;
       state.currentTrackIdx = payload.idx;
-      state.currentTrack = state.playList[payload.idx];
+      state.currentTrack = payload.collection[payload.idx];
       state.isPlaying = true;
     },
     prevTrack: (state) => {
-      if (!state.currentTrackIdx || state.playList.length === 0) {
+      if (state.currentTrackIdx === null || state.playList.length === 0) {
         return;
       }
-      // 이전 트랙이 없으면 재시작
+      state.isPlaying = true;
+      // 이전 트랙이 없으면 스탑
       if (state.currentTrackIdx < 1) {
-        state.isPlaying = true;
+        state.isPlaying = false;
         return;
       }
       // 있으면 다음곡으로
-      state.currentTrackIdx = state.currentTrackIdx -= 1;
+      state.currentTrackIdx = state.currentTrackIdx - 1;
       state.currentTrack = state.playList[state.currentTrackIdx];
     },
     nextTrack: (state) => {
-      if (!state.currentTrackIdx || state.playList.length === 0) {
+      if (state.currentTrackIdx === null || state.playList.length === 0) {
         return;
       }
       // 다음 트랙이 없으면 정지
@@ -60,13 +61,13 @@ const musicPlayerSlice = createSlice({
         return;
       }
       // 있으면 다음곡으로
-      state.currentTrackIdx = state.currentTrackIdx += 1;
+      state.currentTrackIdx = state.currentTrackIdx + 1;
       state.currentTrack = state.playList[state.currentTrackIdx];
     },
     playToggle: (state) => {
-      if (!state.currentTrack) {
-        return;
-      }
+      //   if (!state.currentTrack) {
+      //     return;
+      //   }
       state.isPlaying = !state.isPlaying;
     },
   },

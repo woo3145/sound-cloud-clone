@@ -4,11 +4,67 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { RiMenuUnfoldFill } from "react-icons/ri";
 import { MdPause, MdPlayArrow } from "react-icons/md";
-import { playToggle } from "../../redux/reducers/musicPlayerSlice";
+import {
+  nextTrack,
+  playToggle,
+  prevTrack,
+} from "../../redux/reducers/musicPlayerSlice";
+import React, { useEffect, useRef } from "react";
+import WaveSurfer from "wavesurfer.js";
 
 const MusicPlayer = () => {
+  const wavesurfer = useRef<null | WaveSurfer>(null);
+
   const dispatch = useAppDispatch();
   const musicPlayer = useAppSelector((state) => state.musicPlayer);
+  useEffect(() => {
+    if (!musicPlayer.currentTrack) {
+      return;
+    }
+    wavesurfer.current?.destroy();
+    wavesurfer.current = WaveSurfer.create({
+      container: `#waveform`,
+      barWidth: 2,
+      barRadius: 2,
+      cursorWidth: 1,
+      height: 30,
+      barGap: 2,
+      responsive: true,
+      backend: "WebAudio",
+    });
+    wavesurfer.current.load(musicPlayer.currentTrack?.audioUrl || "");
+    wavesurfer.current.on("ready", () => {
+      if (!wavesurfer.current) {
+        return;
+      }
+      if (musicPlayer.isPlaying) {
+        wavesurfer.current.play();
+      } else {
+        wavesurfer.current.pause();
+      }
+    });
+    // isPlaying 예외
+    // eslint-disable-next-line
+  }, [musicPlayer.currentTrack, musicPlayer.currentTrackIdx]);
+
+  useEffect(() => {
+    if (!wavesurfer.current) {
+      return;
+    }
+    if (musicPlayer.isPlaying) {
+      wavesurfer.current.play();
+    } else {
+      wavesurfer.current.pause();
+    }
+  }, [musicPlayer.isPlaying]);
+
+  useEffect(() => {
+    if (!wavesurfer.current) {
+      return;
+    }
+    wavesurfer.current.setCurrentTime(0);
+  }, [musicPlayer.currentTrackIdx]);
+
   if (musicPlayer.playList.length === 0) {
     return null;
   }
@@ -18,7 +74,10 @@ const MusicPlayer = () => {
         {/* Controller */}
         <div className="flex justify-between items-center">
           <div className="flex items-center text-2xl px-4 shrink-0">
-            <BiArrowToLeft className="mr-4 cursor-pointer" />
+            <BiArrowToLeft
+              onClick={() => dispatch(prevTrack())}
+              className="mr-4 cursor-pointer"
+            />
             <label
               onClick={() => dispatch(playToggle())}
               className={`swap mr-4 ${musicPlayer.isPlaying && "swap-active"}`}
@@ -26,18 +85,17 @@ const MusicPlayer = () => {
               <MdPause className="swap-on" />
               <MdPlayArrow className="swap-off" />
             </label>
-            <BiArrowToRight className="cursor-pointer" />
+            <BiArrowToRight
+              className="cursor-pointer"
+              onClick={() => dispatch(nextTrack())}
+            />
           </div>
         </div>
         <div className="flex-1 w-full flex items-center justify-between px-4 text-xs">
           <span className="shrink-0 px-4 text-primary">0:00</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="20"
-            className="range range-xs range-primary"
-          />
+
+          <div id={"waveform"} className="w-full"></div>
+
           <span className="shrink-0 px-4">0:00</span>
         </div>
         <div className="shrink-0 w-full max-w-sm px-2 flex items-center justify-between">
