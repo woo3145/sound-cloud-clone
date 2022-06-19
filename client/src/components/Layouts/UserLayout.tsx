@@ -2,8 +2,8 @@ import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
 import { AiFillCamera } from "react-icons/ai";
-import GrayButton from "../Button/GrayButton";
 import { BsFillPencilFill } from "react-icons/bs";
+import Footer from "../Footer";
 
 const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
   return (
@@ -11,15 +11,36 @@ const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
       to={to}
       end={true}
       className={({ isActive }) =>
-        `mr-6 cursor-pointer pb-1 ${to === "."} ${
+        `tab pb-2 text-lg ${
           isActive
-            ? "border-b-4 border-blue-900"
-            : "hover:border-b-4 border-black"
+            ? "tab-bordered border-primary text-primary"
+            : "hover:tab-bordered"
         }`
       }
     >
       {text}
     </NavLink>
+  );
+};
+const UserSideBar = () => {
+  return (
+    <div className="w-full pr-6">
+      <ul className="flex w-full items-center justify-between bg-base-100 pb-4">
+        <div className="btn btn-ghost opacity-50 hover:bg-base-100 hover:opacity-100 flex-col">
+          <p className="text-xs normal-case">Followers</p>
+          <p className="text-xl">0</p>
+        </div>
+        <div className="btn btn-ghost opacity-50 hover:bg-base-100 hover:opacity-100 flex-col">
+          <p className="text-xs normal-case">Following</p>
+          <p className="text-xl">0</p>
+        </div>
+        <div className="btn btn-ghost opacity-50 hover:bg-base-100 hover:opacity-100 flex-col">
+          <p className="text-xs normal-case">Tracks</p>
+          <p className="text-xl">0</p>
+        </div>
+      </ul>
+      <Footer />
+    </div>
   );
 };
 
@@ -31,35 +52,36 @@ const UserLayout = () => {
   return (
     <div className="">
       {/* Profile Header */}
-      <div
-        style={{
-          backgroundImage: `linear-gradient(19deg, #21D4FD 0%, #B721FF 100%)`,
-        }}
-        className="h-auto to-red-400 from-yellow-300 bg-gradient-to-tr p-8 flex"
-      >
+      <div className="h-auto to-base-100 from-primary bg-gradient-to-br px-8 py-12 flex">
         <div className="relative flex justify-center mr-8">
-          <div className="w-48 h-48 rounded-full bg-blue-900 shrink-0"></div>
-          <div className="absolute bottom-6">
-            <GrayButton
-              icon={<AiFillCamera className="inline text-lg mr-1" />}
-              text="Upload image"
-            />
+          <div className="avatar relative">
+            <div className="w-48 rounded-full ring ring-base-100">
+              <img
+                alt="avator"
+                src="https://api.lorem.space/image/face?hash=92310"
+              />
+            </div>
           </div>
+          <button className="btn gap-2 absolute bottom-5 btn-xs normal-case">
+            <AiFillCamera />
+            Upload image
+          </button>
         </div>
         <div className="w-full flex justify-between items-start">
-          <div className="text-white text-3xl font-light px-2 py-1 bg-black">
+          <div className="text-white text-3xl font-light px-2 py-1 bg-neutral">
             {user?.username}
           </div>
-          <GrayButton
-            icon={<AiFillCamera className="inline text-lg mr-1" />}
-            text="Upload header image"
-          />
+
+          <button className="btn gap-2 btn-sm normal-case">
+            <AiFillCamera />
+            Upload header image
+          </button>
         </div>
       </div>
       {/* User Navigation */}
       <div className="px-8 pt-4">
-        <div className="flex justify-between items-center border-b">
-          <div className="text-lg flex">
+        <div className="flex justify-between items-start border-b border-base-200">
+          <div className="flex tabs">
             <NavLinkItem text="All" to="." />
             <NavLinkItem text="Popular tracks" to="./popular-tracks" />
             <NavLinkItem text="Tracks" to="./tracks" />
@@ -67,17 +89,19 @@ const UserLayout = () => {
             <NavLinkItem text="Playlists" to="./sets" />
             <NavLinkItem text="Reports" to="./reports" />
           </div>
-          <GrayButton
-            icon={<BsFillPencilFill size={12} className="mr-1.5" />}
-            text={"Edit"}
-          />
+          <button className="btn gap-2 btn-xs normal-case">
+            <BsFillPencilFill />
+            Edit
+          </button>
         </div>
       </div>
-      <div className="w-full flex">
-        <div className="px-8 pt-5 flex w-full">
+      <div className="w-full flex pt-4">
+        <div className="px-8 flex w-full">
           <Outlet />
         </div>
-        <div className="w-full max-w-sm bg-red-50">User Sidebar</div>
+        <div className="hidden md:block w-full max-w-sm border-l border-base-200 pr-6 pl-6">
+          <UserSideBar />
+        </div>
       </div>
     </div>
   );

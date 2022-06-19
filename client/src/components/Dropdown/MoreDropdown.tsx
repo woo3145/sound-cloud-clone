@@ -1,13 +1,8 @@
 import React from "react";
-import { IoEllipsisHorizontalSharp } from "react-icons/io5";
 import { useMe } from "../../hooks/useMe";
-import { moreDropdownToggle } from "../../redux/reducers/uiSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
 import customAxios from "../../utils/customAxios";
 
 export const MoreDropdown = () => {
-  const open = useAppSelector((state) => state.ui.moreDropdownVisible);
-  const dispatch = useAppDispatch();
   const { mutate, isLoggedIn } = useMe();
   // 로그아웃
   const onLogout = async () => {
@@ -66,7 +61,11 @@ export const MoreDropdown = () => {
               </a>
             </li>
             <li>
-              <a onClick={onLogout} className="hover:bg-neutral-focus">
+              <a
+                href="#1"
+                onClick={onLogout}
+                className="hover:bg-neutral-focus"
+              >
                 Sign out
               </a>
             </li>

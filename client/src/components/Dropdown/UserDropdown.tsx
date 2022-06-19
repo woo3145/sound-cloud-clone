@@ -1,14 +1,9 @@
 import React from "react";
 import { FaUser, FaHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { IoIosArrowDown } from "react-icons/io";
 
 export const UserDropDown = () => {
-  const open = useAppSelector((state) => state.ui.userDropdownVisible);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { user } = useMe();
 
   return (
@@ -26,6 +21,7 @@ export const UserDropDown = () => {
                     ? user.avatarUrl
                     : "https://api.lorem.space/image/face?hash=3174"
                 }
+                alt="avator"
               />
             </div>
           </div>
