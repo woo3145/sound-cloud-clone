@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
 import customAxios from "../../utils/customAxios";
 
@@ -39,35 +40,35 @@ export const MoreDropdown = () => {
         className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
       >
         <li>
-          <a href="#1" className="hover:bg-neutral-focus">
+          <Link to="#1" className="hover:bg-neutral-focus">
             About us
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#1" className="hover:bg-neutral-focus">
+          <Link to="#1" className="hover:bg-neutral-focus">
             Legal
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#1" className="hover:bg-neutral-focus">
+          <Link to="#1" className="hover:bg-neutral-focus">
             Copyright
-          </a>
+          </Link>
         </li>
         {isLoggedIn && (
           <>
             <li>
-              <a href="#1" className="hover:bg-neutral-focus">
+              <Link to="#1" className="hover:bg-neutral-focus">
                 Setting
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#1"
+              <Link
+                to="#1"
                 onClick={onLogout}
                 className="hover:bg-neutral-focus"
               >
                 Sign out
-              </a>
+              </Link>
             </li>
           </>
         )}

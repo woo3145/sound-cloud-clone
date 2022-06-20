@@ -85,9 +85,8 @@ const UserLayout = () => {
             <NavLinkItem text="All" to="." />
             <NavLinkItem text="Popular tracks" to="./popular-tracks" />
             <NavLinkItem text="Tracks" to="./tracks" />
-            <NavLinkItem text="Albums" to="./albums" />
             <NavLinkItem text="Playlists" to="./sets" />
-            <NavLinkItem text="Reports" to="./reports" />
+            <NavLinkItem text="Reposts" to="./reposts" />
           </div>
           <button className="btn gap-2 btn-xs normal-case">
             <BsFillPencilFill />

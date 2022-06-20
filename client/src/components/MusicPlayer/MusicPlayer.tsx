@@ -43,6 +43,12 @@ const MusicPlayer = () => {
         wavesurfer.current.pause();
       }
     });
+    wavesurfer.current.on("finish", () => {
+      if (!wavesurfer.current) {
+        return;
+      }
+      dispatch(nextTrack());
+    });
     // isPlaying 예외
     // eslint-disable-next-line
   }, [musicPlayer.currentTrack, musicPlayer.currentTrackIdx]);

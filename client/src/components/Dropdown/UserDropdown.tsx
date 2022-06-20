@@ -2,6 +2,7 @@ import React from "react";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { useMe } from "../../hooks/useMe";
 import { IoIosArrowDown } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 export const UserDropDown = () => {
   const { user } = useMe();
@@ -34,22 +35,22 @@ export const UserDropDown = () => {
         className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
       >
         <li>
-          <a href="/3" className="hover:bg-neutral-focus">
+          <Link to="/3" className="hover:bg-neutral-focus">
             <FaUser className="mx-2" />
             Profile
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#1" className="hover:bg-neutral-focus">
+          <Link to="#1" className="hover:bg-neutral-focus">
             <FaHeart className="mx-2" />
             Likes
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#1" className="hover:bg-neutral-focus">
+          <Link to="#1" className="hover:bg-neutral-focus">
             <FaUser className="mx-2" />
             Tracks
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

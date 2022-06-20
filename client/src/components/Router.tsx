@@ -26,9 +26,8 @@ const Router = () => {
             <Route index element={<UserMain />} />
             <Route path="popular-tracks" element={<div>Popular Tracks</div>} />
             <Route path="tracks" element={<div>Tracks</div>} />
-            <Route path="albums" element={<div>Albums</div>} />
             <Route path="sets" element={<div>Play Lists</div>} />
-            <Route path="reports" element={<div>Reports</div>} />
+            <Route path="reposts" element={<div>Reposts</div>} />
           </Route>
           <Route path="you">
             <Route path="*" element={isLoggedIn ? <Discover /> : <SignIn />} />
