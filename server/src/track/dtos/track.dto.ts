@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { CommonOutput } from 'src/common/dtos/common.dto';
 
 export class CreateTrackInput {
@@ -19,6 +19,9 @@ export class CreateTrackInput {
 
   @IsString()
   audioUrl: string;
+
+  @IsNumber()
+  duration: number;
 }
 
 export class CreateTrackOutput extends CommonOutput {}

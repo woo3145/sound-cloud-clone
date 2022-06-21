@@ -21,6 +21,11 @@ export class User extends CommonEntity {
   @IsString()
   password: string;
   @ApiProperty()
+  @Column({ default: '' })
+  @IsString()
+  avatarUrl: string;
+
+  @ApiProperty()
   @Column({ nullable: true, select: false })
   @IsString()
   currentHashedRefreshToken?: string;

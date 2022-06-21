@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { CommonEntity } from 'src/common/dtos/common.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
@@ -28,6 +28,10 @@ export class Track extends CommonEntity {
   @Column()
   @IsString()
   audioUrl: string;
+
+  @Column()
+  @IsNumber()
+  duration: number;
 
   @ManyToOne(() => User, (user) => user.tracks, { onDelete: 'SET NULL' })
   user: User;

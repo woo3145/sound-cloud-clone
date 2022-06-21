@@ -9,6 +9,7 @@ import * as Joi from 'joi';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { TrackModule } from './track/track.module';
 import { Track } from './track/entities/track.entity';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { Track } from './track/entities/track.entity';
     UserModule,
     AuthModule,
     TrackModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [
