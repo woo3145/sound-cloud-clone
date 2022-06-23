@@ -6,45 +6,20 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public } from 'src/auth/auth.decorator';
-import * as AWS from 'aws-sdk';
-import { ConfigService } from '@nestjs/config';
+import { UploadsService } from './uploads.service';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly configService: ConfigService) {}
-  @Public()
+  constructor(private readonly uploadsService: UploadsService) {}
+
   @Post('audio')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    AWS.config.update({
-      region: this.configService.get('AWS_BUCKET_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get('AWS_ACCESS_KEY'),
-        secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-      },
-    });
-
+  async uploadAudio(@UploadedFile() file: Express.Multer.File) {
     try {
-      const fileName = 'audio/' + Date.now() + file.originalname;
-      await new AWS.S3()
-        .putObject({
-          Key: fileName,
-          Body: file.buffer,
-          Bucket: this.configService.get('AWS_BUCKET_NAME'),
-          ACL: 'public-read',
-        })
-        .promise();
-      return {
-        ok: true,
-        url: `https://${this.configService.get(
-          'AWS_BUCKET_NAME',
-        )}.s3.${this.configService.get(
-          'AWS_BUCKET_REGION',
-        )}.amazonaws.com/${fileName}`,
-      };
-    } catch (error) {
-      console.log(error);
+      return this.uploadsService.uploadAudio(file);
+    } catch (e) {
+      console.log('Upload Audio Error\n', e);
+      throw e;
     }
-    console.log();
   }
 }
