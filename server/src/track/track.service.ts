@@ -22,11 +22,20 @@ export class TrackService {
         user: user,
       }),
     );
-    console.log(track);
 
-    return { ok: true };
+    return { ok: true, trackId: track.id };
   }
   // Read
+  async getTracksByUserId(userId: number) {
+    const tracks = await this.trackRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+    });
+    return tracks;
+  }
   // Update
   // Delete
 }

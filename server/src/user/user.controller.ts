@@ -1,8 +1,15 @@
-import { Body, Controller, Get, HttpException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/auth.decorator';
 import { CommonOutput } from 'src/common/dtos/common.dto';
-import { CreateAccountInput } from './dtos/user.dto';
+import { CreateAccountInput, GetUserTracksOutput } from './dtos/user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -28,4 +35,19 @@ export class UserController {
   // Get User
 
   // Edit User
+
+  // Get User Tracks
+
+  @Public()
+  @Get(`:userId/tracks`)
+  async getUserTracks(
+    @Param('userId') userId: number,
+  ): Promise<GetUserTracksOutput> {
+    try {
+      return this.userService.getUserTracks(userId);
+    } catch (e) {
+      console.log('Register Error\n', e);
+      throw e;
+    }
+  }
 }

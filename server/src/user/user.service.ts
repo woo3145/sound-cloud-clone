@@ -7,16 +7,18 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateAccountInput } from './dtos/user.dto';
+import { CreateAccountInput, GetUserTracksOutput } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CommonOutput } from 'src/common/dtos/common.dto';
+import { TrackService } from 'src/track/track.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly trackService: TrackService,
   ) {}
   /* queries */
   findOneByEmail(email: string): Promise<User> | null {
@@ -46,6 +48,10 @@ export class UserService {
       .addSelect('user.password')
       .addSelect('user.currentHashedRefreshToken')
       .getOne();
+  }
+  async getUserTracks(userId: number): Promise<GetUserTracksOutput> {
+    const collection = await this.trackService.getTracksByUserId(userId);
+    return { ok: true, collection };
   }
 
   // method

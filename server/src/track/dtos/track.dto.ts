@@ -1,35 +1,31 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { CommonOutput } from 'src/common/dtos/common.dto';
 
 export class CreateTrackInput {
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String })
   title: string;
 
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String })
   description?: string;
 
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String })
   artworkUrl?: string;
 
-  @IsBoolean()
-  @ApiProperty()
+  @ApiProperty({ type: Boolean })
   isPublic: boolean;
 
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String })
   genre?: string;
 
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String })
   audioUrl: string;
 
-  @IsNumber()
-  @ApiProperty()
+  @ApiProperty({ type: Number })
   duration: number;
 }
 
-export class CreateTrackOutput extends CommonOutput {}
+export class CreateTrackOutput extends CommonOutput {
+  @ApiProperty({ type: Number })
+  trackId: number;
+}
