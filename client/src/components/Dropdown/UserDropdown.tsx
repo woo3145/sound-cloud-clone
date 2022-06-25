@@ -5,8 +5,11 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 export const UserDropDown = () => {
-  const { user } = useMe();
+  const { user, loading } = useMe();
 
+  if (loading || !user) {
+    return <div>Loading ...</div>;
+  }
   return (
     <div className="dropdown dropdown-end">
       <label
@@ -35,7 +38,7 @@ export const UserDropDown = () => {
         className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
       >
         <li>
-          <Link to="/3" className="hover:bg-neutral-focus">
+          <Link to={`/${user.id}`} className="hover:bg-neutral-focus">
             <FaUser className="mx-2" />
             Profile
           </Link>

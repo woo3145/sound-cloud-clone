@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { User } from "../mockData/useMockTracks";
 import customAxios from "../utils/customAxios";
 
 const fetcher = () => {
@@ -17,7 +18,7 @@ export const useMe = () => {
     fetcher
   );
   return {
-    user: data?.profile,
+    user: data?.profile ? (data.profile as User) : null,
     loading: !data && !error,
     isLoggedIn: data?.profile && !error,
     mutate,

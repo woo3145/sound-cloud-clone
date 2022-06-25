@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
 import { AiFillCamera } from "react-icons/ai";
 import { BsFillPencilFill } from "react-icons/bs";
 import Footer from "../Footer";
+import { useUser } from "../../hooks/useUser";
 
 const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
   return (
@@ -45,8 +46,11 @@ const UserSideBar = () => {
 };
 
 const UserLayout = () => {
-  const { user } = useMe();
-  if (!user) {
+  const { user_id } = useParams();
+  const { user, loading } = useUser(user_id ? parseInt(user_id) : 0);
+  const { user: me } = useMe();
+
+  if (loading || !user) {
     return <div>Loading...</div>;
   }
   return (
@@ -58,24 +62,32 @@ const UserLayout = () => {
             <div className="w-48 rounded-full ring ring-base-100">
               <img
                 alt="avator"
-                src="https://api.lorem.space/image/face?hash=92310"
+                src={
+                  user.avatarUrl
+                    ? user.avatarUrl
+                    : "https://api.lorem.space/image/face?hash=3174"
+                }
               />
             </div>
           </div>
-          <button className="btn gap-2 absolute bottom-5 btn-xs normal-case">
-            <AiFillCamera />
-            Upload image
-          </button>
+          {me?.id === user.id && (
+            <button className="btn gap-2 absolute bottom-5 btn-xs normal-case">
+              <AiFillCamera />
+              Upload image
+            </button>
+          )}
         </div>
         <div className="w-full flex justify-between items-start">
           <div className="text-white text-3xl font-light px-2 py-1 bg-neutral">
             {user?.username}
           </div>
 
-          <button className="btn gap-2 btn-sm normal-case">
-            <AiFillCamera />
-            Upload header image
-          </button>
+          {me?.id === user.id && (
+            <button className="btn gap-2 btn-sm normal-case">
+              <AiFillCamera />
+              Upload header image
+            </button>
+          )}
         </div>
       </div>
       {/* User Navigation */}
@@ -88,10 +100,12 @@ const UserLayout = () => {
             <NavLinkItem text="Playlists" to="./sets" />
             <NavLinkItem text="Reposts" to="./reposts" />
           </div>
-          <button className="btn gap-2 btn-xs normal-case">
-            <BsFillPencilFill />
-            Edit
-          </button>
+          {me?.id === user.id && (
+            <button className="btn gap-2 btn-xs normal-case">
+              <BsFillPencilFill />
+              Edit
+            </button>
+          )}
         </div>
       </div>
       <div className="w-full flex pt-4">

@@ -1,6 +1,7 @@
 export interface User {
+  id: number;
   username: string;
-  email: string;
+  email?: string;
   avatarUrl?: string;
 }
 
@@ -20,6 +21,7 @@ export const useMockTracks = () => {
   const trackUrl3 = "audio/ncs-music-2.mp3";
 
   const user: User = {
+    id: 3,
     username: "woo3145",
     email: "lcwoo3145@gmail.com",
     avatarUrl:
