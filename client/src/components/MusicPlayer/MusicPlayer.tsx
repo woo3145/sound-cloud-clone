@@ -111,7 +111,11 @@ const MusicPlayer = () => {
               <div className="w-9 rounded">
                 <img
                   alt="artwork"
-                  src="https://api.lorem.space/image/face?hash=92048"
+                  src={
+                    musicPlayer.currentTrack?.artworkUrl
+                      ? musicPlayer.currentTrack.artworkUrl
+                      : "https://api.lorem.space/image/face?hash=92048"
+                  }
                 />
               </div>
             </div>

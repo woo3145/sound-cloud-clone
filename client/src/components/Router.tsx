@@ -4,6 +4,7 @@ import { useMe } from "../hooks/useMe";
 import Discover from "../pages/Discover";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import Upload from "../pages/Upload";
 import UserMain from "../pages/User/UserMain";
 import Layout from "./Layouts/Layout";
 import UserLayout from "./Layouts/UserLayout";
@@ -19,8 +20,8 @@ const Router = () => {
           <Route path="discover" element={<Discover />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
+          <Route path="upload" element={<Upload />} />
 
-          <Route path="upload" element={<Discover />} />
           <Route path="stream" element={<Discover />} />
           <Route path=":user_id" element={<UserLayout />}>
             <Route index element={<UserMain />} />

@@ -71,12 +71,14 @@ export const Header = () => {
         </div>
         {/* Nav Right */}
         <div className="flex-0 navbar-end">
-          <NavLink
-            to="/upload"
-            className="btn btn-sm btn-primary mr-2 normal-case"
-          >
-            Upload
-          </NavLink>
+          {isLoggedIn && (
+            <NavLink
+              to="/upload"
+              className="btn btn-sm btn-primary mr-2 normal-case"
+            >
+              Upload
+            </NavLink>
+          )}
           {isLoggedIn ? (
             <UserDropDown />
           ) : (

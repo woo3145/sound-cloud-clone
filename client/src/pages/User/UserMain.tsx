@@ -24,7 +24,14 @@ const UserMain = () => {
           <h3 className="py-4 text-2xl font-light">Recent</h3>
           <ul>
             {collection.map((track, idx) => {
-              return <TrackCard track={track} key={idx} idx={idx} />;
+              return (
+                <TrackCard
+                  collection={collection}
+                  track={track}
+                  key={idx}
+                  idx={idx}
+                />
+              );
             })}
           </ul>
         </>

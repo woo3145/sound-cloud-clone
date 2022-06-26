@@ -13,17 +13,16 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setCollection } from "../../redux/reducers/musicPlayerSlice";
 
 interface Props {
+  collection: Track[];
   track: Track;
   idx: number;
 }
 
-const TrackCard = ({ track, idx }: Props) => {
+const TrackCard = ({ track, idx, collection }: Props) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.musicPlayer);
-  const tracks = useMockTracks();
 
   const setCollectionAndPlay = () => {
-    const collection: Track[] = [...tracks];
     dispatch(setCollection({ collection, idx: idx }));
   };
   return (
