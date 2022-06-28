@@ -1,6 +1,6 @@
 import React from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { Track, useMockTracks } from "../../mockData/useMockTracks";
+import { Track } from "../../mockData/useMockTracks";
 import { BiTimeFive } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -74,7 +74,7 @@ const TrackCard = ({ track, idx, collection }: Props) => {
 
           <p className="btn btn-ghost btn-sm normal-case shrink-0 text-base-content break-all w-20 hover:bg-base-100">
             <BiTimeFive className="mr-2" />
-            {"3:42"}
+            {track.duration}
           </p>
 
           <label className="swap px-4">

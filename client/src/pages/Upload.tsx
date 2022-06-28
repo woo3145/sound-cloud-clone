@@ -4,7 +4,9 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 import { setUploadProgress } from "../redux/reducers/progressSlice";
 import UploadChooser from "../components/Upload/UploadChooser";
 import UploadProgressBar from "../components/Upload/UploadProgressBar";
-import UploadForm from "../components/Upload/UploadForm";
+import UploadForm from "../components/Form/UploadForm";
+import customAxios from "../utils/customAxios";
+import { useMe } from "../hooks/useMe";
 
 const ffmpeg: FFmpeg = createFFmpeg({
   log: true,
@@ -12,6 +14,7 @@ const ffmpeg: FFmpeg = createFFmpeg({
 });
 
 function Upload() {
+  const { user } = useMe();
   const loadable = !!window.SharedArrayBuffer;
   const dispatch = useAppDispatch();
   const progress = useAppSelector((state) => state.progress.uploadProgress);
@@ -19,8 +22,8 @@ function Upload() {
   const [ready, setReady] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [isEncoding, setIsEncoding] = useState(false);
-  const [encodedFile, setEncodedFile] = useState<File | null>(null);
   const [duration, setDuration] = useState<number>(0);
+  const [encodedFile, setEncodedFile] = useState<File | null>(null);
 
   const load = async () => {
     await ffmpeg.load();
@@ -33,7 +36,6 @@ function Upload() {
   const onChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (!fileList) return;
-
     setFile(fileList[0]);
   };
 
@@ -43,9 +45,8 @@ function Upload() {
       dispatch(setUploadProgress(0));
       setIsEncoding(true);
       setMessage("파일을 인코딩 중입니다...");
-      const encodedFileName = encodeURI(file.name);
-      const fileExtendtionPos = encodedFileName.lastIndexOf(".");
-      const fileExtendtion = encodedFileName.substring(fileExtendtionPos);
+      const fileExtendtionPos = file.name.lastIndexOf(".");
+      const fileExtendtion = file.name.substring(fileExtendtionPos);
       ffmpeg.FS("writeFile", `input${fileExtendtion}`, await fetchFile(file));
       await ffmpeg.run(
         "-i",
@@ -61,15 +62,12 @@ function Upload() {
         "output.mp3"
       );
       const data = ffmpeg.FS("readFile", "output.mp3");
-
       const blob = new Blob([data.buffer], {
         type: "audio/mp3",
       });
-      const newFile = new File(
-        [blob],
-        `${encodedFileName.substring(0, fileExtendtionPos)}.mp3`,
-        { type: "audio/mp3" }
-      );
+      const newFile = new File([blob], `${user?.username}.mp3`, {
+        type: "audio/mp3",
+      });
       setEncodedFile(newFile);
     } catch (e) {
       console.log(e);
@@ -81,6 +79,36 @@ function Upload() {
       setMessage("에러가 발생하였습니다.");
     }
   };
+
+  const upload = async () => {
+    try {
+      if (!encodedFile) {
+        throw new Error("업로드할 파일이 존재하지 않습니다.");
+      }
+      if (!file) return;
+
+      const formData = new FormData();
+      const blob = new Blob([encodedFile], { type: "audio/mp3" });
+      const nFile = new File([blob], encodedFile.name, {
+        type: "audio/mp3",
+      });
+      formData.append("file", nFile);
+
+      const res = await customAxios.post("/uploads/audio", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.data.ok) {
+        return res.data.url;
+      } else {
+        throw new Error(res.data.error);
+      }
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
+  };
+
   const onCancel = () => {
     setIsEncoding(false);
     dispatch(setUploadProgress(0));
@@ -134,7 +162,12 @@ function Upload() {
           {isEncoding && <UploadProgressBar progress={progress} />}
           {message && <div className="mx-auto mt-2">{message}</div>}
           {encodedFile && file && (
-            <UploadForm onCancel={onCancel} fileName={file.name} />
+            <UploadForm
+              onCancel={onCancel}
+              fileName={file.name}
+              upload={upload}
+              duration={duration}
+            />
           )}
         </div>
       </div>

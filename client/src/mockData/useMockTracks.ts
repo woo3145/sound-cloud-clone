@@ -12,6 +12,7 @@ export interface Track {
   isPublic: boolean;
   genre?: string;
   audioUrl: string;
+  duration: number;
   user: User;
 }
 
@@ -38,6 +39,7 @@ export const useMockTracks = () => {
       genre: "Blues",
       audioUrl: trackUrl,
       user: user,
+      duration: 222,
     },
     {
       title: "Tobu & Itro - Sunburst [NCS Release]",
@@ -48,6 +50,7 @@ export const useMockTracks = () => {
       genre: "E.M.D",
       audioUrl: trackUrl2,
       user: user,
+      duration: 222,
     },
     {
       title: "Janji - Heroes Tonight (feat. Johnning) [NCS Release]",
@@ -58,6 +61,7 @@ export const useMockTracks = () => {
       genre: "E.M.D",
       audioUrl: trackUrl3,
       user: user,
+      duration: 222,
     },
   ];
 
