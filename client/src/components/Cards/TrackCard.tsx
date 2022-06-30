@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setCollection } from "../../redux/reducers/musicPlayerSlice";
+import { dateFormat, timeFormat } from "../../utils/format";
 
 interface Props {
   collection: Track[];
@@ -50,7 +51,9 @@ const TrackCard = ({ track, idx, collection }: Props) => {
             <button className="btn btn-ghost btn-xs font-normal opacity-50 px-0 pr-4 normal-case justify-start shrink-0 text-base-content break-all hover:bg-base-100">
               {track.user.username}
             </button>
-            <p className="text-xs text-base-content opacity-50">20 days ago</p>
+            <p className="text-xs text-base-content opacity-50">
+              {dateFormat(track.createdAt)}
+            </p>
           </div>
         </div>
         <div className="shrink-0 flex items-center">
@@ -74,7 +77,7 @@ const TrackCard = ({ track, idx, collection }: Props) => {
 
           <p className="btn btn-ghost btn-sm normal-case shrink-0 text-base-content break-all w-20 hover:bg-base-100">
             <BiTimeFive className="mr-2" />
-            {track.duration}
+            {timeFormat(track.duration)}
           </p>
 
           <label className="swap px-4">

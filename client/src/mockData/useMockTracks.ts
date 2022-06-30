@@ -13,6 +13,7 @@ export interface Track {
   genre?: string;
   audioUrl: string;
   duration: number;
+  createdAt: Date;
   user: User;
 }
 
@@ -34,6 +35,7 @@ export const useMockTracks = () => {
       description:
         "Youtube - The Ringers - 2/6/14 - Jimmy Herring, Wayne Krantz, Michael Landau - BB Kings NYC (4:00 ~ 5:50) 카피",
       isPublic: true,
+      createdAt: new Date(),
       artworkUrl:
         "https://images.unsplash.com/photo-1626211786632-cae0956cd772?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJsdWVzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
       genre: "Blues",
@@ -48,6 +50,7 @@ export const useMockTracks = () => {
       artworkUrl:
         "https://images.unsplash.com/photo-1532099514109-7d2d71629d82?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHNsZWVwfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
       genre: "E.M.D",
+      createdAt: new Date(),
       audioUrl: trackUrl2,
       user: user,
       duration: 222,
@@ -60,6 +63,7 @@ export const useMockTracks = () => {
         "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c3BhY2V8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
       genre: "E.M.D",
       audioUrl: trackUrl3,
+      createdAt: new Date(),
       user: user,
       duration: 222,
     },

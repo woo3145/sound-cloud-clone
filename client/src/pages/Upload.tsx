@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import UploadChooser from "../components/Upload/UploadChooser";
 import UploadProgressBar from "../components/Upload/UploadProgressBar";
@@ -6,11 +6,6 @@ import UploadForm from "../components/Form/UploadForm";
 import customAxios from "../utils/customAxios";
 import { useMe } from "../hooks/useMe";
 import { extractExtension } from "../utils/extract";
-
-const ffmpeg: FFmpeg = createFFmpeg({
-  log: true,
-  corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-});
 
 function Upload() {
   const { user } = useMe();
@@ -23,6 +18,15 @@ function Upload() {
   const [fileName, setFileName] = useState<string>("");
   const [duration, setDuration] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
+
+  const ffmpeg: FFmpeg = useMemo(
+    () =>
+      createFFmpeg({
+        log: true,
+        corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+      }),
+    []
+  );
 
   const load = async () => {
     await ffmpeg.load();

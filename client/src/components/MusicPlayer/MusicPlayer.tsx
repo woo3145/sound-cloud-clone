@@ -9,14 +9,16 @@ import {
   playToggle,
   prevTrack,
 } from "../../redux/reducers/musicPlayerSlice";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
+import { timeFormat } from "../../utils/format";
 
 const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
 
   const dispatch = useAppDispatch();
   const musicPlayer = useAppSelector((state) => state.musicPlayer);
+  const [curTime, setCurTime] = useState<number>(0);
   useEffect(() => {
     if (!musicPlayer.currentTrack) {
       return;
@@ -41,6 +43,11 @@ const MusicPlayer = () => {
         wavesurfer.current.play();
       } else {
         wavesurfer.current.pause();
+      }
+    });
+    wavesurfer.current.on("audioprocess", () => {
+      if (wavesurfer.current?.isPlaying()) {
+        setCurTime(Math.floor(wavesurfer.current.getCurrentTime()));
       }
     });
     wavesurfer.current.on("finish", () => {
@@ -71,7 +78,7 @@ const MusicPlayer = () => {
     wavesurfer.current.setCurrentTime(0);
   }, [musicPlayer.currentTrackIdx]);
 
-  if (musicPlayer.playList.length === 0) {
+  if (!musicPlayer.currentTrack) {
     return null;
   }
   return (
@@ -98,11 +105,15 @@ const MusicPlayer = () => {
           </div>
         </div>
         <div className="flex-1 w-full flex items-center justify-between px-4 text-xs">
-          <span className="shrink-0 px-4 text-primary">0:00</span>
+          <span className="shrink-0 w-14 text-center text-primary">
+            {timeFormat(curTime)}
+          </span>
 
           <div id={"waveform"} className="w-full"></div>
 
-          <span className="shrink-0 px-4">0:00</span>
+          <span className="shrink-0 w-14 text-center">
+            {timeFormat(musicPlayer.currentTrack.duration)}
+          </span>
         </div>
         <div className="shrink-0 w-full max-w-sm px-2 flex items-center justify-between">
           {/* Current Track Detail */}
@@ -112,7 +123,7 @@ const MusicPlayer = () => {
                 <img
                   alt="artwork"
                   src={
-                    musicPlayer.currentTrack?.artworkUrl
+                    musicPlayer.currentTrack.artworkUrl
                       ? musicPlayer.currentTrack.artworkUrl
                       : "https://api.lorem.space/image/face?hash=92048"
                   }
@@ -123,10 +134,10 @@ const MusicPlayer = () => {
           {/* Track */}
           <div className="flex-1 w-full px-4">
             <p className="opacity-50 hover:opacity-100 text-xs cursor-pointer">
-              {musicPlayer.currentTrack?.user.username}
+              {musicPlayer.currentTrack.user.username}
             </p>
             <p className="opacity-90 hover:opacity-100 text-xs cursor-pointer break-all line-clamp-1">
-              {musicPlayer.currentTrack?.title}
+              {musicPlayer.currentTrack.title}
             </p>
           </div>
           {/* More Menu */}
