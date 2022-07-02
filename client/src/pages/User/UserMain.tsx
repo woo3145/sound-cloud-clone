@@ -1,16 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import TrackCard from "../../components/Cards/TrackCard";
-import { useMe } from "../../hooks/useMe";
-import { useUser } from "../../hooks/useUser";
-import { useUserTracks } from "../../hooks/useUserTracks";
+import { useFetchMe } from "../../hooks/useFetchMe";
+import { useFetchUser } from "../../hooks/useFetchUser";
+import { useFetchUserTracks } from "../../hooks/useFetchUserTracks";
 
 const UserMain = () => {
   const { user_id } = useParams();
-  const { user } = useUser(user_id ? parseInt(user_id) : 0);
-  const { user: me } = useMe();
+  const { user } = useFetchUser(user_id ? parseInt(user_id) : 0);
+  const { user: me } = useFetchMe();
 
-  const { collection, loading } = useUserTracks(
+  const { tracks, loading } = useFetchUserTracks(
     user_id ? parseInt(user_id) : 0
   );
 
@@ -19,18 +19,13 @@ const UserMain = () => {
   }
   return (
     <div className="w-full">
-      {collection.length > 0 ? (
+      {tracks.length > 0 ? (
         <>
           <h3 className="py-4 text-2xl font-light">Recent</h3>
           <ul>
-            {collection.map((track, idx) => {
+            {tracks.map((track, idx) => {
               return (
-                <TrackCard
-                  collection={collection}
-                  track={track}
-                  key={idx}
-                  idx={idx}
-                />
+                <TrackCard tracks={tracks} track={track} key={idx} idx={idx} />
               );
             })}
           </ul>

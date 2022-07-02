@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useMe } from "../../hooks/useMe";
+import { useFetchMe } from "../../hooks/useFetchMe";
 import customAxios from "../../utils/customAxios";
 
 interface Props {
@@ -26,7 +26,7 @@ const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
     formState: { errors },
   } = useForm<FormData>();
   const nav = useNavigate();
-  const { user } = useMe();
+  const { user } = useFetchMe();
 
   const [error, setError] = useState("");
 

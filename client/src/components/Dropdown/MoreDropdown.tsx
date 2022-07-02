@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useMe } from "../../hooks/useMe";
+import { useFetchMe } from "../../hooks/useFetchMe";
 import customAxios from "../../utils/customAxios";
 
 export const MoreDropdown = () => {
-  const { mutate, isLoggedIn } = useMe();
+  const { mutate, isLoggedIn } = useFetchMe();
   // 로그아웃
   const onLogout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {

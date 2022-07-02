@@ -4,11 +4,11 @@ import UploadChooser from "../components/Upload/UploadChooser";
 import UploadProgressBar from "../components/Upload/UploadProgressBar";
 import UploadForm from "../components/Form/UploadForm";
 import customAxios from "../utils/customAxios";
-import { useMe } from "../hooks/useMe";
+import { useFetchMe } from "../hooks/useFetchMe";
 import { extractExtension } from "../utils/extract";
 
 function Upload() {
-  const { user } = useMe();
+  const { user } = useFetchMe();
   const loadable = !!window.SharedArrayBuffer;
   const [message, setMessage] = useState("");
   const [ready, setReady] = useState(false);

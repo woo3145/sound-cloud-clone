@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useMe } from "../hooks/useMe";
+import { useFetchMe } from "../hooks/useFetchMe";
 import Discover from "../pages/Discover";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
@@ -10,7 +10,7 @@ import Layout from "./Layouts/Layout";
 import UserLayout from "./Layouts/UserLayout";
 
 const Router = () => {
-  const { isLoggedIn } = useMe();
+  const { isLoggedIn } = useFetchMe();
 
   return (
     <BrowserRouter>

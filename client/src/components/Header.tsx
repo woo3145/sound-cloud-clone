@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useMe } from "../hooks/useMe";
+import { useFetchMe } from "../hooks/useFetchMe";
 import { MoreDropdown } from "./Dropdown/MoreDropdown";
 import { UserDropDown } from "./Dropdown/UserDropdown";
 
@@ -50,7 +50,7 @@ const NavMenu = () => {
 };
 
 export const Header = () => {
-  const { isLoggedIn } = useMe();
+  const { isLoggedIn } = useFetchMe();
   return (
     <header
       className="sticky top-0 z-30 flex h-16 w-full justify-center backdrop-blur transition-all duration-100 

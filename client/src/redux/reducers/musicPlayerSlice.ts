@@ -29,11 +29,11 @@ const musicPlayerSlice = createSlice({
     },
     setCollection: (
       state,
-      { payload }: PayloadAction<{ collection: ICollection; idx: number }>
+      { payload }: PayloadAction<{ tracks: ITrack[]; idx: number }>
     ) => {
-      state.playList = payload.collection.tracks;
+      state.playList = payload.tracks;
       state.currentTrackIdx = payload.idx;
-      state.currentTrack = payload.collection.tracks[payload.idx];
+      state.currentTrack = payload.tracks[payload.idx];
       state.isPlaying = true;
     },
     prevTrack: (state) => {

@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
-import { useMe } from "../../hooks/useMe";
+import { useFetchMe } from "../../hooks/useFetchMe";
 import { AiFillCamera } from "react-icons/ai";
 import { BsFillPencilFill } from "react-icons/bs";
 import Footer from "../Footer";
-import { useUser } from "../../hooks/useUser";
+import { useFetchUser } from "../../hooks/useFetchUser";
 
 const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
   return (
@@ -47,8 +47,8 @@ const UserSideBar = () => {
 
 const UserLayout = () => {
   const { user_id } = useParams();
-  const { user, loading } = useUser(user_id ? parseInt(user_id) : 0);
-  const { user: me } = useMe();
+  const { user, loading } = useFetchUser(user_id ? parseInt(user_id) : 0);
+  const { user: me } = useFetchMe();
 
   if (loading || !user) {
     return <div>Loading...</div>;

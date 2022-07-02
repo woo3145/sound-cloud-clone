@@ -7,14 +7,14 @@ const fetcher = (userId: number) => {
   };
 };
 
-export const useUserTracks = (userId: number) => {
+export const useFetchUserTracks = (userId: number) => {
   const { data, error, mutate } = useSWR(
     typeof window === "undefined" ? null : `/user/${userId}/tracks`,
     fetcher(userId),
     { refreshInterval: 0 }
   );
   return {
-    collection: data?.collection as ITrack[],
+    tracks: data?.tracks as ITrack[],
     loading: !data && !error,
     mutate,
   };

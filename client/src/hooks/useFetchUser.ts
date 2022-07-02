@@ -7,7 +7,7 @@ const fetcher = (userId: number) => {
   };
 };
 
-export const useUser = (userId: number) => {
+export const useFetchUser = (userId: number) => {
   const { data, error, mutate } = useSWR(
     typeof window === "undefined" ? null : `/user/${userId}`,
     fetcher(userId),

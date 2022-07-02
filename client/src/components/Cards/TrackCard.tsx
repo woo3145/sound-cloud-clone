@@ -13,17 +13,17 @@ import { setCollection } from "../../redux/reducers/musicPlayerSlice";
 import { dateFormat, timeFormat } from "../../utils/format";
 
 interface Props {
-  collection: ICollection;
+  tracks: ITrack[];
   track: ITrack;
   idx: number;
 }
 
-const TrackCard = ({ track, idx, collection }: Props) => {
+const TrackCard = ({ track, idx, tracks }: Props) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.musicPlayer);
 
   const setCollectionAndPlay = () => {
-    dispatch(setCollection({ collection, idx: idx }));
+    dispatch(setCollection({ tracks, idx: idx }));
   };
   return (
     <li className="pb-4">

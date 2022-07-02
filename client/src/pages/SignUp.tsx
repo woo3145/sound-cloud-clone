@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import SignUpForm from "../components/Form/SignUpFrom";
-import { useMe } from "../hooks/useMe";
+import { useFetchMe } from "../hooks/useFetchMe";
 
 const SignUp = () => {
-  const { isLoggedIn } = useMe();
+  const { isLoggedIn } = useFetchMe();
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn) {

@@ -11,7 +11,7 @@ const fetcher = () => {
   return customAxios.get("/profile").then((res) => res.data);
 };
 
-export const useMe = () => {
+export const useFetchMe = () => {
   const { data, error, mutate } = useSWR(
     typeof window === "undefined" ? null : "/profile",
     fetcher
