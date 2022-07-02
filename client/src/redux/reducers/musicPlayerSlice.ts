@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Track } from "../../mockData/useMockTracks";
 
 interface MusicPlayerState {
-  playList: Track[];
+  playList: ITrack[];
   volume: number;
   isPlaying: boolean;
   currentTrackIdx: number | null;
-  currentTrack: Track | null;
+  currentTrack: ITrack | null;
 }
 
 const initialState: MusicPlayerState = {
@@ -30,11 +29,11 @@ const musicPlayerSlice = createSlice({
     },
     setCollection: (
       state,
-      { payload }: PayloadAction<{ collection: Track[]; idx: number }>
+      { payload }: PayloadAction<{ collection: ICollection; idx: number }>
     ) => {
-      state.playList = payload.collection;
+      state.playList = payload.collection.tracks;
       state.currentTrackIdx = payload.idx;
-      state.currentTrack = payload.collection[payload.idx];
+      state.currentTrack = payload.collection.tracks[payload.idx];
       state.isPlaying = true;
     },
     prevTrack: (state) => {

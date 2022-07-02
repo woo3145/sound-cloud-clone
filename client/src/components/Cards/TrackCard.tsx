@@ -1,6 +1,5 @@
 import React from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { Track } from "../../mockData/useMockTracks";
 import { BiTimeFive } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -14,8 +13,8 @@ import { setCollection } from "../../redux/reducers/musicPlayerSlice";
 import { dateFormat, timeFormat } from "../../utils/format";
 
 interface Props {
-  collection: Track[];
-  track: Track;
+  collection: ICollection;
+  track: ITrack;
   idx: number;
 }
 
