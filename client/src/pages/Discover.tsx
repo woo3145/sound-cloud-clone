@@ -1,7 +1,64 @@
-import React from "react";
-import MusicCard from "../components/Cards/MusicCard";
+import React, { useEffect, useRef, useState } from "react";
+import { CollectionCard } from "../components/Cards/CollectionCard";
 import Footer from "../components/Footer";
 import useMockMixedLists from "../mockData/useMockMixedLists";
+
+const CollectionSlider = ({ collections }: { collections: ICollection[] }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const INTERVAL = 400;
+
+  const left = () => {
+    if (!ref.current) return;
+    ref.current.scrollLeft = ref.current.scrollLeft - INTERVAL;
+  };
+  const right = () => {
+    if (!ref.current) return;
+    ref.current.scrollLeft = ref.current.scrollLeft + INTERVAL;
+  };
+
+  return (
+    <div className="relative">
+      <div
+        className="carousel mt-4 relative cursor-pointer"
+        ref={ref}
+        onDrag={(e) => console.log(e)}
+      >
+        {/* Collection Card*/}
+        {collections.map(({ coverImg, title }, idx) => {
+          return (
+            <div
+              key={idx}
+              id={`slide${idx}`}
+              className="mr-4 carousel-item w-1/4"
+            >
+              <CollectionCard
+                key={idx}
+                coverImg={coverImg}
+                title={title}
+                mixedTitle={"Charts: New & hot"}
+              />
+            </div>
+          );
+        })}
+      </div>
+      {/* Control Buttons*/}
+      <>
+        <div
+          className="btn btn-circle absolute text-center left-2 top-1/3"
+          onClick={left}
+        >
+          ❮
+        </div>
+        <div
+          className="btn btn-circle absolute text-center right-2 top-1/3"
+          onClick={right}
+        >
+          ❯
+        </div>
+      </>
+    </div>
+  );
+};
 
 function Discover() {
   const { mixedListsOfNewAndHot, mixedListsOfSleep } = useMockMixedLists();
@@ -27,25 +84,7 @@ function Discover() {
                   Up-and-coming tracks on SoundCloud
                 </p>
               </div>
-
-              {/* Mixed lists */}
-              <div className="overflow-x-scroll">
-                <div className="mt-4">
-                  <div className="flex">
-                    {/* Music Card*/}
-                    {mixedListsOfNewAndHot.map(({ coverImg, title }) => {
-                      return (
-                        <MusicCard
-                          key={title}
-                          coverImg={coverImg}
-                          title={title}
-                          mixedTitle={"Charts: New & hot"}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+              <CollectionSlider collections={mixedListsOfNewAndHot} />
             </li>
             <li className="border-b mb-8">
               {/* Mixed title */}
@@ -58,24 +97,7 @@ function Discover() {
                 </p>
               </div>
 
-              {/* Mixed lists */}
-              <div className="overflow-x-scroll">
-                <div className="mt-4">
-                  <div className="flex">
-                    {/* Music Card*/}
-                    {mixedListsOfSleep.map(({ coverImg, title }) => {
-                      return (
-                        <MusicCard
-                          key={title}
-                          coverImg={coverImg}
-                          title={title}
-                          mixedTitle={"Charts: New & hot"}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+              <CollectionSlider collections={mixedListsOfSleep} />
             </li>
           </ul>
         </div>
