@@ -8,9 +8,9 @@ import {
   MdPlayArrow,
   MdShare,
 } from "react-icons/md";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { setCollection } from "../../redux/reducers/musicPlayerSlice";
-import { dateFormat, timeFormat } from "../../utils/format";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { setCollection } from "../../../redux/reducers/musicPlayerSlice";
+import { dateFormat, timeFormat } from "../../../utils/format";
 
 interface Props {
   tracks: ITrack[];

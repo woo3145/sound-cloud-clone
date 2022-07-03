@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useFetchMe } from "../../hooks/useFetchMe";
-import customAxios from "../../utils/customAxios";
+import { useFetchMe } from "../../../hooks/useFetchMe";
+import customAxios from "../../../utils/customAxios";
 
 interface Props {
   fileName: string;

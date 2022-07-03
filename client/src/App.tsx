@@ -1,6 +1,6 @@
 import React from "react";
-import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
-import Router from "./components/Router";
+import MusicPlayer from "./components/Features/MusicPlayer/MusicPlayer";
+import Router from "./Router";
 
 function App() {
   return (

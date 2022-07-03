@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import ErrorText from "../Text/ErrorText";
-import { useLocalStorage } from "../../utils/useLocalStorage";
-import customAxios from "../../utils/customAxios";
+import ErrorText from "../../Shared/Text/ErrorText";
+import { useLocalStorage } from "../../../utils/useLocalStorage";
+import customAxios from "../../../utils/customAxios";
 
 interface FormData {
   email: string;

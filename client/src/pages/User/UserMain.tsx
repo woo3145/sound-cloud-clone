@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import TrackCard from "../../components/Cards/TrackCard";
+import TrackCard from "../../components/Shared/Cards/TrackCard";
 import { useFetchMe } from "../../hooks/useFetchMe";
 import { useFetchUser } from "../../hooks/useFetchUser";
 import { useFetchUserTracks } from "../../hooks/useFetchUserTracks";

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
-import SignUpForm from "../components/Form/SignUpFrom";
+import Footer from "../components/Layouts/Footer";
+import SignUpForm from "../components/Features/Form/SignUpFrom";
 import { useFetchMe } from "../hooks/useFetchMe";
 
 const SignUp = () => {

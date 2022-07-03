@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useFetchMe } from "../../hooks/useFetchMe";
-import customAxios from "../../utils/customAxios";
+import { useFetchMe } from "../../../hooks/useFetchMe";
+import customAxios from "../../../utils/customAxios";
 
 export const MoreDropdown = () => {
   const { mutate, isLoggedIn } = useFetchMe();

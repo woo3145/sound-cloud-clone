@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
-import UploadChooser from "../components/Upload/UploadChooser";
-import UploadProgressBar from "../components/Upload/UploadProgressBar";
-import UploadForm from "../components/Form/UploadForm";
+import UploadChooser from "../components/Features/Upload/UploadChooser";
+import UploadProgressBar from "../components/Features/Upload/UploadProgressBar";
+import UploadForm from "../components/Features/Form/UploadForm";
 import customAxios from "../utils/customAxios";
 import { useFetchMe } from "../hooks/useFetchMe";
 import { extractExtension } from "../utils/extract";

@@ -1,6 +1,6 @@
 import { BsFillPersonPlusFill, BsPersonCheckFill } from "react-icons/bs";
 import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { RiMenuUnfoldFill } from "react-icons/ri";
 import { MdPause, MdPlayArrow } from "react-icons/md";
@@ -8,10 +8,10 @@ import {
   nextTrack,
   playToggle,
   prevTrack,
-} from "../../redux/reducers/musicPlayerSlice";
+} from "../../../redux/reducers/musicPlayerSlice";
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-import { timeFormat } from "../../utils/format";
+import { timeFormat } from "../../../utils/format";
 
 const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);

@@ -1,16 +1,17 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import NavDrawer from "../Drawers/NavDrawer";
-import { Header } from "../Header";
+import NavDrawer from "../Shared/Drawers/NavDrawer";
+import { Header } from "./Header";
 
-const Layout = () => {
+const BaseLayout = () => {
   return (
     <div className="w-full bg-base-200 min-h-screen drawer">
       <input id="nav-drawer" type="checkbox" className="drawer-toggle" />
 
-      <div className="drawer-content">
+      {/* Main */}
+      <div className="drawer-content w-full flex flex-col items-center relative">
         <Header />
-        <div className=" mx-auto max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg bg-base-100 min-h-screen">
+        <div className="w-full max-w-screen-lg bg-base-100">
           <Outlet />
         </div>
       </div>
@@ -21,4 +22,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default BaseLayout;

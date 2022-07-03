@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useFetchMe } from "../hooks/useFetchMe";
-import { MoreDropdown } from "./Dropdown/MoreDropdown";
-import { UserDropDown } from "./Dropdown/UserDropdown";
+import { useFetchMe } from "../../hooks/useFetchMe";
+import { MoreDropdown } from "../Shared/Dropdown/MoreDropdown";
+import { UserDropDown } from "../Shared/Dropdown/UserDropdown";
 
 const DrawerToggle = () => {
   return (
@@ -57,7 +57,7 @@ export const Header = () => {
     bg-neutral text-neutral-content shadow-sm
   "
     >
-      <div className="w-full navbar bg-inherit  max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
+      <div className="w-full navbar bg-inherit max-w-screen-lg mx-auto">
         {/* Nav Left */}
         <div className="flex-1 navbar-start">
           <DrawerToggle />
