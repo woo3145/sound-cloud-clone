@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CollectionCard } from "../components/Shared/Cards/CollectionCard";
 import MixedListsSection from "../components/Features/Discover/MixedListsSection";
-import Footer from "../components/Layouts/Footer";
+import Footer from "../components/Layouts/Common/Footer";
 import useMockMixedLists from "../mockData/useMockMixedLists";
 
 const CollectionSlider = ({ collections }: { collections: ICollection[] }) => {
@@ -67,7 +67,6 @@ function Discover() {
   return (
     <div className="flex relative">
       <div className="w-full px-4 py-4 lg:px-8 lg:py-8 box-border">
-        {/* Header */}
         <h1 className="mb-5 text-3xl sm:text-4xl font-normal border-b leading-normal sm:leading-relaxed">
           Discover Tracks and Playlists
         </h1>

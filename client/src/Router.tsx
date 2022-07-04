@@ -5,9 +5,9 @@ import Discover from "./pages/Discover";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Upload from "./pages/Upload";
-import UserMain from "./pages/User/UserMain";
-import BaseLayout from "./components/Layouts/BaseLayout";
+import BaseLayout from "./components/Layouts/Common/BaseLayout";
 import UserLayout from "./components/Layouts/UserLayout";
+import UserMain from "./pages/User/UserMain";
 
 const Router = () => {
   const { isLoggedIn } = useFetchMe();

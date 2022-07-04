@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Layouts/Footer";
+import Footer from "../components/Layouts/Common/Footer";
 import SignUpForm from "../components/Features/Form/SignUpFrom";
 import { useFetchMe } from "../hooks/useFetchMe";
 

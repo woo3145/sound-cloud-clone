@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import NavDrawer from "../Shared/Drawers/NavDrawer";
-import { Header } from "./Header";
+import NavDrawer from "../../Shared/Drawers/NavDrawer";
+import { Header } from "./Header/Header";
 
 const BaseLayout = () => {
   return (
@@ -11,7 +11,7 @@ const BaseLayout = () => {
       {/* Main */}
       <div className="drawer-content w-full flex flex-col items-center relative">
         <Header />
-        <div className="w-full max-w-screen-lg bg-base-100">
+        <div className="w-full max-w-screen-lg h-auto bg-base-100">
           <Outlet />
         </div>
       </div>

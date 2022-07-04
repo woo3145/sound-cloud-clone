@@ -1,10 +1,10 @@
 import React from "react";
 import { FaUser, FaHeart } from "react-icons/fa";
-import { useFetchMe } from "../../../hooks/useFetchMe";
+import { useFetchMe } from "../../../../hooks/useFetchMe";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 
-export const UserDropDown = () => {
+export const HeaderUserDropDown = () => {
   const { user, loading } = useFetchMe();
 
   if (loading || !user) {

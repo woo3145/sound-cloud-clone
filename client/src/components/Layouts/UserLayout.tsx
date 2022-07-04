@@ -3,7 +3,7 @@ import { NavLink, Outlet, useParams } from "react-router-dom";
 import { useFetchMe } from "../../hooks/useFetchMe";
 import { AiFillCamera } from "react-icons/ai";
 import { BsFillPencilFill } from "react-icons/bs";
-import Footer from "./Footer";
+import Footer from "./Common/Footer";
 import { useFetchUser } from "../../hooks/useFetchUser";
 
 const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
