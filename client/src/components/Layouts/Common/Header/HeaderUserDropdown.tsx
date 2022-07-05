@@ -4,6 +4,81 @@ import { useFetchMe } from "../../../../hooks/useFetchMe";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 
+const UserDropdownButton = ({
+  tabIndex,
+  avatarUrl,
+  username,
+}: {
+  tabIndex: number;
+  avatarUrl?: string;
+  username: string;
+}) => {
+  return (
+    <label
+      tabIndex={tabIndex}
+      className="btn btn-square btn-ghost rounded-btn w-auto px-4 focus:bg-neutral-focus"
+    >
+      <div className="flex items-center text-xs gap-3">
+        <UserAvatar src={avatarUrl} />
+        <p>{username}</p>
+        <IoIosArrowDown />
+      </div>
+    </label>
+  );
+};
+
+const UserAvatar = ({ src }: { src?: string }) => {
+  return (
+    <div className="avatar">
+      <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1">
+        <img
+          src={src ? src : "https://api.lorem.space/image/face?hash=3174"}
+          alt="avator"
+        />
+      </div>
+    </div>
+  );
+};
+
+const ProfileMenu = ({
+  userId,
+  tabIndex,
+}: {
+  userId: number;
+  tabIndex: number;
+}) => {
+  return (
+    <ul
+      tabIndex={tabIndex}
+      className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
+    >
+      <ProfileMenuItem href={`/${userId}`} text="Profile" icon={<FaUser />} />
+      <ProfileMenuItem href={`/${userId}`} text="Likes" icon={<FaHeart />} />
+      <ProfileMenuItem href={`/${userId}`} text="Tracks" icon={<FaUser />} />
+    </ul>
+  );
+};
+const ProfileMenuItem = ({
+  href,
+  text,
+  icon,
+}: {
+  href: string;
+  text: string;
+  icon: JSX.Element;
+}) => {
+  return (
+    <li>
+      <Link to={href} className="hover:bg-neutral-focus">
+        <>
+          {icon}
+          {text}
+        </>
+      </Link>
+    </li>
+  );
+};
+
 export const HeaderUserDropDown = () => {
   const { user, loading } = useFetchMe();
 
@@ -12,50 +87,12 @@ export const HeaderUserDropDown = () => {
   }
   return (
     <div className="dropdown dropdown-end">
-      <label
+      <UserDropdownButton
         tabIndex={0}
-        className="btn btn-square btn-ghost rounded-btn w-auto px-4 focus:bg-neutral-focus"
-      >
-        <div className="flex items-center text-xs">
-          <div className="avatar pr-4">
-            <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1">
-              <img
-                src={
-                  user.avatarUrl
-                    ? user.avatarUrl
-                    : "https://api.lorem.space/image/face?hash=3174"
-                }
-                alt="avator"
-              />
-            </div>
-          </div>
-          <p className="pr-2">{user.username}</p>
-          <IoIosArrowDown />
-        </div>
-      </label>
-      <ul
-        tabIndex={0}
-        className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
-      >
-        <li>
-          <Link to={`/${user.id}`} className="hover:bg-neutral-focus">
-            <FaUser className="mx-2" />
-            Profile
-          </Link>
-        </li>
-        <li>
-          <Link to="#1" className="hover:bg-neutral-focus">
-            <FaHeart className="mx-2" />
-            Likes
-          </Link>
-        </li>
-        <li>
-          <Link to="#1" className="hover:bg-neutral-focus">
-            <FaUser className="mx-2" />
-            Tracks
-          </Link>
-        </li>
-      </ul>
+        avatarUrl={user.avatarUrl}
+        username={user.username}
+      />
+      <ProfileMenu tabIndex={0} userId={user.id} />
     </div>
   );
 };

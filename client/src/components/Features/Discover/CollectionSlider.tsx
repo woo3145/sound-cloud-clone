@@ -1,6 +1,27 @@
 import React, { useRef } from "react";
 import { CollectionCard } from "../../Shared/Cards/CollectionCard";
 
+const LeftButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <div
+      className="btn btn-circle absolute text-center left-2 top-1/3"
+      onClick={onClick}
+    >
+      ❮
+    </div>
+  );
+};
+const RightButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <div
+      className="btn btn-circle absolute text-center right-2 top-1/3"
+      onClick={onClick}
+    >
+      ❯
+    </div>
+  );
+};
+
 const CollectionSlider = ({ collections }: { collections: ICollection[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const INTERVAL = 400;
@@ -41,18 +62,8 @@ const CollectionSlider = ({ collections }: { collections: ICollection[] }) => {
       </div>
       {/* Control Buttons*/}
       <>
-        <div
-          className="btn btn-circle absolute text-center left-2 top-1/3"
-          onClick={left}
-        >
-          ❮
-        </div>
-        <div
-          className="btn btn-circle absolute text-center right-2 top-1/3"
-          onClick={right}
-        >
-          ❯
-        </div>
+        <LeftButton onClick={left} />
+        <RightButton onClick={right} />
       </>
     </div>
   );

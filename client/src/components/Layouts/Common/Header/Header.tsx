@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useFetchMe } from "../../../../hooks/useFetchMe";
-import NavButton from "../../../Shared/Button/NavButton";
 import { HeaderMoreDropdown } from "./HeaderMoreDropdown";
 import { HeaderUserDropDown } from "./HeaderUserDropdown";
 import customAxios from "../../../../utils/customAxios";
@@ -29,21 +28,9 @@ const NavDrawerToggle = () => {
 };
 const SiteLogo = () => {
   return (
-    <NavButton
-      text="SoundCloud"
-      href="/discover"
-      color="ghost"
-      className="px-4 lg:px-8 text-xl"
-    />
-  );
-};
-const NavigationItem = ({ text, href }: { text: string; href: string }) => {
-  return (
-    <li>
-      <NavLink to={href} end>
-        {text}
-      </NavLink>
-    </li>
+    <NavLink to="/discover" className="btn btn-ghost px-4 lg:px-8 text-xl">
+      SoundCloud
+    </NavLink>
   );
 };
 const Navigation = () => {
@@ -55,7 +42,15 @@ const Navigation = () => {
     </ul>
   );
 };
-
+const NavigationItem = ({ text, href }: { text: string; href: string }) => {
+  return (
+    <li>
+      <NavLink to={href} end>
+        {text}
+      </NavLink>
+    </li>
+  );
+};
 const HeaderLeft = ({
   children,
 }: {
@@ -63,14 +58,35 @@ const HeaderLeft = ({
 }) => {
   return <div className="flex-1 navbar-start">{children}</div>;
 };
+
 const HeaderRight = ({
   children,
 }: {
   children: JSX.Element | JSX.Element[];
 }) => {
-  return <div className="flex-0 navbar-end">{children}</div>;
+  return <div className="flex-0 navbar-end gap-2">{children}</div>;
 };
-
+const UploadNavButton = () => {
+  return (
+    <NavLink to="/upload" className="btn btn-sm btn-primary">
+      Upload
+    </NavLink>
+  );
+};
+const SignInNavButton = () => {
+  return (
+    <NavLink to="/signup" className="btn btn-sm btn-primary mr-2">
+      Create Account
+    </NavLink>
+  );
+};
+const SignUpNavButton = () => {
+  return (
+    <NavLink to="/upload" className="btn btn-sm btn-primary">
+      Upload
+    </NavLink>
+  );
+};
 export const Header = () => {
   const { isLoggedIn, mutate } = useFetchMe();
   // 로그아웃
@@ -99,29 +115,13 @@ export const Header = () => {
         <HeaderRight>
           {isLoggedIn ? (
             <>
-              <NavButton
-                text="Upload"
-                href="/upload"
-                color="primary"
-                size="sm"
-              />
+              <UploadNavButton />
               <HeaderUserDropDown />
             </>
           ) : (
             <>
-              <NavButton
-                text="Sign in"
-                href="/signin"
-                size="sm"
-                className="mr-2"
-              />
-              <NavButton
-                text="Create Account"
-                href="/signup"
-                size="sm"
-                color="primary"
-                className="mr-2"
-              />
+              <SignInNavButton />
+              <SignUpNavButton />
             </>
           )}
           <HeaderMoreDropdown onLogout={onLogout} isLoggedIn={isLoggedIn} />
