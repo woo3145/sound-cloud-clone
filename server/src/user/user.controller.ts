@@ -1,15 +1,13 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/auth.decorator';
 import { CommonOutput } from 'src/common/dtos/common.dto';
-import { CreateAccountInput, GetUserTracksOutput } from './dtos/user.dto';
+import {
+  CreateAccountInput,
+  EditUserInput,
+  GetUserOutput,
+  GetUserTracksOutput,
+} from './dtos/user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -33,8 +31,29 @@ export class UserController {
     }
   }
   // Get User
-
+  @Public()
+  @Get(':userId')
+  async getUser(@Param('userId') userId: number): Promise<GetUserOutput> {
+    try {
+      return this.userService.getUser(userId);
+    } catch (e) {
+      console.log('Get User Error\n', e);
+      throw e;
+    }
+  }
   // Edit User
+  @Patch('')
+  async editUser(
+    @Req() req,
+    @Body() editUserInput: EditUserInput,
+  ): Promise<CommonOutput> {
+    try {
+      return this.userService.editUser(req.user, editUserInput);
+    } catch (e) {
+      console.log('Edit User Error\n', e);
+      throw e;
+    }
+  }
 
   // Get User Tracks
 
@@ -46,7 +65,7 @@ export class UserController {
     try {
       return this.userService.getUserTracks(userId);
     } catch (e) {
-      console.log('Register Error\n', e);
+      console.log('Get User Tracks Error\n', e);
       throw e;
     }
   }

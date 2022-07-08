@@ -27,13 +27,14 @@ export class TrackService {
   }
   // Read
   async getTracksByUserId(userId: number) {
-    const tracks = await this.trackRepository.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
-    });
+    const tracks = await this.trackRepository
+      .createQueryBuilder('track')
+      .where('track.userId = :id', { id: userId })
+      .leftJoin('track.user', 'user')
+      .addSelect('user.id')
+      .addSelect('user.avatarUrl')
+      .addSelect('user.username')
+      .getMany();
     return tracks;
   }
   // Update

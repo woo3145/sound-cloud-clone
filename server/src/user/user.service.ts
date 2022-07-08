@@ -1,13 +1,12 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateAccountInput, GetUserTracksOutput } from './dtos/user.dto';
+import {
+  CreateAccountInput,
+  EditUserInput,
+  GetUserOutput,
+  GetUserTracksOutput,
+} from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CommonOutput } from 'src/common/dtos/common.dto';
@@ -50,8 +49,22 @@ export class UserService {
       .getOne();
   }
   async getUserTracks(userId: number): Promise<GetUserTracksOutput> {
-    const collection = await this.trackService.getTracksByUserId(userId);
-    return { ok: true, collection };
+    const tracks = await this.trackService.getTracksByUserId(userId);
+    return { ok: true, tracks };
+  }
+  async getUser(userId: number): Promise<GetUserOutput> {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id: userId })
+      .select('user.id')
+      .addSelect('user.avatarUrl')
+      .addSelect('user.username')
+      .getOne();
+
+    return {
+      ok: true,
+      user,
+    };
   }
 
   // method
@@ -72,6 +85,26 @@ export class UserService {
     return {
       ok: true,
       message: '성공적으로 계정이 생성되었습니다.',
+    };
+  }
+  async editUser(
+    user: User,
+    { username, avatarUrl }: EditUserInput,
+  ): Promise<CommonOutput> {
+    if (!username && !avatarUrl) {
+      throw new Error('변경 된 내용이 없습니다.');
+    }
+    if (username) {
+      user.username = username;
+    }
+    if (avatarUrl) {
+      user.avatarUrl = avatarUrl;
+    }
+    await this.userRepository.save(user);
+
+    return {
+      ok: true,
+      message: '성공적으로 프로필 업데이트에 성공했습니다.',
     };
   }
 

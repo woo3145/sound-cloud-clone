@@ -16,7 +16,7 @@ export class CreateTrackInput {
   isPublic: boolean;
 
   @ApiProperty({ type: String })
-  genre?: string;
+  genre: string;
 
   @ApiProperty({ type: String })
   audioUrl: string;
