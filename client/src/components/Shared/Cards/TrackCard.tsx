@@ -33,6 +33,7 @@ const TrackCard = ({ track, idx, tracks }: Props) => {
           <div className="avatar">
             <div className="w-20 rounded">
               <img
+                crossOrigin="anonymous"
                 src={
                   track.artworkUrl
                     ? track.artworkUrl

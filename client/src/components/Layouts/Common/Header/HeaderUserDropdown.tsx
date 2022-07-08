@@ -30,8 +30,9 @@ const UserDropdownButton = ({
 const UserAvatar = ({ src }: { src?: string }) => {
   return (
     <div className="avatar">
-      <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1">
+      <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1 bg-white">
         <img
+          crossOrigin="anonymous"
           src={src ? src : "https://api.lorem.space/image/face?hash=3174"}
           alt="avator"
         />

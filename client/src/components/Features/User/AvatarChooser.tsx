@@ -1,6 +1,5 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { AiFillCamera } from "react-icons/ai";
-import useUploadAvatarImg from "../../../hooks/useUploadAvatarImg";
 
 interface Props {
   setAvatarFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
