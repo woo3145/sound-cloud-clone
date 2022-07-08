@@ -75,15 +75,15 @@ const UploadNavButton = () => {
 };
 const SignInNavButton = () => {
   return (
-    <NavLink to="/signup" className="btn btn-sm btn-primary mr-2">
-      Create Account
+    <NavLink to="/signin" className="btn btn-sm btn-ghost mr-2">
+      Sign in
     </NavLink>
   );
 };
 const SignUpNavButton = () => {
   return (
-    <NavLink to="/upload" className="btn btn-sm btn-primary">
-      Upload
+    <NavLink to="/signup" className="btn btn-sm btn-primary">
+      Create account
     </NavLink>
   );
 };

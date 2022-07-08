@@ -5,6 +5,7 @@ import { AiFillCamera } from "react-icons/ai";
 import { BsFillPencilFill } from "react-icons/bs";
 import Footer from "./Common/Footer";
 import { useFetchUser } from "../../hooks/useFetchUser";
+import ProfileHeader from "../Features/User/ProfileHeader";
 
 const NavLinkItem = ({ text, to }: { text: string; to: string }) => {
   return (
@@ -56,40 +57,7 @@ const UserLayout = () => {
   return (
     <div className="">
       {/* Profile Header */}
-      <div className="h-auto to-base-100 from-primary bg-gradient-to-br px-8 py-12 flex">
-        <div className="relative flex justify-center mr-8">
-          <div className="avatar relative">
-            <div className="w-48 rounded-full ring ring-base-100">
-              <img
-                alt="avator"
-                src={
-                  user.avatarUrl
-                    ? user.avatarUrl
-                    : "https://api.lorem.space/image/face?hash=3174"
-                }
-              />
-            </div>
-          </div>
-          {me?.id === user.id && (
-            <button className="btn gap-2 absolute bottom-5 btn-xs normal-case">
-              <AiFillCamera />
-              Upload image
-            </button>
-          )}
-        </div>
-        <div className="w-full flex justify-between items-start">
-          <div className="text-white text-3xl font-light px-2 py-1 bg-neutral">
-            {user?.username}
-          </div>
-
-          {me?.id === user.id && (
-            <button className="btn gap-2 btn-sm normal-case">
-              <AiFillCamera />
-              Upload header image
-            </button>
-          )}
-        </div>
-      </div>
+      <ProfileHeader user={user} me={me} />
       {/* User Navigation */}
       <div className="px-8 pt-4">
         <div className="flex justify-between items-start border-b border-base-200">

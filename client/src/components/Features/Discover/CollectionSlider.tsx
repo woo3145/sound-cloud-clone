@@ -54,7 +54,7 @@ const CollectionSlider = ({ collections }: { collections: ICollection[] }) => {
                 key={idx}
                 coverImg={coverImg}
                 title={title}
-                mixedTitle={"Charts: New & hot"}
+                description={"Charts: New & hot"}
               />
             </div>
           );
