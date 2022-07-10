@@ -1,5 +1,4 @@
 import React from "react";
-import { AiFillCamera } from "react-icons/ai";
 import useUploadAvatarImg from "../../../hooks/useUploadAvatarImg";
 import AvatarChooser from "./AvatarChooser";
 import AvatarSaveModal from "./AvatarSaveModal";
@@ -22,14 +21,6 @@ const ProfileHeaderAvator = ({ avatarUrl }: { avatarUrl: string }) => {
   );
 };
 
-const UploadHeaderImgButton = ({ onClick }: { onClick: any }) => {
-  return (
-    <button className="btn gap-2 btn-sm normal-case">
-      <AiFillCamera />
-      Upload header image
-    </button>
-  );
-};
 const ProfileHeaderUserName = ({ username }: { username: string }) => {
   return (
     <div className="text-white text-3xl font-light px-2 py-1 bg-neutral">
@@ -38,21 +29,21 @@ const ProfileHeaderUserName = ({ username }: { username: string }) => {
   );
 };
 
-type JSXElementTypeAndFalse = JSX.Element | false;
+type JSXElementAndFalseType = JSX.Element | false;
 const ProfileHeaderLeft = ({
   children,
 }: {
-  children: JSXElementTypeAndFalse | JSXElementTypeAndFalse[];
+  children: JSXElementAndFalseType | JSXElementAndFalseType[];
 }) => {
   return <div className="relative flex justify-center">{children}</div>;
 };
 const ProfileHeaderRight = ({
   children,
 }: {
-  children: JSXElementTypeAndFalse | JSXElementTypeAndFalse[];
+  children: JSXElementAndFalseType | JSXElementAndFalseType[];
 }) => {
   return (
-    <div className="w-full flex justify-between items-start pl-8">
+    <div className="w-full flex justify-between relative items-start pl-8">
       {children}
     </div>
   );
@@ -65,14 +56,14 @@ interface Props {
 
 const ProfileHeader = ({ user, me }: Props) => {
   const {
-    upload,
+    upload: avatarUpload,
     setAvatarFile,
     avatarUploadModalVisible,
     setAvatarUploadModalVisible,
     avatarPreviewUrl,
   } = useUploadAvatarImg();
 
-  const closeModal = () => {
+  const closeAvatarModal = () => {
     setAvatarUploadModalVisible(false);
   };
 
@@ -84,13 +75,13 @@ const ProfileHeader = ({ user, me }: Props) => {
       </ProfileHeaderLeft>
       <ProfileHeaderRight>
         <ProfileHeaderUserName username={user.username} />
-        {me?.id === user.id && <UploadHeaderImgButton onClick={() => {}} />}
       </ProfileHeaderRight>
+
       {avatarUploadModalVisible && (
         <AvatarSaveModal
-          closeModal={closeModal}
+          closeModal={closeAvatarModal}
           avatarPreviewUrl={avatarPreviewUrl}
-          upload={upload}
+          upload={avatarUpload}
         />
       )}
     </div>

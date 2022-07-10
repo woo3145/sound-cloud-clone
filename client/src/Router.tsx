@@ -4,10 +4,9 @@ import { useFetchMe } from "./hooks/useFetchMe";
 import Discover from "./pages/Discover";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Upload from "./pages/Upload";
 import BaseLayout from "./components/Layouts/Common/BaseLayout";
-import UserLayout from "./components/Layouts/UserLayout";
-import UserMain from "./pages/User/UserMain";
+import UserPage from "./pages/UserPage";
+import Upload from "./pages/Upload";
 
 const Router = () => {
   const { isLoggedIn } = useFetchMe();
@@ -23,12 +22,9 @@ const Router = () => {
           <Route path="upload" element={<Upload />} />
 
           <Route path="stream" element={<Discover />} />
-          <Route path=":user_id" element={<UserLayout />}>
-            <Route index element={<UserMain />} />
-            <Route path="popular-tracks" element={<div>Popular Tracks</div>} />
-            <Route path="tracks" element={<div>Tracks</div>} />
-            <Route path="sets" element={<div>Play Lists</div>} />
-            <Route path="reposts" element={<div>Reposts</div>} />
+          <Route path=":user_id">
+            <Route index element={<UserPage />} />
+            <Route path=":filter" element={<UserPage />} />
           </Route>
           <Route path="you">
             <Route path="*" element={isLoggedIn ? <Discover /> : <SignIn />} />

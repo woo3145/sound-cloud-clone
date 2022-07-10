@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const CollectionArtWork = ({ coverImg }: { coverImg: string }) => {
+const CollectionArtwork = ({ coverImg }: { coverImg: string }) => {
   return (
     <div
       className="cursor-pointer relative w-full h-0"
@@ -37,7 +37,7 @@ export const CollectionCard = ({ coverImg, title, description }: Props) => {
   return (
     <div className="w-full pb-5">
       {/* Artwork */}
-      <CollectionArtWork coverImg={coverImg} />
+      <CollectionArtwork coverImg={coverImg} />
 
       {/* Title & User */}
       <CollectionTitle title={title} />

@@ -12,6 +12,30 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setCollection } from "../../../redux/reducers/musicPlayerSlice";
 import { dateFormat, timeFormat } from "../../../utils/format";
 
+const TrackCardArtwork = ({
+  artworkUrl,
+}: {
+  artworkUrl: string | undefined;
+}) => {
+  return (
+    <div className="shrink-0 flex">
+      <div className="avatar">
+        <div className="w-20 rounded">
+          <img
+            crossOrigin="anonymous"
+            src={
+              artworkUrl
+                ? artworkUrl
+                : "https://api.lorem.space/image/face?hash=92048"
+            }
+            alt="Artwork"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface Props {
   tracks: ITrack[];
   track: ITrack;
@@ -29,21 +53,7 @@ const TrackCard = ({ track, idx, tracks }: Props) => {
     <li className="pb-4">
       <div className="flex items-center">
         {/* Artwork Image*/}
-        <div className="shrink-0 flex">
-          <div className="avatar">
-            <div className="w-20 rounded">
-              <img
-                crossOrigin="anonymous"
-                src={
-                  track.artworkUrl
-                    ? track.artworkUrl
-                    : "https://api.lorem.space/image/face?hash=92048"
-                }
-                alt="Artwork"
-              />
-            </div>
-          </div>
-        </div>
+        <TrackCardArtwork artworkUrl={track.artworkUrl} />
         {/* content */}
         <div className="px-4 w-full">
           <p className="text-md text-base-content break-all">{track.title}</p>
