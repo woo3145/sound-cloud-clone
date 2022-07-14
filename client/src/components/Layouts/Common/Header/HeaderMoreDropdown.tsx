@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const MoreIcon = () => {
   return (
@@ -58,13 +58,13 @@ const MoreMenu = ({
       className="menu dropdown-content p-2 shadow bg-neutral rounded-box w-52 mt-4"
     >
       <MoreMenuItem href="#1" text="About us" />
-      <MoreMenuItem href="#1" text="Legal" />
-      <MoreMenuItem href="#1" text="About us" />
-      <MoreMenuItem href="#1" text="Copyright" />
+      <MoreMenuItem href="#2" text="Legal" />
+      <MoreMenuItem href="#3" text="About us" />
+      <MoreMenuItem href="#4" text="Copyright" />
       {isLoggedIn && (
         <>
-          <MoreMenuItem href="#1" text="Setting" />
-          <MoreMenuItem href="" text="Sign out" onClick={onLogout} />
+          <MoreMenuItem href="#5" text="Setting" />
+          <MoreMenuItem href="#6" text="Sign out" onClick={onLogout} />
         </>
       )}
     </ul>

@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import {
@@ -14,6 +14,8 @@ import {
   setCollection,
 } from "../../../redux/reducers/musicPlayerSlice";
 import { dateFormat, timeFormat } from "../../../utils/format";
+import { useFetchMe } from "../../../hooks/useFetchMe";
+import customAxios from "../../../utils/customAxios";
 
 const TrackCardArtwork = ({
   artworkUrl,
@@ -102,7 +104,13 @@ const LikeButton = () => {
   );
 };
 
-const MoreDropdown = () => {
+const MoreDropdown = ({
+  deleteTrack,
+  isMe,
+}: {
+  deleteTrack: () => void;
+  isMe: boolean;
+}) => {
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost">
@@ -119,15 +127,24 @@ const MoreDropdown = () => {
           </a>
         </li>
         <li>
-          <a href="#1" className="text-sm">
+          <a href="#2" className="text-sm">
             <MdShare />
             Repost
           </a>
         </li>
+        {isMe && (
+          <li>
+            <a onClick={deleteTrack} className="text-sm">
+              <AiTwotoneDelete />
+              delete
+            </a>
+          </li>
+        )}
       </ul>
     </div>
   );
 };
+
 interface Props {
   tracks: ITrack[];
   track: ITrack;
@@ -136,15 +153,28 @@ interface Props {
 
 const TrackCard = ({ track, idx, tracks }: Props) => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.musicPlayer);
+  const musicPlayer = useAppSelector((state) => state.musicPlayer);
+  const { user } = useFetchMe();
 
   const setCollectionAndPlay = () => {
-    if (idx === state.currentTrackIdx) {
+    if (idx === musicPlayer.currentTrackIdx) {
       dispatch(playToggle());
       return;
     }
     dispatch(setCollection({ tracks, idx: idx }));
   };
+  const deleteTrack = async () => {
+    if (!window.confirm("정말 트랙을 삭제하시겠습니까?")) {
+      return;
+    }
+    try {
+      await customAxios.delete(`track/${track.id}`);
+      return window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <li className="pb-4">
       <div className="flex items-center">
@@ -158,12 +188,18 @@ const TrackCard = ({ track, idx, tracks }: Props) => {
         />
         <div className="shrink-0 flex items-center">
           <PlayButton
-            active={idx === state.currentTrackIdx && state.isPlaying === true}
+            active={
+              idx === musicPlayer.currentTrackIdx &&
+              musicPlayer.isPlaying === true
+            }
             onClick={setCollectionAndPlay}
           />
           <TrackDuration duration={track.duration} />
           <LikeButton />
-          <MoreDropdown />
+          <MoreDropdown
+            deleteTrack={deleteTrack}
+            isMe={track.user.id === user?.id}
+          />
         </div>
       </div>
     </li>

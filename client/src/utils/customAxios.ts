@@ -50,19 +50,19 @@ customAxios.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(error.message);
   }
 );
 
 customAxios.interceptors.response.use(
   (response: AxiosResponse<any>) => {
-    if (response.data.error) {
-      // ok: false, error: message 로 내려온 응답 처리
+    if (!response.data.ok) {
+      return Promise.reject(response.data.message);
     }
     return response;
   },
   (err) => {
-    return Promise.reject(err);
+    return Promise.reject(err.message);
   }
 );
 

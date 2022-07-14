@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useFetchUserTracks } from "../../../hooks/useFetchUserTracks";
 import TrackCard from "../../Shared/Cards/TrackCard";
 
@@ -28,9 +28,13 @@ const UserTrackList = ({ isMe }: Props) => {
           </ul>
         </>
       ) : (
-        <div>
+        <div className="pb-8">
           <p>Nothing to hear here</p>
-          {isMe && <button className="btn btn-primary">Upload Now</button>}
+          {isMe && (
+            <NavLink to="/upload" className="btn btn-primary">
+              Upload Now
+            </NavLink>
+          )}
         </div>
       )}
     </div>

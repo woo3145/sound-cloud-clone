@@ -92,10 +92,12 @@ export const Header = () => {
   // 로그아웃
   const onLogout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      await customAxios.post("/auth/logout");
+      try {
+        await customAxios.post("/auth/logout");
+      } catch (e) {}
+      mutate(null);
       window.localStorage.removeItem("accessToken");
       window.localStorage.removeItem("accessTokenExpire");
-      mutate(null);
     }
   };
 
