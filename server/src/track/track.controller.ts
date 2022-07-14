@@ -1,5 +1,14 @@
-import { Body, Controller, Patch, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CommonOutput } from 'src/common/dtos/common.dto';
 import { CreateTrackInput, CreateTrackOutput } from './dtos/track.dto';
 import { TrackService } from './track.service';
 
@@ -19,5 +28,13 @@ export class TrackController {
       console.log('Create Track Error\n', e);
       throw e;
     }
+  }
+
+  @Delete(':id')
+  async deleteTrack(
+    @Req() req,
+    @Param('id') trackId: number,
+  ): Promise<CommonOutput> {
+    return this.trackService.delete(trackId, req.user);
   }
 }

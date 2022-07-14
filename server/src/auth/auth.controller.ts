@@ -50,6 +50,7 @@ export class AuthController {
 
       // 응답에 Refresh 쿠키를 담아줌
       res.cookie('Refresh', refreshToken, refreshOptions);
+      console.log(res);
       return {
         ok: true,
         message: '성공적으로 로그인 되었습니다.',
