@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { CollectionCard } from "../../Shared/Cards/CollectionCard";
+import { CollectionCard } from "../Cards/CollectionCard";
 
 const LeftButton = ({ onClick }: { onClick: () => void }) => {
   return (

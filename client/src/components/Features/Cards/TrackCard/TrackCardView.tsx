@@ -8,14 +8,7 @@ import {
   MdPlayArrow,
   MdShare,
 } from "react-icons/md";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import {
-  playToggle,
-  setCollection,
-} from "../../../redux/reducers/musicPlayerSlice";
-import { dateFormat, timeFormat } from "../../../utils/format";
-import { useFetchMe } from "../../../hooks/useFetchMe";
-import customAxios from "../../../utils/customAxios";
+import { dateFormat, timeFormat } from "../../../../utils/format";
 
 const TrackCardArtwork = ({
   artworkUrl,
@@ -66,14 +59,14 @@ const TrackCardTitleContainer = ({
 };
 
 const PlayButton = ({
-  active,
+  isActive,
   onClick,
 }: {
-  active: boolean;
+  isActive: boolean;
   onClick: () => void;
 }) => {
   return (
-    <label className={`swap ${active && "swap-active"}`} onClick={onClick}>
+    <label className={`swap ${isActive && "swap-active"}`} onClick={onClick}>
       <div className="btn btn-sm swap-on bg-primary border-none">
         <MdPause className="mr-2" />
         Pause
@@ -106,10 +99,10 @@ const LikeButton = () => {
 
 const MoreDropdown = ({
   deleteTrack,
-  isMe,
+  isMyTrack,
 }: {
   deleteTrack: () => void;
-  isMe: boolean;
+  isMyTrack: boolean;
 }) => {
   return (
     <div className="dropdown dropdown-end">
@@ -132,9 +125,9 @@ const MoreDropdown = ({
             Repost
           </a>
         </li>
-        {isMe && (
+        {isMyTrack && (
           <li>
-            <a onClick={deleteTrack} className="text-sm">
+            <a onClick={deleteTrack} href="." className="text-sm">
               <AiTwotoneDelete />
               delete
             </a>
@@ -145,65 +138,40 @@ const MoreDropdown = ({
   );
 };
 
-interface Props {
-  tracks: ITrack[];
+interface TrackCardViewProps {
   track: ITrack;
-  idx: number;
+  isActive: boolean;
+  isMyTrack: boolean;
+  setCollectionAndPlayToggle: () => void;
+  deleteTrack: () => void;
 }
 
-const TrackCard = ({ track, idx, tracks }: Props) => {
-  const dispatch = useAppDispatch();
-  const musicPlayer = useAppSelector((state) => state.musicPlayer);
-  const { user } = useFetchMe();
+const TrackCardView = ({
+  track,
+  isActive,
+  isMyTrack,
 
-  const setCollectionAndPlay = () => {
-    if (idx === musicPlayer.currentTrackIdx) {
-      dispatch(playToggle());
-      return;
-    }
-    dispatch(setCollection({ tracks, idx: idx }));
-  };
-  const deleteTrack = async () => {
-    if (!window.confirm("정말 트랙을 삭제하시겠습니까?")) {
-      return;
-    }
-    try {
-      await customAxios.delete(`track/${track.id}`);
-      return window.location.reload();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+  setCollectionAndPlayToggle,
+  deleteTrack,
+}: TrackCardViewProps) => {
   return (
-    <li className="pb-4">
-      <div className="flex items-center">
-        {/* Artwork Image*/}
-        <TrackCardArtwork artworkUrl={track.artworkUrl} />
-        {/* content */}
-        <TrackCardTitleContainer
-          title={track.title}
-          username={track.user.username}
-          createdAt={track.createdAt}
-        />
-        <div className="shrink-0 flex items-center">
-          <PlayButton
-            active={
-              idx === musicPlayer.currentTrackIdx &&
-              musicPlayer.isPlaying === true
-            }
-            onClick={setCollectionAndPlay}
-          />
-          <TrackDuration duration={track.duration} />
-          <LikeButton />
-          <MoreDropdown
-            deleteTrack={deleteTrack}
-            isMe={track.user.id === user?.id}
-          />
-        </div>
+    <li className="pb-4 flex items-center">
+      {/* Artwork Image*/}
+      <TrackCardArtwork artworkUrl={track.artworkUrl} />
+      {/* content */}
+      <TrackCardTitleContainer
+        title={track.title}
+        username={track.user.username}
+        createdAt={track.createdAt}
+      />
+      <div className="shrink-0 flex items-center">
+        <PlayButton isActive={isActive} onClick={setCollectionAndPlayToggle} />
+        <TrackDuration duration={track.duration} />
+        <LikeButton />
+        <MoreDropdown deleteTrack={deleteTrack} isMyTrack={isMyTrack} />
       </div>
     </li>
   );
 };
 
-export default TrackCard;
+export default TrackCardView;

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFetchMe } from "../hooks/useFetchMe";
 import { BsFillPencilFill } from "react-icons/bs";
 import { useFetchUser } from "../hooks/useFetchUser";
-import UserTrackList from "../components/Features/User/UserTrackList";
+import UserTrackList from "../components/Features/User/UserTrackList/UserTrackList";
 import ProfileHeader from "../components/Features/User/ProfileHeader";
 import ProfileTabs from "../components/Features/User/ProfileTabs";
 import UserSideBar from "../components/Features/User/UserSideBar";
@@ -43,14 +43,14 @@ const UserSideBarSection = ({ children }: { children: JSX.Element }) => {
 };
 
 const UserPage = () => {
-  const [isMe, setIsMe] = useState(false);
+  const [isMyPage, setIsMyPage] = useState(false);
   const { user_id } = useParams();
   const { user, loading } = useFetchUser(user_id ? parseInt(user_id) : 0);
   const { user: me } = useFetchMe();
 
   useEffect(() => {
     if (!me || !user) return;
-    setIsMe(me.id === user.id);
+    setIsMyPage(me.id === user.id);
   }, [me, user]);
 
   if (loading || !user) {
@@ -63,11 +63,11 @@ const UserPage = () => {
       {/* User Navigation */}
       <ProfileTabsSection>
         <ProfileTabs userId={user_id ? +user_id : 0} />
-        {isMe && <ProfileEditButton />}
+        {isMyPage && <ProfileEditButton />}
       </ProfileTabsSection>
       <div className="w-full flex pt-4">
         <MainSection>
-          <UserTrackList isMe={isMe} />
+          <UserTrackList />
         </MainSection>
         <UserSideBarSection>
           <UserSideBar />

@@ -29,7 +29,6 @@ const ProfileHeaderUserName = ({ username }: { username: string }) => {
   );
 };
 
-type JSXElementAndFalseType = JSX.Element | false;
 const ProfileHeaderLeft = ({
   children,
 }: {

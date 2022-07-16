@@ -38,7 +38,6 @@ export const CollectionCard = ({ coverImg, title, description }: Props) => {
     <div className="w-full pb-5">
       {/* Artwork */}
       <CollectionArtwork coverImg={coverImg} />
-
       {/* Title & User */}
       <CollectionTitle title={title} />
       <CollectionDescription description={description} />
