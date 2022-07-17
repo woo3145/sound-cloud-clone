@@ -1,73 +1,41 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useFetchMe } from "../../../hooks/useFetchMe";
-import customAxios from "../../../utils/customAxios";
+import React from "react";
+import { UseFormRegister } from "react-hook-form";
+import { TrackUploadFormData } from "./TrackUploadForm";
+
+const ArtWorkPreview = () => {
+  return (
+    <div className="shrink-0">
+      <div className="avatar">
+        <div className="w-52 rounded">
+          <img
+            alt="artwork"
+            src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface Props {
-  fileName: string;
+  register: UseFormRegister<TrackUploadFormData>;
+  defaultFileName: string;
   onCancel: () => void;
-  upload: () => Promise<string>;
-  duration: number;
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => Promise<void>;
 }
 
-interface FormData {
-  title: string;
-  genre: string;
-  description?: string;
-  privacy: string;
-}
-
-const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
-  const nav = useNavigate();
-  const { user } = useFetchMe();
-
-  const [error, setError] = useState("");
-
-  const onUpload = handleSubmit(async (data) => {
-    try {
-      const { title, genre, description, privacy } = data;
-      const url = await upload();
-      console.log(url, duration);
-      const res = await customAxios.post("/track", {
-        title,
-        description,
-        genre,
-        isPublic: privacy === "public",
-        audioUrl: url,
-        duration: Math.floor(duration),
-        artworkUrl:
-          "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
-      });
-
-      if (res.data.ok) {
-        nav(`/${user?.id}`);
-      } else {
-        throw new Error("Error");
-      }
-    } catch (e: any) {
-      console.log(e.message);
-    }
-  });
+const TrackUploadFormView = ({
+  register,
+  defaultFileName,
+  onSubmit,
+  onCancel,
+}: Props) => {
   return (
-    <form onSubmit={onUpload} className="w-full">
+    <form onSubmit={onSubmit} className="w-full">
       <div className="flex">
-        <div className="shrink-0">
-          <div className="avatar">
-            <div className="w-52 rounded">
-              <img
-                alt="artwork"
-                src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
-              />
-            </div>
-          </div>
-        </div>
+        <ArtWorkPreview />
         <div className="w-full pl-4">
           <div className="mb-4">
             <span className="">Title</span>
@@ -77,7 +45,7 @@ const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
               type="text"
               placeholder="Name your track"
               className="input input-bordered input-primary w-full mt-2"
-              defaultValue={fileName}
+              defaultValue={defaultFileName}
             />
           </div>
           <div className="mb-4">
@@ -112,6 +80,7 @@ const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
               <input
                 {...register("privacy", { required: true })}
                 type="radio"
+                defaultChecked
                 value={"public"}
                 className="radio radio-primary mr-4"
               />
@@ -129,7 +98,7 @@ const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
           </div>
         </div>
       </div>
-      <div className="text-center">
+      <div className="text-right">
         <button className="btn mr-2" onClick={onCancel}>
           취소
         </button>
@@ -142,4 +111,4 @@ const UploadForm = ({ fileName, onCancel, upload, duration }: Props) => {
   );
 };
 
-export default UploadForm;
+export default TrackUploadFormView;

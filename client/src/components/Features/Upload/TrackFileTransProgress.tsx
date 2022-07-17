@@ -4,7 +4,7 @@ interface Props {
   progress: number;
 }
 
-const UploadProgressBar = ({ progress }: Props) => {
+const TrackFileTransProgress = ({ progress }: Props) => {
   return (
     <div
       className="radial-progress text-primary"
@@ -15,4 +15,4 @@ const UploadProgressBar = ({ progress }: Props) => {
   );
 };
 
-export default UploadProgressBar;
+export default TrackFileTransProgress;

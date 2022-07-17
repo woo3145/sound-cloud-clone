@@ -4,7 +4,7 @@ interface Props {
   onChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const UploadChooser = ({ onChangeHandler }: Props) => {
+const TrackFileChooser = ({ onChangeHandler }: Props) => {
   return (
     <div className="flex flex-col items-center py-8">
       <p className="text-xl pb-4">음원파일을 선택해주세요.</p>
@@ -25,4 +25,4 @@ const UploadChooser = ({ onChangeHandler }: Props) => {
   );
 };
 
-export default UploadChooser;
+export default TrackFileChooser;
