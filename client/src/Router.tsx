@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useFetchMe } from "./hooks/useFetchMe";
 import Discover from "./pages/Discover";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignInPage";
+import SignUp from "./pages/SignUpPage";
 import BaseLayout from "./components/Layouts/Common/BaseLayout";
 import UserPage from "./pages/UserPage";
-import Upload from "./pages/Upload";
+import Upload from "./pages/UploadPage";
 
 const Router = () => {
   const { isLoggedIn } = useFetchMe();

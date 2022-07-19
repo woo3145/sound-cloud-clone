@@ -1,51 +1,30 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { FieldError, UseFormRegister } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import ErrorText from "../../Shared/Text/ErrorText";
-import customAxios from "../../../utils/customAxios";
+import ErrorText from "../../../Shared/Text/ErrorText";
+import { SignUpFormData } from "./SignUpFrom";
 
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-  checkPassword: string;
+interface SignInFormViewProps {
+  register: UseFormRegister<SignUpFormData>;
+  errors: {
+    name?: FieldError | undefined;
+    email?: FieldError | undefined;
+    password?: FieldError | undefined;
+    checkPassword?: FieldError | undefined;
+  };
+  resError: string;
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => Promise<void>;
 }
 
-const SignUpForm = () => {
-  const [resError, setResError] = useState("");
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const onRegister = handleSubmit(async (data) => {
-    setResError("");
-    const { name, email, password, checkPassword } = data;
-    if (password !== checkPassword) {
-      setResError("Password not matched");
-      setValue("password", "");
-      setValue("checkPassword", "");
-      return;
-    }
-
-    try {
-      const res = await customAxios.post("/user/register", {
-        email,
-        password,
-        name,
-      });
-      if (res.data.ok) {
-        window.location.replace("/signin");
-      } else {
-        setResError(res.data.error);
-      }
-    } catch (e) {
-      setResError("서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
-    }
-  });
+const SignUpFormView = ({
+  register,
+  errors,
+  resError,
+  onSubmit,
+}: SignInFormViewProps) => {
   return (
     <div className="w-full h-auto border p-8">
       <h2 className="text-center text-2xl">
@@ -67,7 +46,7 @@ const SignUpForm = () => {
           <hr className="w-full border-neutral-900" />
         </div>
 
-        <form className="flex flex-col text-lg mb-4" onSubmit={onRegister}>
+        <form className="flex flex-col text-lg mb-4" onSubmit={onSubmit}>
           <input
             {...register("name", { required: true })}
             type="text"
@@ -142,4 +121,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignUpFormView;

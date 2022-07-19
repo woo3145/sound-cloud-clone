@@ -1,46 +1,28 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { FieldError, UseFormRegister } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import ErrorText from "../../Shared/Text/ErrorText";
-import { useLocalStorage } from "../../../utils/useLocalStorage";
-import customAxios from "../../../utils/customAxios";
+import ErrorText from "../../../Shared/Text/ErrorText";
+import { SingInFormData } from "./SignInForm";
 
-interface FormData {
-  email: string;
-  password: string;
+interface SignInFormViewProps {
+  register: UseFormRegister<SingInFormData>;
+  errors: {
+    email?: FieldError | undefined;
+    password?: FieldError | undefined;
+  };
+  resError: string;
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => Promise<void>;
 }
 
-const SignInForm = () => {
-  const [error, setError] = useState("");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  // eslint-disable-next-line
-  const [__, setAccessToken] = useLocalStorage<string>("accessToken", "");
-  // eslint-disable-next-line
-  const [_, setAccessTokenExpire] = useLocalStorage<number>(
-    "accessTokenExpire",
-    0
-  );
-
-  const onLogin = handleSubmit(async (data) => {
-    const { email, password } = data;
-    try {
-      const res = await customAxios.post("/auth/login", { email, password });
-      setAccessToken(res.data.accessToken);
-      setAccessTokenExpire(res.data.accessTokenExpire);
-      window.location.replace("/");
-    } catch (e) {
-      setAccessToken("");
-      setAccessTokenExpire(0);
-      setError("이메일이나 패스워드가 잘못되었습니다.");
-    }
-  });
-
+const SignInFormView = ({
+  register,
+  errors,
+  resError,
+  onSubmit,
+}: SignInFormViewProps) => {
   return (
     <div className="w-full h-auto border p-8">
       <h2 className="text-center text-2xl">Welcome back!</h2>
@@ -59,7 +41,7 @@ const SignInForm = () => {
           <hr className="w-full border-neutral-900" />
         </div>
 
-        <form className="flex flex-col text-lg mb-4" onSubmit={onLogin}>
+        <form className="flex flex-col text-lg mb-4" onSubmit={onSubmit}>
           <input
             {...register("email", { required: true })}
             type="email"
@@ -91,7 +73,7 @@ const SignInForm = () => {
           <button className="w-full py-1.5 bg-orange-600 mt-4 rounded-sm text-white">
             Sing in
           </button>
-          {error && <ErrorText text={error} />}
+          {resError && <ErrorText text={resError} />}
         </form>
 
         <div className="flex justify-center text-sm">
@@ -105,4 +87,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignInFormView;

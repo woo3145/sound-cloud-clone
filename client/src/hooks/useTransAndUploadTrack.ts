@@ -119,6 +119,7 @@ const useTransAndUploadTrack = () => {
 
   useEffect(() => {
     load();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -133,6 +134,7 @@ const useTransAndUploadTrack = () => {
     };
     // 오디오 변환
     transFile();
+    // eslint-disable-next-line
   }, [inputFile]);
 
   return {
