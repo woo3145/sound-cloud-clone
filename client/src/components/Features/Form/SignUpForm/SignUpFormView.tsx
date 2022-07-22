@@ -1,14 +1,14 @@
-import React from "react";
-import { FieldError, UseFormRegister } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-import ErrorText from "../../../Shared/Text/ErrorText";
-import { SignUpFormData } from "./SignUpFrom";
+import React from 'react';
+import { FieldError, UseFormRegister } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
+import { Link } from 'react-router-dom';
+import ErrorText from '../../../Shared/Text/ErrorText';
+import { SignUpFormData } from './SignUpFrom';
 
 interface SignInFormViewProps {
   register: UseFormRegister<SignUpFormData>;
   errors: {
-    name?: FieldError | undefined;
+    username?: FieldError | undefined;
     email?: FieldError | undefined;
     password?: FieldError | undefined;
     checkPassword?: FieldError | undefined;
@@ -48,26 +48,26 @@ const SignUpFormView = ({
 
         <form className="flex flex-col text-lg mb-4" onSubmit={onSubmit}>
           <input
-            {...register("name", { required: true })}
+            {...register('username', { required: true })}
             type="text"
             placeholder="user name"
             className="border rounded-sm px-4 py-1.5 focus:outline-none"
           />
-          {errors.name?.type === "required" && (
-            <ErrorText text={"email is required"} />
+          {errors.username?.type === 'required' && (
+            <ErrorText text={'email is required'} />
           )}
           <input
-            {...register("email", { required: true })}
+            {...register('email', { required: true })}
             type="email"
             placeholder="email address"
             className="border rounded-sm px-4 py-1.5 focus:outline-none mt-2"
           />
-          {errors.email?.type === "required" && (
-            <ErrorText text={"email is required"} />
+          {errors.email?.type === 'required' && (
+            <ErrorText text={'email is required'} />
           )}
 
           <input
-            {...register("password", {
+            {...register('password', {
               required: true,
               minLength: 8,
               maxLength: 32,
@@ -76,17 +76,17 @@ const SignUpFormView = ({
             placeholder="password"
             className="border rounded-sm px-4 py-1.5 focus:outline-none mt-2"
           />
-          {errors.password?.type === "required" && (
-            <ErrorText text={"password is required"} />
+          {errors.password?.type === 'required' && (
+            <ErrorText text={'password is required'} />
           )}
-          {errors.password?.type === "maxLength" ||
-            (errors.password?.type === "minLength" && (
+          {errors.password?.type === 'maxLength' ||
+            (errors.password?.type === 'minLength' && (
               <ErrorText
-                text={"password length should be between 8 to 32 characters"}
+                text={'password length should be between 8 to 32 characters'}
               />
             ))}
           <input
-            {...register("checkPassword", {
+            {...register('checkPassword', {
               required: true,
               minLength: 8,
               maxLength: 32,
@@ -95,13 +95,13 @@ const SignUpFormView = ({
             placeholder="check password"
             className="border rounded-sm px-4 py-1.5 focus:outline-none mt-2"
           />
-          {errors.checkPassword?.type === "required" && (
-            <ErrorText text={"password is required"} />
+          {errors.checkPassword?.type === 'required' && (
+            <ErrorText text={'password is required'} />
           )}
-          {errors.checkPassword?.type === "maxLength" ||
-            (errors.checkPassword?.type === "minLength" && (
+          {errors.checkPassword?.type === 'maxLength' ||
+            (errors.checkPassword?.type === 'minLength' && (
               <ErrorText
-                text={"password length should be between 8 to 32 characters"}
+                text={'password length should be between 8 to 32 characters'}
               />
             ))}
           <button className="w-full py-1.5 bg-orange-600 mt-4 rounded-sm text-white">

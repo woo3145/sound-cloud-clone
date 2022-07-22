@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/auth/auth.decorator';
 import { UploadsService } from './uploads.service';
 
 @ApiTags('Uploads')

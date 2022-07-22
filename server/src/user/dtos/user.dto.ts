@@ -5,16 +5,13 @@ import { Track } from 'src/track/entities/track.entity';
 import { User } from '../entities/user.entity';
 
 export class CreateAccountInput {
-  @ApiProperty()
-  @IsEmail()
+  @ApiProperty({ type: String })
   email: string;
 
-  @ApiProperty()
-  @IsString()
+  @ApiProperty({ type: String })
   password: string;
 
-  @ApiProperty()
-  @IsString()
+  @ApiProperty({ type: String })
   username: string;
 }
 

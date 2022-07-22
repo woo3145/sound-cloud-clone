@@ -1,8 +1,8 @@
-import React from "react";
-import { FaUser, FaHeart } from "react-icons/fa";
-import { useFetchMe } from "../../../../hooks/useFetchMe";
-import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { FaUser, FaHeart } from 'react-icons/fa';
+import { useFetchMe } from '../../../../hooks/useFetchMe';
+import { IoIosArrowDown } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 const UserDropdownButton = ({
   tabIndex,
@@ -33,7 +33,7 @@ const UserAvatar = ({ src }: { src?: string }) => {
       <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1 bg-white">
         <img
           crossOrigin="anonymous"
-          src={src ? src : "https://api.lorem.space/image/face?hash=3174"}
+          src={src ? src : 'https://api.lorem.space/image/face?hash=3174'}
           alt="avator"
         />
       </div>
