@@ -6,7 +6,7 @@ import * as AWS from 'aws-sdk';
 export class UploadsService {
   constructor(private readonly configService: ConfigService) {}
 
-  async uploadAudio(file: Express.Multer.File) {
+  async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
     AWS.config.update({
       region: this.configService.get('AWS_BUCKET_REGION'),
       credentials: {
@@ -15,7 +15,7 @@ export class UploadsService {
       },
     });
 
-    const fileName = 'audio/' + Date.now() + file.originalname;
+    const fileName = `${folder}/${Date.now()}-${file.originalname}`;
     await new AWS.S3()
       .putObject({
         Key: fileName,
@@ -24,41 +24,34 @@ export class UploadsService {
         ACL: 'public-read',
       })
       .promise();
+    return `https://${this.configService.get(
+      'AWS_BUCKET_NAME',
+    )}.s3.${this.configService.get(
+      'AWS_BUCKET_REGION',
+    )}.amazonaws.com/${fileName}`;
+  }
+
+  async uploadAudio(file: Express.Multer.File) {
+    const url = await this.uploadFile(file, 'audio');
     return {
       ok: true,
-      url: `https://${this.configService.get(
-        'AWS_BUCKET_NAME',
-      )}.s3.${this.configService.get(
-        'AWS_BUCKET_REGION',
-      )}.amazonaws.com/${fileName}`,
+      url,
     };
   }
 
   async uploadAvatar(file: Express.Multer.File) {
-    AWS.config.update({
-      region: this.configService.get('AWS_BUCKET_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get('AWS_ACCESS_KEY'),
-        secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-      },
-    });
-
-    const fileName = 'avatar/' + Date.now() + file.originalname;
-    await new AWS.S3()
-      .putObject({
-        Key: fileName,
-        Body: file.buffer,
-        Bucket: this.configService.get('AWS_BUCKET_NAME'),
-        ACL: 'public-read',
-      })
-      .promise();
+    const url = await this.uploadFile(file, 'avatar');
     return {
       ok: true,
-      url: `https://${this.configService.get(
-        'AWS_BUCKET_NAME',
-      )}.s3.${this.configService.get(
-        'AWS_BUCKET_REGION',
-      )}.amazonaws.com/${fileName}`,
+      url,
+    };
+  }
+
+  async uploadArtwork(file: Express.Multer.File) {
+    const url = await this.uploadFile(file, 'artwork');
+    return {
+      ok: true,
+      url,
     };
   }
 }

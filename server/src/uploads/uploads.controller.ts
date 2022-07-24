@@ -17,7 +17,6 @@ export class UploadsController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadAudio(@UploadedFile() file: Express.Multer.File) {
     try {
-      console.log(file);
       return this.uploadsService.uploadAudio(file);
     } catch (e) {
       console.log('Upload Audio Error\n', e);
@@ -30,7 +29,18 @@ export class UploadsController {
     try {
       return this.uploadsService.uploadAvatar(file);
     } catch (e) {
-      console.log('Upload Audio Error\n', e);
+      console.log('Upload Avatar Error\n', e);
+      throw e;
+    }
+  }
+
+  @Post('artwork')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadArtwork(@UploadedFile() file: Express.Multer.File) {
+    try {
+      return this.uploadsService.uploadArtwork(file);
+    } catch (e) {
+      console.log('Upload Artwork Error\n', e);
       throw e;
     }
   }
