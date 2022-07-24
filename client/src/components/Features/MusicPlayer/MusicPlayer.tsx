@@ -1,24 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BsFillPersonPlusFill, BsPersonCheckFill } from 'react-icons/bs';
-import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { RiMenuUnfoldFill } from 'react-icons/ri';
-import { MdPause, MdPlayArrow } from 'react-icons/md';
 import {
+  changePlayTime,
   nextTrack,
-  playToggle,
-  prevTrack,
+  playListVisibleToggle,
 } from '../../../redux/reducers/musicPlayerSlice';
 import WaveSurfer from 'wavesurfer.js';
 import { timeFormat } from '../../../utils/format';
+import PlayListQueue from './PlayListQueue';
+import MusicPlayerController from './MusicPlayerController';
 
 const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
 
   const dispatch = useAppDispatch();
   const musicPlayer = useAppSelector((state) => state.musicPlayer);
-  const [curTime, setCurTime] = useState<number>(0);
   useEffect(() => {
     if (!musicPlayer.currentTrack) {
       return;
@@ -47,7 +46,9 @@ const MusicPlayer = () => {
     });
     wavesurfer.current.on('audioprocess', () => {
       if (wavesurfer.current?.isPlaying()) {
-        setCurTime(Math.floor(wavesurfer.current.getCurrentTime()));
+        dispatch(
+          changePlayTime(Math.floor(wavesurfer.current.getCurrentTime()))
+        );
       }
     });
     wavesurfer.current.on('finish', () => {
@@ -83,30 +84,14 @@ const MusicPlayer = () => {
   }
   return (
     <div className="fixed bottom-0 left-0 w-full bg-base-200 h-12 border-t border-base-300 flex justify-center">
-      <div className="flex self-stretch max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg w-full">
+      <div className="flex self-stretch max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg w-full relative">
+        {musicPlayer.playListVisible && <PlayListQueue />}
         {/* Controller */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center text-2xl px-4 shrink-0">
-            <BiArrowToLeft
-              onClick={() => dispatch(prevTrack())}
-              className="mr-4 cursor-pointer"
-            />
-            <label
-              onClick={() => dispatch(playToggle())}
-              className={`swap mr-4 ${musicPlayer.isPlaying && 'swap-active'}`}
-            >
-              <MdPause className="swap-on" />
-              <MdPlayArrow className="swap-off" />
-            </label>
-            <BiArrowToRight
-              className="cursor-pointer"
-              onClick={() => dispatch(nextTrack())}
-            />
-          </div>
-        </div>
+        <MusicPlayerController />
+
         <div className="flex-1 w-full flex items-center justify-between px-4 text-xs">
           <span className="shrink-0 w-14 text-center text-primary">
-            {timeFormat(curTime)}
+            {timeFormat(musicPlayer.currentTime)}
           </span>
 
           <div id={'waveform'} className="w-full"></div>
@@ -151,8 +136,16 @@ const MusicPlayer = () => {
               <BsFillPersonPlusFill className="swap-off" />
             </label>
 
-            <label className="swap">
-              <input type="checkbox" />
+            <label
+              className="swap"
+              htmlFor="playList-drawer"
+              onClick={() => dispatch(playListVisibleToggle())}
+            >
+              <input
+                type="checkbox"
+                readOnly
+                checked={musicPlayer.playListVisible}
+              />
               <RiMenuUnfoldFill className="swap-on text-primary" />
               <RiMenuUnfoldFill className="swap-off" />
             </label>

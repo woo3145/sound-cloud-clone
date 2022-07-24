@@ -1,9 +1,9 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { useFetchMe } from "../../../../hooks/useFetchMe";
-import { HeaderMoreDropdown } from "./HeaderMoreDropdown";
-import { HeaderUserDropDown } from "./HeaderUserDropdown";
-import customAxios from "../../../../utils/customAxios";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useFetchMe } from '../../../../hooks/useFetchMe';
+import { HeaderMoreDropdown } from './HeaderMoreDropdown';
+import { HeaderUserDropDown } from './HeaderUserDropdown';
+import customAxios from '../../../../utils/customAxios';
 
 const NavDrawerToggle = () => {
   return (
@@ -91,13 +91,13 @@ export const Header = () => {
   const { isLoggedIn, mutate } = useFetchMe();
   // 로그아웃
   const onLogout = async () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
       try {
-        await customAxios.post("/auth/logout");
+        await customAxios.post('/auth/logout');
       } catch (e) {}
       mutate(null);
-      window.localStorage.removeItem("accessToken");
-      window.localStorage.removeItem("accessTokenExpire");
+      window.localStorage.removeItem('accessToken');
+      window.localStorage.removeItem('accessTokenExpire');
     }
   };
 

@@ -1,7 +1,8 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import NavDrawer from "../../Shared/Drawers/NavDrawer";
-import { Header } from "./Header/Header";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import MusicPlayer from '../../Features/MusicPlayer/MusicPlayer';
+import NavDrawer from '../../Shared/Drawers/NavDrawer';
+import { Header } from './Header/Header';
 
 const BaseLayout = () => {
   return (
@@ -14,6 +15,8 @@ const BaseLayout = () => {
         <div className="w-full max-w-screen-lg h-auto bg-base-100">
           <Outlet />
         </div>
+
+        <MusicPlayer />
       </div>
 
       {/* Drawers & Modals */}

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface MusicPlayerState {
   playList: ITrack[];
@@ -6,6 +6,9 @@ interface MusicPlayerState {
   isPlaying: boolean;
   currentTrackIdx: number | null;
   currentTrack: ITrack | null;
+  currentTime: number;
+
+  playListVisible: boolean;
 }
 
 const initialState: MusicPlayerState = {
@@ -14,10 +17,12 @@ const initialState: MusicPlayerState = {
   isPlaying: false,
   currentTrackIdx: null,
   currentTrack: null,
+  currentTime: 0,
+  playListVisible: false,
 };
 
 const musicPlayerSlice = createSlice({
-  name: "musicPlayer",
+  name: 'musicPlayer',
   initialState,
   reducers: {
     clear: (state) => {
@@ -34,6 +39,7 @@ const musicPlayerSlice = createSlice({
       state.playList = payload.tracks;
       state.currentTrackIdx = payload.idx;
       state.currentTrack = payload.tracks[payload.idx];
+      state.currentTime = 0;
       state.isPlaying = true;
     },
     prevTrack: (state) => {
@@ -41,6 +47,7 @@ const musicPlayerSlice = createSlice({
         return;
       }
       state.isPlaying = true;
+      state.currentTime = 0;
       // 이전 트랙이 없으면 스탑
       if (state.currentTrackIdx < 1) {
         state.isPlaying = false;
@@ -54,6 +61,7 @@ const musicPlayerSlice = createSlice({
       if (state.currentTrackIdx === null || state.playList.length === 0) {
         return;
       }
+      state.currentTime = 0;
       // 다음 트랙이 없으면 정지
       if (state.currentTrackIdx >= state.playList.length - 1) {
         state.isPlaying = false;
@@ -69,10 +77,25 @@ const musicPlayerSlice = createSlice({
       //   }
       state.isPlaying = !state.isPlaying;
     },
+
+    playListVisibleToggle: (state) => {
+      state.playListVisible = !state.playListVisible;
+    },
+
+    changePlayTime: (state, { payload }: PayloadAction<number>) => {
+      state.currentTime = payload;
+    },
   },
 });
 
-export const { clear, setCollection, prevTrack, nextTrack, playToggle } =
-  musicPlayerSlice.actions;
+export const {
+  clear,
+  setCollection,
+  prevTrack,
+  nextTrack,
+  playToggle,
+  playListVisibleToggle,
+  changePlayTime,
+} = musicPlayerSlice.actions;
 
 export default musicPlayerSlice.reducer;
