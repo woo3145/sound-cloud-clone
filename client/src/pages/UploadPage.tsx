@@ -1,8 +1,8 @@
-import React from "react";
-import TrackFileChooser from "../components/Features/Upload/TrackFileChooser";
-import TrackFileTransProgress from "../components/Features/Upload/TrackFileTransProgress";
-import TrackUploadForm from "../components/Features/Form/TrackUploadForm/TrackUploadForm";
-import useTransAndUploadTrack from "../hooks/useTransAndUploadTrack";
+import React from 'react';
+import TrackFileChooser from '../components/Features/Upload/TrackFileChooser';
+import TrackFileTransProgress from '../components/Features/Upload/TrackFileTransProgress';
+import TrackUploadForm from '../components/Features/Form/TrackUploadForm/TrackUploadForm';
+import useTransAndUploadTrack from '../hooks/useTransAndUploadTrack';
 
 function Upload() {
   const {
@@ -43,7 +43,7 @@ function Upload() {
             <TrackUploadForm
               onCancel={onCancel}
               fileName={fileName}
-              upload={uploadTrack}
+              uploadTrack={uploadTrack}
               duration={duration}
             />
           )}

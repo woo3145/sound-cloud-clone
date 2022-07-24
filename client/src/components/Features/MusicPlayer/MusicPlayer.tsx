@@ -1,17 +1,17 @@
-import { BsFillPersonPlusFill, BsPersonCheckFill } from "react-icons/bs";
-import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { RiMenuUnfoldFill } from "react-icons/ri";
-import { MdPause, MdPlayArrow } from "react-icons/md";
+import React, { useEffect, useRef, useState } from 'react';
+import { BsFillPersonPlusFill, BsPersonCheckFill } from 'react-icons/bs';
+import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
+import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { RiMenuUnfoldFill } from 'react-icons/ri';
+import { MdPause, MdPlayArrow } from 'react-icons/md';
 import {
   nextTrack,
   playToggle,
   prevTrack,
-} from "../../../redux/reducers/musicPlayerSlice";
-import React, { useEffect, useRef, useState } from "react";
-import WaveSurfer from "wavesurfer.js";
-import { timeFormat } from "../../../utils/format";
+} from '../../../redux/reducers/musicPlayerSlice';
+import WaveSurfer from 'wavesurfer.js';
+import { timeFormat } from '../../../utils/format';
 
 const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
@@ -32,10 +32,10 @@ const MusicPlayer = () => {
       height: 30,
       barGap: 2,
       responsive: true,
-      backend: "WebAudio",
+      backend: 'WebAudio',
     });
-    wavesurfer.current.load(musicPlayer.currentTrack?.audioUrl || "");
-    wavesurfer.current.on("ready", () => {
+    wavesurfer.current.load(musicPlayer.currentTrack?.audioUrl || '');
+    wavesurfer.current.on('ready', () => {
       if (!wavesurfer.current) {
         return;
       }
@@ -45,12 +45,12 @@ const MusicPlayer = () => {
         wavesurfer.current.pause();
       }
     });
-    wavesurfer.current.on("audioprocess", () => {
+    wavesurfer.current.on('audioprocess', () => {
       if (wavesurfer.current?.isPlaying()) {
         setCurTime(Math.floor(wavesurfer.current.getCurrentTime()));
       }
     });
-    wavesurfer.current.on("finish", () => {
+    wavesurfer.current.on('finish', () => {
       if (!wavesurfer.current) {
         return;
       }
@@ -93,7 +93,7 @@ const MusicPlayer = () => {
             />
             <label
               onClick={() => dispatch(playToggle())}
-              className={`swap mr-4 ${musicPlayer.isPlaying && "swap-active"}`}
+              className={`swap mr-4 ${musicPlayer.isPlaying && 'swap-active'}`}
             >
               <MdPause className="swap-on" />
               <MdPlayArrow className="swap-off" />
@@ -109,7 +109,7 @@ const MusicPlayer = () => {
             {timeFormat(curTime)}
           </span>
 
-          <div id={"waveform"} className="w-full"></div>
+          <div id={'waveform'} className="w-full"></div>
 
           <span className="shrink-0 w-14 text-center">
             {timeFormat(musicPlayer.currentTrack.duration)}
@@ -122,11 +122,8 @@ const MusicPlayer = () => {
               <div className="w-9 rounded">
                 <img
                   alt="artwork"
-                  src={
-                    musicPlayer.currentTrack.artworkUrl
-                      ? musicPlayer.currentTrack.artworkUrl
-                      : "https://api.lorem.space/image/face?hash=92048"
-                  }
+                  crossOrigin="anonymous"
+                  src={musicPlayer.currentTrack.artworkUrl}
                 />
               </div>
             </div>
