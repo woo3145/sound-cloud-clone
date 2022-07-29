@@ -1,14 +1,14 @@
-import React from "react";
-import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from "react-icons/ai";
-import { BiTimeFive } from "react-icons/bi";
-import { FiMoreVertical } from "react-icons/fi";
+import React from 'react';
+import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from 'react-icons/ai';
+import { BiTimeFive } from 'react-icons/bi';
+import { FiMoreVertical } from 'react-icons/fi';
 import {
   MdOutlinePlaylistAdd,
   MdPause,
   MdPlayArrow,
   MdShare,
-} from "react-icons/md";
-import { dateFormat, timeFormat } from "../../../../utils/format";
+} from 'react-icons/md';
+import { dateFormat, timeFormat } from '../../../../utils/format';
 
 const TrackCardArtwork = ({
   artworkUrl,
@@ -18,13 +18,13 @@ const TrackCardArtwork = ({
   return (
     <div className="shrink-0 flex">
       <div className="avatar">
-        <div className="w-20 rounded">
+        <div className="w-16 sm:w-20 rounded">
           <img
             crossOrigin="anonymous"
             src={
               artworkUrl
                 ? artworkUrl
-                : "https://api.lorem.space/image/face?hash=92048"
+                : 'https://api.lorem.space/image/face?hash=92048'
             }
             alt="Artwork"
           />
@@ -45,7 +45,9 @@ const TrackCardTitleContainer = ({
 }) => {
   return (
     <div className="px-4 w-full">
-      <p className="text-md text-base-content break-all">{title}</p>
+      <p className="text-md text-base-content break-all line-clamp-1">
+        {title}
+      </p>
       <div className="flex items-center">
         <button className="btn btn-ghost btn-xs font-normal opacity-50 px-0 pr-4 normal-case justify-start shrink-0 text-base-content break-all hover:bg-base-100">
           {username}
@@ -66,7 +68,7 @@ const PlayButton = ({
   onClick: () => void;
 }) => {
   return (
-    <label className={`swap ${isActive && "swap-active"}`} onClick={onClick}>
+    <label className={`swap ${isActive && 'swap-active'}`} onClick={onClick}>
       <div className="btn btn-sm swap-on bg-primary border-none">
         <MdPause className="mr-2" />
         Pause

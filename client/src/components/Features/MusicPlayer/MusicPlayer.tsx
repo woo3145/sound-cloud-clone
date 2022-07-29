@@ -1,25 +1,36 @@
 import React, { useEffect, useRef } from 'react';
-import { BsFillPersonPlusFill, BsPersonCheckFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { RiMenuUnfoldFill } from 'react-icons/ri';
 import {
   changePlayTime,
   nextTrack,
-  playListVisibleToggle,
 } from '../../../redux/reducers/musicPlayerSlice';
 import WaveSurfer from 'wavesurfer.js';
-import { timeFormat } from '../../../utils/format';
 import PlayListQueue from './PlayListQueue';
 import MusicPlayerController from './MusicPlayerController';
+import MusicPlayerBar from './MusicPlayerBar';
+import MusicPlayerDetail from './MusicPlayerDetail';
+import MusicPlayerMoreMenu from './MusicPlayerMoreMenu';
 
 const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
 
   const dispatch = useAppDispatch();
-  const musicPlayer = useAppSelector((state) => state.musicPlayer);
+  // musicPlayer를 가져오면 currentDuration 업데이트에 따라 리렌더링이 일어나서 따로가져옴
+  const currentTrack = useAppSelector(
+    (state) => state.musicPlayer.currentTrack
+  );
+  const currentTrackIdx = useAppSelector(
+    (state) => state.musicPlayer.currentTrackIdx
+  );
+  const isPlaying = useAppSelector((state) => state.musicPlayer.isPlaying);
+  const playListVisible = useAppSelector(
+    (state) => state.musicPlayer.playListVisible
+  );
+
+  // currentTrack이 변경되면 waveSurfer 재생성 후
+  // ready, audioprocess, finish 이벤트 추가
   useEffect(() => {
-    if (!musicPlayer.currentTrack) {
+    if (!currentTrack) {
       return;
     }
     wavesurfer.current?.destroy();
@@ -33,17 +44,19 @@ const MusicPlayer = () => {
       responsive: true,
       backend: 'WebAudio',
     });
-    wavesurfer.current.load(musicPlayer.currentTrack?.audioUrl || '');
+    wavesurfer.current.load(currentTrack.audioUrl || '');
+
     wavesurfer.current.on('ready', () => {
       if (!wavesurfer.current) {
         return;
       }
-      if (musicPlayer.isPlaying) {
+      if (isPlaying) {
         wavesurfer.current.play();
       } else {
         wavesurfer.current.pause();
       }
     });
+
     wavesurfer.current.on('audioprocess', () => {
       if (wavesurfer.current?.isPlaying()) {
         dispatch(
@@ -51,6 +64,7 @@ const MusicPlayer = () => {
         );
       }
     });
+
     wavesurfer.current.on('finish', () => {
       if (!wavesurfer.current) {
         return;
@@ -59,97 +73,43 @@ const MusicPlayer = () => {
     });
     // isPlaying 예외
     // eslint-disable-next-line
-  }, [musicPlayer.currentTrack, musicPlayer.currentTrackIdx]);
+  }, [currentTrack, currentTrackIdx]);
 
+  // isPlaying에 따라 오디오 재생
   useEffect(() => {
     if (!wavesurfer.current) {
       return;
     }
-    if (musicPlayer.isPlaying) {
+    if (isPlaying) {
       wavesurfer.current.play();
     } else {
       wavesurfer.current.pause();
     }
-  }, [musicPlayer.isPlaying]);
+  }, [isPlaying]);
 
+  // 오디오파일 변경시 재생시간 초기화
   useEffect(() => {
     if (!wavesurfer.current) {
       return;
     }
     wavesurfer.current.setCurrentTime(0);
-  }, [musicPlayer.currentTrackIdx]);
+  }, [currentTrackIdx]);
 
-  if (!musicPlayer.currentTrack) {
+  if (!currentTrack) {
     return null;
   }
   return (
     <div className="fixed bottom-0 left-0 w-full bg-base-200 h-12 border-t border-base-300 flex justify-center">
       <div className="flex self-stretch max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg w-full relative">
-        {musicPlayer.playListVisible && <PlayListQueue />}
+        {playListVisible && <PlayListQueue />}
         {/* Controller */}
         <MusicPlayerController />
 
-        <div className="flex-1 w-full flex items-center justify-between px-4 text-xs">
-          <span className="shrink-0 w-14 text-center text-primary">
-            {timeFormat(musicPlayer.currentTime)}
-          </span>
+        <MusicPlayerBar />
+        <div className="w-full max-w-sm px-2 flex items-center justify-between">
+          <MusicPlayerDetail />
 
-          <div id={'waveform'} className="w-full"></div>
-
-          <span className="shrink-0 w-14 text-center">
-            {timeFormat(musicPlayer.currentTrack.duration)}
-          </span>
-        </div>
-        <div className="shrink-0 w-full max-w-sm px-2 flex items-center justify-between">
-          {/* Current Track Detail */}
-          <div className="shrink-0 flex">
-            <div className="avatar border border-base-300">
-              <div className="w-9 rounded">
-                <img
-                  alt="artwork"
-                  crossOrigin="anonymous"
-                  src={musicPlayer.currentTrack.artworkUrl}
-                />
-              </div>
-            </div>
-          </div>
-          {/* Track */}
-          <div className="flex-1 w-full px-4">
-            <p className="opacity-50 hover:opacity-100 text-xs cursor-pointer">
-              {musicPlayer.currentTrack.user.username}
-            </p>
-            <p className="opacity-90 hover:opacity-100 text-xs cursor-pointer break-all line-clamp-1">
-              {musicPlayer.currentTrack.title}
-            </p>
-          </div>
-          {/* More Menu */}
-          <div className="shrink-0 text-lg flex items-center">
-            <label className="swap mr-3">
-              <input type="checkbox" />
-              <AiFillHeart className="swap-on text-primary" />
-              <AiOutlineHeart className="swap-off" />
-            </label>
-
-            <label className="swap mr-3">
-              <input type="checkbox" />
-              <BsPersonCheckFill className="swap-on text-primary" />
-              <BsFillPersonPlusFill className="swap-off" />
-            </label>
-
-            <label
-              className="swap"
-              htmlFor="playList-drawer"
-              onClick={() => dispatch(playListVisibleToggle())}
-            >
-              <input
-                type="checkbox"
-                readOnly
-                checked={musicPlayer.playListVisible}
-              />
-              <RiMenuUnfoldFill className="swap-on text-primary" />
-              <RiMenuUnfoldFill className="swap-off" />
-            </label>
-          </div>
+          <MusicPlayerMoreMenu />
         </div>
       </div>
     </div>

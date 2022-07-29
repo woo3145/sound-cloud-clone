@@ -25,11 +25,14 @@ const musicPlayerSlice = createSlice({
   name: 'musicPlayer',
   initialState,
   reducers: {
-    clear: (state) => {
+    // 현재 재생중인 트랙만 남기고 플레이리스트 정리
+    playListClear: (state) => {
       if (state.playList.length <= 1) {
         return;
       }
-      state.playList.filter((d, idx) => idx === state.currentTrackIdx);
+      state.playList = state.playList.filter(
+        (d, idx) => idx === state.currentTrackIdx
+      );
       state.currentTrackIdx = 0;
     },
     setCollection: (
@@ -85,17 +88,25 @@ const musicPlayerSlice = createSlice({
     changePlayTime: (state, { payload }: PayloadAction<number>) => {
       state.currentTime = payload;
     },
+
+    changeTrackIdx: (state, { payload }: PayloadAction<number>) => {
+      state.currentTrackIdx = payload;
+      state.currentTrack = state.playList[payload];
+      state.currentTime = 0;
+      state.isPlaying = true;
+    },
   },
 });
 
 export const {
-  clear,
+  playListClear,
   setCollection,
   prevTrack,
   nextTrack,
   playToggle,
   playListVisibleToggle,
   changePlayTime,
+  changeTrackIdx,
 } = musicPlayerSlice.actions;
 
 export default musicPlayerSlice.reducer;
