@@ -129,10 +129,10 @@ const MoreDropdown = ({
         </li>
         {isMyTrack && (
           <li>
-            <a onClick={deleteTrack} href="." className="text-sm">
+            <div onClick={deleteTrack} className="text-sm">
               <AiTwotoneDelete />
               delete
-            </a>
+            </div>
           </li>
         )}
       </ul>

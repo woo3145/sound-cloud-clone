@@ -1,13 +1,13 @@
-import React, { useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { useFetchUserTracks } from "../../../../hooks/useFetchUserTracks";
+import React, { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { useFetchUserTracks } from '../../../../hooks/useFetchUserTracks';
 import {
   playToggle,
   setCollection,
-} from "../../../../redux/reducers/musicPlayerSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import customAxios from "../../../../utils/customAxios";
-import UserTrackListView from "./UserTrackListView";
+} from '../../../../redux/reducers/musicPlayerSlice';
+import { useAppDispatch, useAppSelector } from '../../../../redux/store';
+import customAxios from '../../../../utils/customAxios';
+import UserTrackListView from './UserTrackListView';
 
 const UserTrackList = () => {
   const { user_id, filter } = useParams();
@@ -29,7 +29,7 @@ const UserTrackList = () => {
           dispatch(setCollection({ tracks, idx }));
         },
         deleteTrack: async () => {
-          if (!window.confirm("정말 트랙을 삭제하시겠습니까?")) {
+          if (!window.confirm('정말 트랙을 삭제하시겠습니까?')) {
             return;
           }
           try {
