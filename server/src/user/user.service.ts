@@ -48,6 +48,7 @@ export class UserService {
       .addSelect('user.currentHashedRefreshToken')
       .getOne();
   }
+
   async getUserTracks(userId: number): Promise<GetUserTracksOutput> {
     const tracks = await this.trackService.getTracksByUserId(userId);
     return { ok: true, tracks };
@@ -139,5 +140,21 @@ export class UserService {
     this.userRepository.update(id, {
       currentHashedRefreshToken: null,
     });
+  }
+
+  async likesTrack(me: User, trackId: number) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: me.id },
+        relations: ['favoriteTracks'],
+      });
+      const track = await this.trackService.getTrackById(trackId);
+      user.favoriteTracks.push(track);
+      await this.userRepository.save(user);
+      return;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 }

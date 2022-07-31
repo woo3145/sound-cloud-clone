@@ -1,4 +1,11 @@
-import { Entity, Column, BeforeInsert, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BeforeInsert,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { CommonEntity } from 'src/common/dtos/common.entity';
@@ -34,6 +41,11 @@ export class User extends CommonEntity {
   @ApiProperty()
   @OneToMany(() => Track, (track) => track.user)
   tracks: Track[];
+
+  @ApiProperty()
+  @ManyToMany(() => Track, (track) => track.favoriteUsers, { cascade: true })
+  @JoinTable()
+  favoriteTracks: Track[];
 
   /* methods */
   @BeforeInsert()

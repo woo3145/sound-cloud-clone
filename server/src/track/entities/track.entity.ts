@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { CommonEntity } from 'src/common/dtos/common.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Track extends CommonEntity {
@@ -43,4 +43,8 @@ export class Track extends CommonEntity {
 
   @ManyToOne(() => User, (user) => user.tracks, { onDelete: 'SET NULL' })
   user: User;
+
+  @ApiProperty()
+  @ManyToMany(() => User, (user) => user.favoriteTracks)
+  favoriteUsers: User[];
 }

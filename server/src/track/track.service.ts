@@ -42,6 +42,16 @@ export class TrackService {
       .getMany();
     return tracks;
   }
+  async getTrackById(trackId: number) {
+    try {
+      const track = await this.trackRepository.findOne({
+        where: { id: trackId },
+      });
+      return track;
+    } catch (e) {
+      throw new Error('트랙이 없습니다.');
+    }
+  }
   // Update
   // Delete
   async delete(trackId: number, user: User): Promise<CommonOutput> {
