@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -79,9 +80,17 @@ export class UserController {
     }
   }
 
-  // Likes
+  // Likes & Unlikes
   @Put(':user_id/track_likes/:track_id')
-  async trackLikes(@Param('track_id') trackId: number, @Req() req) {
+  async likesTrack(@Param('track_id') trackId: number, @Req() req) {
     return this.userService.likesTrack(req.user, trackId);
+  }
+  @Delete(':user_id/track_likes/:track_id')
+  async unlikesTrack(@Param('track_id') trackId: number, @Req() req) {
+    return this.userService.unlikesTrack(req.user, trackId);
+  }
+  @Get(':user_id/track_likes/:track_id')
+  async checkLikeTrack(@Param('track_id') trackId: number, @Req() req) {
+    return this.userService.checkLikeTrack(req.user, trackId);
   }
 }

@@ -151,10 +151,59 @@ export class UserService {
       const track = await this.trackService.getTrackById(trackId);
       user.favoriteTracks.push(track);
       await this.userRepository.save(user);
-      return;
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: '서버에 문제가 있습니다.',
+      };
+    }
+  }
+  async unlikesTrack(me: User, trackId: number) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: me.id },
+        relations: ['favoriteTracks'],
+      });
+      const track = await this.trackService.getTrackById(trackId);
+      user.favoriteTracks = user.favoriteTracks.filter(
+        (t) => t.id !== track.id,
+      );
+      await this.userRepository.save(user);
+      return {
+        ok: true,
+      };
     } catch (e) {
       console.log(e);
-      return null;
+      return {
+        ok: false,
+        message: '서버에 문제가 있습니다.',
+      };
+    }
+  }
+
+  async checkLikeTrack(me: User, trackId: number) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id: me.id,
+          favoriteTracks: {
+            id: trackId,
+          },
+        },
+        relations: ['favoriteTracks'],
+      });
+      return {
+        ok: true,
+        state: user ? true : false,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: '서버에 문제가 있습니다.',
+      };
     }
   }
 }
