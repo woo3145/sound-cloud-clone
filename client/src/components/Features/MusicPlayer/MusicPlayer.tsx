@@ -15,7 +15,6 @@ const MusicPlayer = () => {
   const wavesurfer = useRef<null | WaveSurfer>(null);
 
   const dispatch = useAppDispatch();
-  // musicPlayer를 가져오면 currentDuration 업데이트에 따라 리렌더링이 일어나서 따로가져옴
   const currentTrack = useAppSelector(
     (state) => state.musicPlayer.currentTrack
   );

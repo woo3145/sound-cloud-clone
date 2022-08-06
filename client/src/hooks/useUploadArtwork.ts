@@ -27,7 +27,7 @@ const useUploadArtwork = () => {
   const upload = async () => {
     try {
       if (!file) {
-        throw new Error('업로드할 파일이 존재하지 않습니다.');
+        return defaultArtworkUrl;
       }
 
       const formData = new FormData();
