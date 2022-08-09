@@ -47,6 +47,16 @@ export class User extends CommonEntity {
   @JoinTable()
   favoriteTracks: Track[];
 
+  @ApiProperty()
+  @ManyToMany(() => User, (user) => user.followers)
+  @JoinTable()
+  followings: User[];
+
+  @ApiProperty()
+  @ManyToMany(() => User, (user) => user.followings)
+  @JoinTable()
+  followers: User[];
+
   /* methods */
   @BeforeInsert()
   async hashPassword(): Promise<void> {

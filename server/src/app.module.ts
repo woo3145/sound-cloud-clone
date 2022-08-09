@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { TrackModule } from './track/track.module';
 import { Track } from './track/entities/track.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { MeModule } from './me/me.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { UploadsModule } from './uploads/uploads.module';
     AuthModule,
     TrackModule,
     UploadsModule,
+    MeModule,
   ],
   controllers: [AppController],
   providers: [

@@ -14,8 +14,6 @@ class GetProfileOutput extends CommonOutput {
 
 @Controller()
 export class AppController {
-  constructor() {}
-
   @ApiResponse({
     status: 201,
     type: GetProfileOutput,
