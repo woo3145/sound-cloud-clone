@@ -1,38 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import React from 'react';
 import { BsFillPersonPlusFill, BsPersonCheckFill } from 'react-icons/bs';
 import { RiMenuUnfoldFill } from 'react-icons/ri';
-import useLikesTrack from '../../../hooks/useLikesTrack';
 import { playListVisibleToggle } from '../../../redux/reducers/musicPlayerSlice';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
-
-const LikesButton = ({ trackId }: { trackId: number }) => {
-  const [active, setActive] = useState(false);
-  const { likes, unlikes, check } = useLikesTrack(trackId);
-
-  useEffect(() => {
-    const checkState = async () => {
-      const { state } = await check();
-      setActive(state);
-    };
-    checkState();
-  }, [check, trackId]);
-
-  const likesTrack = async (e: any) => {
-    const data = await likes();
-    if (data.ok) setActive(true);
-  };
-  const unlikesTrack = async (e: any) => {
-    const data = await unlikes();
-    if (data.ok) setActive(false);
-  };
-
-  return active ? (
-    <AiFillHeart className="text-primary mr-3" onClick={unlikesTrack} />
-  ) : (
-    <AiOutlineHeart className="mr-3" onClick={likesTrack} />
-  );
-};
+import LikesTrackButton from '../Buttons/LikesTrackButton';
 
 const MusicPlayerMoreMenu = () => {
   const dispatch = useAppDispatch();
@@ -51,10 +22,10 @@ const MusicPlayerMoreMenu = () => {
     dispatch(playListVisibleToggle());
   };
   return (
-    <div className="shrink-0 text-lg flex items-center">
-      <LikesButton trackId={trackId} />
+    <div className="shrink-0 text-lg flex gap-4 items-center">
+      <LikesTrackButton trackId={trackId} />
 
-      <label className="swap mr-3" onClick={followUser}>
+      <label className="swap" onClick={followUser}>
         <input type="checkbox" />
         <BsPersonCheckFill className="swap-on text-primary" />
         <BsFillPersonPlusFill className="swap-off" />

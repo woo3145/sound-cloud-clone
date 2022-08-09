@@ -1,5 +1,5 @@
 import React from 'react';
-import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from 'react-icons/ai';
+import { AiTwotoneDelete } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
 import { FiMoreVertical } from 'react-icons/fi';
 import {
@@ -9,6 +9,7 @@ import {
   MdShare,
 } from 'react-icons/md';
 import { dateFormat, timeFormat } from '../../../../utils/format';
+import LikesTrackButton from '../../Buttons/LikesTrackButton';
 
 const TrackCardArtwork = ({
   artworkUrl,
@@ -89,16 +90,6 @@ const TrackDuration = ({ duration }: { duration: number }) => {
   );
 };
 
-const LikeButton = () => {
-  return (
-    <label className="swap px-4">
-      <input type="checkbox" />
-      <AiFillHeart className="swap-on text-primary" />
-      <AiOutlineHeart className="swap-off" />
-    </label>
-  );
-};
-
 const MoreDropdown = ({
   deleteTrack,
   isMyTrack,
@@ -166,10 +157,10 @@ const TrackCardView = ({
         username={track.user.username}
         createdAt={track.createdAt}
       />
-      <div className="shrink-0 flex items-center">
+      <div className="shrink-0 flex gap-2 items-center">
         <PlayButton isActive={isActive} onClick={setCollectionAndPlayToggle} />
         <TrackDuration duration={track.duration} />
-        <LikeButton />
+        <LikesTrackButton trackId={track.id} />
         <MoreDropdown deleteTrack={deleteTrack} isMyTrack={isMyTrack} />
       </div>
     </li>

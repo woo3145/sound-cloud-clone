@@ -16,7 +16,8 @@ customAxios.interceptors.request.use(
     );
     // 만약 accessToken이 만료 되었다면 cookie에 저장된 refresh token을 이용하여 새로 발급받고
     // refresh Token이 없다면 localStorage를 초기화 해준다.
-    if (accessTokenExpire && moment(accessTokenExpire).diff(moment()) < 0) {
+    if (accessTokenExpire && moment(accessTokenExpire).diff(moment()) < 1000) {
+      console.log('access token 재발급');
       try {
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/auth/refresh`,
@@ -31,9 +32,12 @@ customAxios.interceptors.request.use(
           'accessTokenExpire',
           JSON.stringify(data.accessTokenExpire)
         );
+        console.log('access token 재발급 : 성공');
       } catch (e) {
         window.localStorage.setItem('accessToken', '');
         window.localStorage.setItem('accessTokenExpire', '');
+
+        console.log('access token 재발급 : 실패 (refresh token 만료)');
       }
     }
 
@@ -62,6 +66,7 @@ customAxios.interceptors.response.use(
     return response;
   },
   (err) => {
+    console.log('만료');
     return Promise.reject(err.message);
   }
 );

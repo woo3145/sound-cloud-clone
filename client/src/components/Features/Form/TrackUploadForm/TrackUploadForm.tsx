@@ -27,6 +27,7 @@ const TrackUploadForm = ({
   duration,
 }: Props) => {
   const { register, handleSubmit } = useForm<TrackUploadFormData>();
+
   const {
     artworkPreviewUrl,
     onChangeHandler: onArtworkChangeHandler,
