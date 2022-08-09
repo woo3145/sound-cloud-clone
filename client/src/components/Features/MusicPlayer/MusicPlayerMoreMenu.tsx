@@ -1,8 +1,8 @@
 import React from 'react';
-import { BsFillPersonPlusFill, BsPersonCheckFill } from 'react-icons/bs';
 import { RiMenuUnfoldFill } from 'react-icons/ri';
 import { playListVisibleToggle } from '../../../redux/reducers/musicPlayerSlice';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import FollowUserButton from '../Buttons/FollowUserButton';
 import LikesTrackButton from '../Buttons/LikesTrackButton';
 
 const MusicPlayerMoreMenu = () => {
@@ -14,9 +14,9 @@ const MusicPlayerMoreMenu = () => {
     (state) => state.musicPlayer.currentTrack?.id
   ) as number;
 
-  const followUser = () => {
-    console.log('Follow User');
-  };
+  const artistId = useAppSelector(
+    (state) => state.musicPlayer.currentTrack?.user.id
+  ) as number;
 
   const openPlayListToggle = () => {
     dispatch(playListVisibleToggle());
@@ -25,11 +25,7 @@ const MusicPlayerMoreMenu = () => {
     <div className="shrink-0 text-lg flex gap-4 items-center">
       <LikesTrackButton trackId={trackId} />
 
-      <label className="swap" onClick={followUser}>
-        <input type="checkbox" />
-        <BsPersonCheckFill className="swap-on text-primary" />
-        <BsFillPersonPlusFill className="swap-off" />
-      </label>
+      <FollowUserButton userId={artistId} />
 
       <label
         className="swap"

@@ -1,21 +1,15 @@
-import React from "react";
-import useUploadAvatarImg from "../../../hooks/useUploadAvatarImg";
-import AvatarChooser from "./AvatarChooser";
-import AvatarSaveModal from "./AvatarSaveModal";
+import React from 'react';
+import useUploadAvatarImg from '../../../hooks/useUploadAvatarImg';
+import AvatarChooser from './AvatarChooser';
+import AvatarSaveModal from './AvatarSaveModal';
 
 const ProfileHeaderAvator = ({ avatarUrl }: { avatarUrl: string }) => {
   return (
     <div className="avatar relative">
-      <div className="w-48 rounded-full ring ring-base-100 bg-white">
-        <img
-          crossOrigin="anonymous"
-          alt="avator"
-          src={
-            avatarUrl
-              ? avatarUrl
-              : "https://api.lorem.space/image/face?hash=3174"
-          }
-        />
+      <div className="w-48 rounded-full bg-base-200">
+        {avatarUrl && (
+          <img crossOrigin="anonymous" alt="avator" src={avatarUrl} />
+        )}
       </div>
     </div>
   );

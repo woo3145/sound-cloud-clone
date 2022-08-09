@@ -20,7 +20,7 @@ const UserDropdownButton = ({
     >
       <div className="flex items-center text-xs gap-3">
         <UserAvatar src={avatarUrl} />
-        <p>{username}</p>
+        <p className="normal-case">{username}</p>
         <IoIosArrowDown />
       </div>
     </label>
@@ -30,12 +30,8 @@ const UserDropdownButton = ({
 const UserAvatar = ({ src }: { src?: string }) => {
   return (
     <div className="avatar">
-      <div className="w-8 rounded-full ring-offset-base-100 ring-offset-1 ring-1 bg-white">
-        <img
-          crossOrigin="anonymous"
-          src={src ? src : 'https://api.lorem.space/image/face?hash=3174'}
-          alt="avator"
-        />
+      <div className="w-8 rounded-full bg-base-200">
+        {src && <img crossOrigin="anonymous" src={src} alt="avator" />}
       </div>
     </div>
   );
